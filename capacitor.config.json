@@ -1,0 +1,7 @@
+{
+  "appId": "com.mishkat.anwar",
+  "appName": "مشكاة الأنوار",
+  "webDir": "www",
+  "backgroundColor": "#052e1a",
+  "android": { "allowMixedContent": false }
+}
