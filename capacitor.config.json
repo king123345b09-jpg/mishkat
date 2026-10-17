@@ -3,5 +3,13 @@
   "appName": "مشكاة الأنوار",
   "webDir": "www",
   "backgroundColor": "#052e1a",
-  "android": { "allowMixedContent": false }
+  "android": {
+    "allowMixedContent": false
+  },
+  "plugins": {
+    "LocalNotifications": {
+      "smallIcon": "ic_stat_mosque",
+      "iconColor": "#d4af37"
+    }
+  }
 }

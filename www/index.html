@@ -14,7 +14,7 @@
 <title>مشكاة الأنوار - Mishkat Al-Anwar</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Aref+Ruqaa:wght@400;700&family=Scheherazade+New:wght@400;700&family=Inter:wght@300;400;500;600;700;900&family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Amiri+Quran&family=Amiri:wght@400;700&family=Aref+Ruqaa:wght@400;700&family=Scheherazade+New:wght@400;700&family=Inter:wght@300;400;500;600;700;900&family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -463,6 +463,20 @@ html,body{overscroll-behavior:none}
 .toast.show{transform:translateX(-50%) translateY(0);opacity:1;visibility:visible}
 .pre-banner{top:calc(env(safe-area-inset-top) + 12px)}
 .geo-icon svg{overflow:visible;animation:none}
+.pre-banner{transform:translateX(-50%) translateY(-150%);opacity:0;visibility:hidden;pointer-events:none}
+.pre-banner.show{transform:translateX(-50%) translateY(0);opacity:1;visibility:visible;pointer-events:auto}
+.verses-block{font-family:'Amiri Quran','Scheherazade New',serif!important;line-height:2.5}
+.leaflet-bar a{width:40px!important;height:40px!important;line-height:40px!important;font-size:20px!important}
+#adhanOverlay{position:fixed;inset:0;z-index:20000;display:none;align-items:center;justify-content:center;text-align:center;color:#fff;background:#052e1a center/cover no-repeat}
+#adhanOverlay.on{display:flex}
+#adhanOverlay::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,46,26,.45),rgba(5,46,26,.9))}
+.ao-in{position:relative;width:86%;max-width:420px}
+.ao-sub{font-size:16px;opacity:.9}.ao-name{font-family:'Aref Ruqaa',serif;font-size:56px;color:#f4c430;margin:6px 0}
+.ao-time{font-size:30px;font-family:'Inter',sans-serif;font-weight:700}.ao-date{font-size:14px;opacity:.85;margin:6px 0 26px}
+#aoVol{width:100%;accent-color:#f4c430;margin-bottom:22px}
+.ao-stop,#adhanStop{background:linear-gradient(135deg,#f4c430,#b8941f);color:#052e1a;border:0;border-radius:18px;padding:14px 28px;font-size:18px;font-weight:700;font-family:inherit}
+#adhanStop{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(96px + env(safe-area-inset-bottom));z-index:19999;display:none;box-shadow:0 6px 24px rgba(0,0,0,.5)}
+#adhanStop.on{display:block}
 .hidden{display:none!important}
 @media (max-width:360px){.splash-title{font-size:38px}.next-prayer-name{font-size:26px}.tasbih-counter{font-size:52px}.qibla-compass{width:250px;height:250px}.tick{transform-origin:50% 111px}.qibla-needle{height:90px}.wird-results{grid-template-columns:repeat(2,1fr)}}
 </style>
@@ -1108,20 +1122,18 @@ function renderPrayerGrid() {
     </div>`).join('');
 }
 function renderAdhanCards() {
-  const lists = {
-    fajr: ['أذان الحرم المكي الشريف', 'أذان المسجد الأقصى', 'الشيخ محمد رفعت', 'الشيخ مصطفى إسماعيل', 'الشيخ علي ملا'],
-    dhuhr: ['أذان الحرم المكي الشريف', 'أذان المسجد الأقصى', 'الشيخ عبد الباسط عبد الصمد', 'الشيخ محمود الحصري'],
-    asr: ['أذان الحرم المكي الشريف', 'أذان المسجد النبوي', 'الشيخ ناصر القطامي'],
-    maghrib: ['أذان جامع الجزائر', 'أذان الحرم المكي الشريف', 'الشيخ مشاري العفاسي'],
-    isha: ['أذان جامع الجزائر', 'أذان المسجد النبوي', 'الشيخ علي ملا']
-  };
-  document.getElementById('adhanCards').innerHTML = Object.keys(lists).map(p => `
+  const mk = p => `
     <div class="adhan-card">
       <div class="adhan-header"><div class="adhan-icon" style="background:none;padding:0;overflow:hidden">${mosqueIcon(p).replace(/id="(\w+)-/g, 'id="$1-a').replace(/url\(#(\w+)-/g, 'url(#$1-a')}</div>
-      <div><div class="adhan-title">أذان ${t(p)}</div><div class="adhan-subtitle">اختر المؤذن المفضل</div></div></div>
-      <select class="adhan-select" onchange="showToast('تم حفظ المؤذن','fas fa-check')">${lists[p].map(o => `<option>${o}</option>`).join('')}</select>
-      <div class="mode-toggle"><div class="mode-btn active" onclick="selectMode(this)"><i class="fas fa-bell"></i> إشعار</div><div class="mode-btn" onclick="selectMode(this)"><i class="fas fa-expand"></i> شاشة كاملة</div></div>
-    </div>`).join('');
+      <div><div class="adhan-title">أذان ${t(p)}</div><div class="adhan-subtitle">اختر الأذان</div></div></div>
+      <select class="adhan-select" onchange="store.set('adhanSel_${p}', +this.value); showToast('تم حفظ الأذان','fas fa-check')">${ADHANS.map((a, i) => `<option value="${i}" ${i === adhanPref(p) ? 'selected' : ''}>${a.name}</option>`).join('')}</select>
+      <div class="mode-toggle">
+        <div class="mode-btn ${adhanModeOf(p) === 'notif' ? 'active' : ''}" onclick="setAdhanMode('${p}','notif',this)"><i class="fas fa-bell"></i> إشعار</div>
+        <div class="mode-btn ${adhanModeOf(p) === 'full' ? 'active' : ''}" onclick="setAdhanMode('${p}','full',this)"><i class="fas fa-expand"></i> شاشة كاملة</div>
+        <div class="mode-btn" onclick="playAdhan('${p}')"><i class="fas fa-play"></i> تجربة</div>
+      </div>
+    </div>`;
+  document.getElementById('adhanCards').innerHTML = `<div class="adhan-card"><div class="adhan-header"><div class="adhan-icon"><i class="fas fa-volume-high"></i></div><div><div class="adhan-title">مستوى صوت الأذان</div><div class="adhan-subtitle">ارفع صوت الوسائط في هاتفك أيضاً</div></div></div><input type="range" id="adhanVolRange" min="0" max="100" value="${Math.round(store.get('adhanVol', 1) * 100)}" oninput="setAdhanVol(this.value/100)" style="width:100%;accent-color:#f4c430;margin-top:10px"></div>` + ['fajr', 'dhuhr', 'asr', 'maghrib', 'isha'].map(mk).join('');
 }
 function renderDuaaCategories() {
   const todayKey = new Date().toDateString();
@@ -1215,7 +1227,8 @@ function greatCircle(a, b, n = 64) {
 }
 function initMap() {
   try {
-    map = L.map('map', { zoomControl: false, attributionControl: false }).setView([state.location.lat, state.location.lng], 13);
+    map = L.map('map', { zoomControl: true, attributionControl: false }).setView([state.location.lat, state.location.lng], 13);
+    try { addMapButtons(); } catch (e) {}
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19 }).addTo(map);
     const goldIcon = L.divIcon({ className: '', html: '<div style="width:22px;height:22px;background:linear-gradient(135deg,#f4c430,#d4af37);border:3px solid #0a5c36;border-radius:50%;box-shadow:0 0 0 6px rgba(244,196,48,.25),0 0 20px rgba(244,196,48,.8)"></div>', iconSize: [22, 22], iconAnchor: [11, 11] });
     const kaabaIcon = L.divIcon({ className: '', html: '<div style="width:30px;height:30px;background:#111;border:2px solid #f4c430;border-radius:8px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 18px rgba(244,196,48,.9)"><i class="fas fa-kaaba" style="color:#f4c430;font-size:15px"></i></div>', iconSize: [30, 30], iconAnchor: [15, 15] });
@@ -1279,6 +1292,7 @@ function updateNextPrayer() {
   if (ha && ha.dataset.p !== next) { ha.dataset.p = next; ha.innerHTML = mosqueIcon(next).replace(/id="(\w+)-/g, 'id="$1-h').replace(/url\(#(\w+)-/g, 'url(#$1-h'); }
 }
 function updatePrayerSubs() {
+  checkAdhanTime();
   const now = new Date(), nx = state.nextPrayer;
   prayerKeys.forEach(p => {
     const c = document.querySelector(`.prayer-card[data-prayer="${p}"]`); if (!c) return;
@@ -1342,7 +1356,7 @@ function togglePreAlerts(el) {
 function updateHijriDate() {
   const now = new Date();
   document.getElementById('gregorianDate').textContent = now.toLocaleDateString('en-GB');
-  try { document.getElementById('hijriDate').textContent = now.toLocaleDateString('ar-SA-u-ca-islamic', { day: 'numeric', month: 'long', year: 'numeric' }); } catch (e) {}
+  try { document.getElementById('hijriDate').textContent = now.toLocaleDateString('ar-SA-u-ca-islamic-umalqura-nu-latn', { day: 'numeric', month: 'long', year: 'numeric' }); } catch (e) {}
 }
 function togglePrayer(el, prayer) {
   el.classList.toggle('on');
@@ -1685,7 +1699,7 @@ function searchQuran() {
   });
   document.getElementById('surahCount').textContent = `${n} سورة`;
 }
-const toArabicNum = num => String(num).replace(/\d/g, d => '٠١٢٣٤٥٦٧٨٩'[d]);
+const toArabicNum = n => String(n);
 async function openSurah(num) {
   const s = surahs[num - 1]; if (!s) return;
   if (state.audioSurah !== num) { stopAudio(); state.currentAyah = 1; }
@@ -1788,6 +1802,7 @@ async function testNativeNotif() {
 function hideTop() {
   const q = id => document.getElementById(id);
   if (!q('permissionModal').classList.contains('off')) return true;
+  if (q('adhanOverlay').classList.contains('on') || q('adhanStop').classList.contains('on')) { stopAdhan(); return true; }
   if (q('modalOverlay').classList.contains('active')) { closeModal(); return true; }
   if (q('quranReader').classList.contains('active')) {
     if (!q('readerSearch').classList.contains('hidden')) { q('readerSearch').classList.add('hidden'); return true; }
@@ -1893,7 +1908,7 @@ function setWirdDays(v) {
     today = dayN <= days ? `<br><i class="fas fa-bookmark"></i> ورد اليوم (${dayN}/${days}): <b>من الصفحة ${from} إلى ${to}</b>` : '<br>🎉 <b>اكتملت الختمة، تقبل الله منك</b>';
     document.getElementById('khatmaBtnText').textContent = 'إعادة بدء الختمة';
   }
-  document.getElementById('wirdNote').innerHTML = `لختم القرآن في <b>${days}</b> يوماً اقرأ <b>${Math.ceil(pages)}</b> صفحة يومياً، أي نحو <b>${Math.ceil(pages / 5)}</b> صفحات بعد كل صلاة. موعد الختم المتوقع: <b>${end.toLocaleDateString('ar-EG', { day: 'numeric', month: 'long', year: 'numeric' })}</b>${today}`;
+  document.getElementById('wirdNote').innerHTML = `لختم القرآن في <b>${days}</b> يوماً اقرأ <b>${Math.ceil(pages)}</b> صفحة يومياً، أي نحو <b>${Math.ceil(pages / 5)}</b> صفحات بعد كل صلاة. موعد الختم المتوقع: <b>${end.toLocaleDateString('ar-EG-u-nu-latn', { day: 'numeric', month: 'long', year: 'numeric' })}</b>${today}`;
 }
 function startKhatma() {
   store.set('khatmaStart', new Date().toISOString());
@@ -2009,28 +2024,31 @@ function changeLanguage(lang, el) {
 }
 function selectMode(el) { el.parentElement.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active')); el.classList.add('active'); }
 const BG_SRC = [['مكة','Kaaba','#0a5c36,#d4af37'],['المدينة',"Prophet's_Mosque",'#1e3a5f,#d4af37'],['الجزائر','Great_Mosque_of_Algiers','#7f1d1d,#d4af37'],['الأقصى','Al-Aqsa_Mosque','#0a5c36,#f4c430'],['الأزهر','Al-Azhar_Mosque','#2a1a05,#d4af37']];
+const BG_URL = {};
+function bgApply(i, u) { BG_URL[i] = u; const el = document.querySelector(`.bg-thumb[data-i="${i}"]`); if (el) el.style.backgroundImage = `url("${u}")`; }
 function initAdhanBgs() {
   const saved = store.get('adhanBg', 0);
   document.getElementById('bgPreview').innerHTML = BG_SRC.map((b, i) => { const c = b[2].split(','); return `<div class="bg-thumb ${i === saved ? 'selected' : ''}" data-i="${i}" onclick="selectBg(this)" style="background:linear-gradient(135deg,${c[0]},${c[1]})"><div class="bg-thumb-label">${b[0]}</div></div>`; }).join('') +
-    `<div class="bg-thumb" id="bgGallery" onclick="document.getElementById('bgFile').click()" style="background:rgba(244,196,48,.1);display:flex;align-items:center;justify-content:center"><i class="fas fa-plus" style="color:var(--royal-gold);font-size:24px;z-index:1"></i><div class="bg-thumb-label">معرض</div></div>`;
-  BG_SRC.forEach((b, i) => {
-    const apply = u => { const el = document.querySelector(`.bg-thumb[data-i="${i}"]`); if (el) el.style.backgroundImage = `url("${u}")`; };
-    const c = store.get('bgimg_' + b[1], null);
-    if (c) { apply(c); return; }
-    fetch('https://en.wikipedia.org/api/rest_v1/page/summary/' + encodeURIComponent(b[1])).then(r => r.json()).then(j => { const u = j.thumbnail && j.thumbnail.source; if (u) { store.set('bgimg_' + b[1], u); apply(u); } }).catch(() => {});
+    `<div class="bg-thumb ${saved === 99 ? 'selected' : ''}" data-i="99" onclick="document.getElementById('bgFile').click()" style="background:rgba(244,196,48,.1);display:flex;align-items:center;justify-content:center"><i class="fas fa-plus" style="color:var(--royal-gold);font-size:24px;z-index:1"></i><div class="bg-thumb-label">معرض</div></div>`;
+  BG_SRC.forEach(async (b, i) => {
+    let rec = null; try { rec = await QDB.get('bg_' + b[1]); } catch (e) {}
+    if (!rec) { try {
+      const j = await (await fetch('https://en.wikipedia.org/api/rest_v1/page/summary/' + encodeURIComponent(b[1]))).json();
+      const u = j.thumbnail && j.thumbnail.source;
+      if (u) { rec = await (await fetch(u.replace(/\/\d+px-/, '/960px-'))).blob(); await QDB.set('bg_' + b[1], rec); }
+    } catch (e) {} }
+    if (rec) bgApply(i, URL.createObjectURL(rec));
   });
+  QDB.get('bg_custom').then(c => { if (c) bgApply(99, URL.createObjectURL(c)); }).catch(() => {});
 }
 function selectBg(el) {
   document.querySelectorAll('.bg-thumb').forEach(b => b.classList.remove('selected'));
-  el.classList.add('selected');
-  if (el.dataset.i !== undefined) store.set('adhanBg', +el.dataset.i);
-  showToast('تم اختيار الخلفية', 'fas fa-image');
+  el.classList.add('selected'); store.set('adhanBg', +el.dataset.i);
+  showToast('تم حفظ الخلفية', 'fas fa-image');
 }
 function pickBgFile(inp) {
   const f = inp.files && inp.files[0]; if (!f) return;
-  const g = document.getElementById('bgGallery');
-  g.style.backgroundImage = `url("${URL.createObjectURL(f)}")`;
-  selectBg(g);
+  QDB.set('bg_custom', f); bgApply(99, URL.createObjectURL(f)); selectBg(document.querySelector('.bg-thumb[data-i="99"]'));
 }
 function toggleCheckbox(item) { const c = item.querySelector('.custom-checkbox'); c.classList.toggle('checked'); showToast(c.classList.contains('checked') ? 'تمت الموافقة على الشروط' : 'تم إلغاء الموافقة', 'fas fa-file-contract'); }
 function shareApp() {
@@ -2079,7 +2097,7 @@ function showToast(text, icon) {
   toastTimer = setTimeout(() => tEl.classList.remove('show'), 2600);
 }
 const IS_NATIVE = !!(window.Capacitor && Capacitor.isNativePlatform && Capacitor.isNativePlatform());
-if (!IS_NATIVE && 'serviceWorker' in navigator && /^https?:/.test(location.protocol)) window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
+if ('serviceWorker' in navigator && /^https?:/.test(location.protocol)) window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').then(() => { if (!store.get('warm2', false) && navigator.onLine) warmCache().then(() => store.set('warm2', true)); }).catch(() => {}));
 let deferredInstall = null;
 window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferredInstall = e; });
 window.addEventListener('appinstalled', () => showToast('تم تثبيت التطبيق', 'fas fa-check'));
@@ -2113,13 +2131,90 @@ function scheduleNativeNotifs() {
           if (!state.prayerToggles[p]) return;
           const at = times[p].getTime();
           if (state.preAlerts && at - 1800000 > now) list.push({ id: id++, title: 'مشكاة الأنوار', body: PRE_ALERT_TEXT + ' • ' + t(p), schedule: { at: new Date(at - 1800000), allowWhileIdle: true } });
-          if (at > now) list.push({ id: id++, title: 'حان الآن موعد صلاة ' + t(p), body: 'حيّ على الصلاة', schedule: { at: new Date(at), allowWhileIdle: true } });
+          if (at > now) list.push({ id: id++, title: 'حان الآن موعد صلاة ' + t(p), body: 'حيّ على الصلاة', extra: { prayer: p, at }, schedule: { at: new Date(at), allowWhileIdle: true } });
         });
       }
       if (list.length) await LN.schedule({ notifications: list });
+      await postOngoing(LN);
     } catch (e) { console.log('native notif error', e); }
   }, 1500);
 }
+const NATIVE = !!(window.Capacitor && Capacitor.isNativePlatform && Capacitor.isNativePlatform());
+const ADHANS = [
+  { name: 'الأذان الأول', url: 'https://www.islamcan.com/audio/adhan/azan1.mp3' },
+  { name: 'الأذان الثاني', url: 'https://github.com/AalianKhan/adhans/blob/master/adhan.mp3?raw=true' },
+  { name: 'أذان الفجر', url: 'https://github.com/AalianKhan/adhans/blob/master/adhan_fajr.mp3?raw=true' }
+];
+const firedAdhan = {}; let adhanAudio = null;
+const adhanPref = p => store.get('adhanSel_' + p, p === 'fajr' ? 2 : 0);
+const adhanModeOf = p => store.get('adhanMode_' + p, 'notif');
+function setAdhanMode(p, m, el) { store.set('adhanMode_' + p, m); el.parentNode.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active')); el.classList.add('active'); showToast('تم الحفظ', 'fas fa-check'); }
+function setAdhanVol(v) { store.set('adhanVol', v); if (adhanAudio) adhanAudio.volume = v; ['adhanVolRange', 'aoVol'].forEach(id => { const e = document.getElementById(id); if (e) e.value = Math.round(v * 100); }); }
+function stopAdhan() {
+  if (adhanAudio) { adhanAudio.onended = adhanAudio.onerror = null; adhanAudio.pause(); adhanAudio = null; }
+  document.getElementById('adhanOverlay').classList.remove('on'); document.getElementById('adhanStop').classList.remove('on');
+}
+const hijriStr = d => d.toLocaleDateString('ar-SA-u-ca-islamic-umalqura-nu-latn', { day: 'numeric', month: 'long', year: 'numeric' });
+const hhmm = d => d.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+function playAdhan(p) {
+  stopAdhan();
+  const a = adhanAudio = new Audio(ADHANS[adhanPref(p)].url);
+  a.volume = store.get('adhanVol', 1); a.onended = stopAdhan;
+  a.onerror = () => { stopAdhan(); showToast('تعذر تشغيل الأذان - تحقق من الإنترنت', 'fas fa-triangle-exclamation'); };
+  a.play().catch(() => {});
+  if (adhanModeOf(p) === 'full') {
+    const o = document.getElementById('adhanOverlay'), img = BG_URL[store.get('adhanBg', 0)];
+    o.style.backgroundImage = img ? `url("${img}")` : '';
+    document.getElementById('aoName').textContent = t(p); document.getElementById('aoTime').textContent = state.prayerTimes[p] || '';
+    document.getElementById('aoDate').textContent = hijriStr(new Date()); document.getElementById('aoVol').value = Math.round(a.volume * 100);
+    o.classList.add('on');
+  } else document.getElementById('adhanStop').classList.add('on');
+}
+function checkAdhanTime() {
+  const now = Date.now();
+  prayerKeys.forEach(p => {
+    if (p === 'dhuha') return;
+    const d = state.prayerDates[p]; if (!d || !state.prayerToggles[p]) return;
+    const k = p + d.toDateString();
+    if (now >= d.getTime() && now - d.getTime() < 60000 && !firedAdhan[k]) { firedAdhan[k] = 1; playAdhan(p); }
+  });
+}
+function computeEvents() {
+  const params = adhan.CalculationMethod.MuslimWorldLeague(); params.madhab = adhan.Madhab.Shafi;
+  const coords = new adhan.Coordinates(state.location.lat, state.location.lng), ev = [];
+  for (let d = 0; d < 3; d++) {
+    const day = new Date(); day.setDate(day.getDate() + d); const pt = new adhan.PrayerTimes(coords, day, params);
+    const T = { fajr: pt.fajr, dhuha: new Date(pt.sunrise.getTime() + 20 * 60000), dhuhr: pt.dhuhr, asr: pt.asr, maghrib: pt.maghrib, isha: pt.isha };
+    Object.keys(T).forEach(p => ev.push({ p, t: T[p] }));
+  }
+  return ev.sort((a, b) => a.t - b.t);
+}
+async function postOngoing(LN) {
+  try { await LN.createChannel({ id: 'persist', name: 'الصلاة القادمة', description: 'إشعار دائم بموعد الصلاة القادمة', importance: 2, vibration: false }); } catch (e) {}
+  const ev = computeEvents(), now = Date.now(), i = ev.findIndex(e => e.t.getTime() > now); if (i < 0) return;
+  const mk = (e, from, at) => { const m = Math.max(0, Math.round((e.t - from) / 60000)); return { id: 1000, title: `الصلاة القادمة: ${t(e.p)} ${hhmm(e.t)}`, body: `${hijriStr(new Date(from))} • بعد ${Math.floor(m / 60)} س ${m % 60} د`, ongoing: true, autoCancel: false, channelId: 'persist', schedule: { at: new Date(at), allowWhileIdle: true } }; };
+  await LN.schedule({ notifications: [mk(ev[i], now, now + 1500)] });
+  if (ev[i + 1]) { await new Promise(r => setTimeout(r, 4000)); await LN.schedule({ notifications: [mk(ev[i + 1], ev[i].t.getTime(), ev[i].t.getTime() + 2000)] }); }
+}
+function addMapButtons() {
+  const mkBtn = (icon, title, fn) => { const C = L.control({ position: 'topleft' }); C.onAdd = () => { const d = L.DomUtil.create('div', 'leaflet-bar'); d.innerHTML = `<a href="#" title="${title}" style="display:block;text-align:center"><i class="fas ${icon}"></i></a>`; L.DomEvent.on(d, 'click', e => { L.DomEvent.stop(e); fn(); }); return d; }; C.addTo(map); };
+  mkBtn('fa-crosshairs', 'موقعي', () => map.setView([state.location.lat, state.location.lng], 16));
+  mkBtn('fa-route', 'الطريق إلى الكعبة', () => updateMapLocation(true));
+}
+async function warmCache() {
+  try {
+    await navigator.serviceWorker.ready;
+    const urls = [...document.querySelectorAll('link[rel=stylesheet][href^=http],script[src^=http]')].map(e => e.href || e.src);
+    for (const u of urls) { try { const r = await fetch(u); if (/css/.test(u)) { const tx = await r.clone().text(); for (const m of tx.matchAll(/url\(([^)]+)\)/g)) { try { await fetch(new URL(m[1].replace(/["']/g, ''), u).href); } catch (e) {} } } } catch (e) {} }
+  } catch (e) {}
+}
+if (NATIVE) {
+  const el = document.querySelector('[onclick="installApp()"]'); if (el) el.style.display = 'none';
+  const LN = Capacitor.Plugins.LocalNotifications;
+  if (LN && LN.addListener) LN.addListener('localNotificationActionPerformed', e => { const x = e.notification && e.notification.extra; if (x && x.prayer && Date.now() - x.at < 300000) playAdhan(x.prayer); });
+}
 </script>
+<div id="adhanOverlay"><div class="ao-in"><div class="ao-sub">حان الآن موعد صلاة</div><div class="ao-name" id="aoName"></div><div class="ao-time" id="aoTime"></div><div class="ao-date" id="aoDate"></div><input type="range" id="aoVol" min="0" max="100" oninput="setAdhanVol(this.value/100)"><button class="ao-stop" onclick="stopAdhan()"><i class="fas fa-stop"></i> إيقاف الأذان</button></div></div>
+<button id="adhanStop" onclick="stopAdhan()"><i class="fas fa-stop"></i> إيقاف الأذان</button>
 </body>
 </html>
