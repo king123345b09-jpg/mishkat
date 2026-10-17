@@ -477,6 +477,49 @@ html,body{overscroll-behavior:none}
 .ao-stop,#adhanStop{background:linear-gradient(135deg,#f4c430,#b8941f);color:#052e1a;border:0;border-radius:18px;padding:14px 28px;font-size:18px;font-weight:700;font-family:inherit}
 #adhanStop{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(96px + env(safe-area-inset-bottom));z-index:19999;display:none;box-shadow:0 6px 24px rgba(0,0,0,.5)}
 #adhanStop.on{display:block}
+.wird-card{display:none!important}
+.logo-circle{flex:0 0 44px!important;width:44px!important;height:44px!important;min-width:44px;align-self:center}
+.mode-toggle{gap:6px!important;padding:6px!important;border-radius:16px!important;align-items:stretch}
+.mode-btn{display:flex!important;align-items:center;justify-content:center;gap:6px;padding:12px 4px!important;border-radius:12px!important;font-size:13px!important;line-height:1.2;white-space:nowrap}
+.mode-toggle .mode-btn:last-child{border:1px solid rgba(212,175,55,.45);color:var(--royal-gold-light)}
+.bg-thumb{position:relative}
+.bg-del{position:absolute;top:6px;left:6px;width:26px;height:26px;border-radius:50%;background:rgba(0,0,0,.65);color:#fff;display:flex;align-items:center;justify-content:center;z-index:2;font-size:13px}
+.bg-add{display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(244,196,48,.1)}
+.bg-add i{font-size:24px;color:var(--royal-gold);z-index:1}
+.map-full{position:fixed!important;inset:0;z-index:9500;margin:0!important;border-radius:0!important;height:100%!important;max-height:none!important}
+.map-full #map{height:100%!important}
+#calOverlay,#mushafViewer{position:fixed;inset:0;z-index:9800;display:none;flex-direction:column}
+#calOverlay.on,#mushafViewer.on{display:flex}
+#calOverlay{align-items:center;justify-content:center;background:rgba(3,22,13,.88);padding:14px}
+.cal-card{width:100%;max-width:430px;background:linear-gradient(160deg,#0f6b3f,#052e1a);border:1px solid #d4af37;border-radius:24px;padding:16px;box-shadow:0 20px 60px rgba(0,0,0,.6)}
+.cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;text-align:center}
+.cal-head button,.mv-top button,.mv-bar button{width:42px;height:42px;border-radius:14px;border:1px solid rgba(212,175,55,.5);background:rgba(244,196,48,.12);color:#f4c430;font-size:16px;flex:none}
+#calTitle{font-size:20px;color:#f4c430;font-weight:700}#calSub{font-size:12px;opacity:.8;margin-top:2px}
+.cal-week,.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
+.cal-week div{text-align:center;font-size:11px;color:#d4af37;padding:6px 0}
+.cal-cell{aspect-ratio:1;border-radius:12px;background:rgba(5,46,26,.55);display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1}
+.cal-cell b{font-size:17px;font-family:'Inter',sans-serif}.cal-cell small{font-size:9px;opacity:.7;font-family:'Inter',sans-serif;margin-top:2px}
+.cal-cell.fri b{color:#8ee6b0}
+.cal-cell.today{background:linear-gradient(135deg,#f4c430,#b8941f);color:#052e1a;box-shadow:0 0 16px rgba(244,196,48,.6)}
+.cal-cell.today b,.cal-cell.today small{color:#052e1a;opacity:1}
+.cal-foot{display:flex;gap:10px;margin-top:14px}
+.cal-foot button{flex:1;padding:12px;border-radius:14px;font-size:15px;font-weight:700;border:1px solid rgba(212,175,55,.5);background:transparent;color:#f4c430;font-family:inherit}
+.cal-foot button:first-child{background:linear-gradient(135deg,#f4c430,#b8941f);color:#052e1a;border:0}
+#mushafViewer{background:#0a1f14}
+.mv-top{display:flex;align-items:center;gap:10px;padding:calc(10px + env(safe-area-inset-top)) 12px 10px;background:#052e1a;border-bottom:1px solid rgba(212,175,55,.4);color:#f4c430}
+.mv-title{flex:1;text-align:center;font-size:16px;font-weight:700}
+.mv-stage{flex:1;min-height:0;overflow:hidden;touch-action:none;background:#fff;display:flex;align-items:center;justify-content:center}
+.mv-stage img{max-width:100%;max-height:100%;transform-origin:center;user-select:none;-webkit-user-drag:none}
+.mv-bar{display:flex;align-items:center;gap:10px;padding:10px 12px calc(10px + env(safe-area-inset-bottom));background:#052e1a;border-top:1px solid rgba(212,175,55,.4)}
+.mv-bar input{flex:1;accent-color:#f4c430}
+#mvNav{position:absolute;inset:0;background:rgba(3,22,13,.97);overflow-y:auto;padding:calc(70px + env(safe-area-inset-top)) 14px 20px;display:none;z-index:2}
+#mvNav.on{display:block}
+.mv-sec{color:#f4c430;font-weight:700;margin:14px 0 8px}
+.mv-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.mv-chip{padding:11px 4px;text-align:center;border-radius:12px;background:rgba(244,196,48,.1);border:1px solid rgba(212,175,55,.3);color:#fff;font-size:13px}
+.mushaf-card{display:flex;align-items:center;gap:14px;margin:14px 0;padding:16px;border-radius:20px;background:linear-gradient(135deg,#0f6b3f,#073d23);border:1px solid #d4af37;box-shadow:0 8px 24px rgba(0,0,0,.35);cursor:pointer}
+.mc-ic{width:54px;height:54px;border-radius:16px;background:linear-gradient(135deg,#f4c430,#b8941f);color:#052e1a;display:flex;align-items:center;justify-content:center;font-size:26px;flex:none}
+.mc-t{font-size:17px;font-weight:700;color:#f4c430}.mc-s{font-size:12px;opacity:.85;margin-top:3px}
 .hidden{display:none!important}
 @media (max-width:360px){.splash-title{font-size:38px}.next-prayer-name{font-size:26px}.tasbih-counter{font-size:52px}.qibla-compass{width:250px;height:250px}.tick{transform-origin:50% 111px}.qibla-needle{height:90px}.wird-results{grid-template-columns:repeat(2,1fr)}}
 </style>
@@ -546,7 +589,7 @@ html,body{overscroll-behavior:none}
     <!-- HOME -->
     <div id="screen-home" class="screen active">
       <div class="hero-card">
-        <div class="hero-date">
+        <div class="hero-date" onclick="openCalendar()" style="cursor:pointer">
           <div>
             <div class="hijri-date" id="hijriDate">١٥ جمادى الأولى ١٤٤٦</div>
             <div class="gregorian-date" id="gregorianDate">2024/12/17</div>
@@ -639,6 +682,7 @@ html,body{overscroll-behavior:none}
         <div class="quran-subtitle">رواية ورش عن نافع • 114 سورة</div>
       </div>
       <div class="reciter-row" id="reciterRow"></div>
+      <div class="mushaf-card" onclick="openMushaf()"><div class="mc-ic"><i class="fas fa-book-quran"></i></div><div><div class="mc-t">المصحف المصوّر بالتجويد</div><div class="mc-s">رواية ورش • 604 صفحة • يعمل بدون إنترنت</div></div></div>
 
       <div class="wird-card">
         <div class="wird-head">
@@ -763,7 +807,7 @@ html,body{overscroll-behavior:none}
         <div class="settings-item" onclick="showToast('شكراً لتقييمك ⭐⭐⭐⭐⭐','fas fa-star')"><div class="settings-item-left"><div class="settings-icon"><i class="fas fa-star"></i></div><div class="settings-label">قيّم التطبيق</div></div><div class="settings-value"><i class="fas fa-chevron-left"></i></div></div>
         <div class="settings-item" onclick="shareApp()"><div class="settings-item-left"><div class="settings-icon"><i class="fas fa-share-alt"></i></div><div class="settings-label">شارك التطبيق</div></div><div class="settings-value"><i class="fas fa-chevron-left"></i></div></div>
       </div>
-      <div class="version-display">مشكاة الأنوار © 2024 - جميع الحقوق محفوظة</div>
+      <div class="version-display">مشكاة الأنوار © 2026 - جميع الحقوق محفوظة</div>
     </div>
   </div>
 
@@ -1126,14 +1170,14 @@ function renderAdhanCards() {
     <div class="adhan-card">
       <div class="adhan-header"><div class="adhan-icon" style="background:none;padding:0;overflow:hidden">${mosqueIcon(p).replace(/id="(\w+)-/g, 'id="$1-a').replace(/url\(#(\w+)-/g, 'url(#$1-a')}</div>
       <div><div class="adhan-title">أذان ${t(p)}</div><div class="adhan-subtitle">اختر الأذان</div></div></div>
-      <select class="adhan-select" onchange="store.set('adhanSel_${p}', +this.value); showToast('تم حفظ الأذان','fas fa-check')">${ADHANS.map((a, i) => `<option value="${i}" ${i === adhanPref(p) ? 'selected' : ''}>${a.name}</option>`).join('')}</select>
+      <select class="adhan-select" onchange="store.set('adhanSel_${p}', +this.value); showToast('تم حفظ الأذان','fas fa-check')">${adhanList().map((a, i) => `<option value="${i}" ${i === adhanPref(p) ? 'selected' : ''}>${a.name}</option>`).join('')}</select>
       <div class="mode-toggle">
         <div class="mode-btn ${adhanModeOf(p) === 'notif' ? 'active' : ''}" onclick="setAdhanMode('${p}','notif',this)"><i class="fas fa-bell"></i> إشعار</div>
         <div class="mode-btn ${adhanModeOf(p) === 'full' ? 'active' : ''}" onclick="setAdhanMode('${p}','full',this)"><i class="fas fa-expand"></i> شاشة كاملة</div>
         <div class="mode-btn" onclick="playAdhan('${p}')"><i class="fas fa-play"></i> تجربة</div>
       </div>
     </div>`;
-  document.getElementById('adhanCards').innerHTML = `<div class="adhan-card"><div class="adhan-header"><div class="adhan-icon"><i class="fas fa-volume-high"></i></div><div><div class="adhan-title">مستوى صوت الأذان</div><div class="adhan-subtitle">ارفع صوت الوسائط في هاتفك أيضاً</div></div></div><input type="range" id="adhanVolRange" min="0" max="100" value="${Math.round(store.get('adhanVol', 1) * 100)}" oninput="setAdhanVol(this.value/100)" style="width:100%;accent-color:#f4c430;margin-top:10px"></div>` + ['fajr', 'dhuhr', 'asr', 'maghrib', 'isha'].map(mk).join('');
+  document.getElementById('adhanCards').innerHTML = `<div class="adhan-card"><div class="adhan-header"><div class="adhan-icon"><i class="fas fa-volume-high"></i></div><div><div class="adhan-title">مستوى صوت الأذان</div><div class="adhan-subtitle">ارفع صوت الوسائط في هاتفك أيضاً</div></div></div><input type="range" id="adhanVolRange" min="0" max="100" value="${Math.round(store.get('adhanVol', 1) * 100)}" oninput="setAdhanVol(this.value/100)" style="width:100%;accent-color:#f4c430;margin-top:10px"></div>` + `<div class="adhan-card"><div class="adhan-header"><div class="adhan-icon"><i class="fas fa-music"></i></div><div><div class="adhan-title">أذان من هاتفك</div><div class="adhan-subtitle">اختر ملفاً صوتياً ليعمل بدون إنترنت</div></div></div><label class="mode-btn" style="display:flex;margin-top:12px;border:1px solid rgba(212,175,55,.45)"><i class="fas fa-folder-open"></i> اختيار ملف<input type="file" accept="audio/*" style="display:none" onchange="pickAdhanFile(this)"></label></div>` + ['fajr', 'dhuhr', 'asr', 'maghrib', 'isha'].map(mk).join('');
 }
 function renderDuaaCategories() {
   const todayKey = new Date().toDateString();
@@ -1803,6 +1847,10 @@ function hideTop() {
   const q = id => document.getElementById(id);
   if (!q('permissionModal').classList.contains('off')) return true;
   if (q('adhanOverlay').classList.contains('on') || q('adhanStop').classList.contains('on')) { stopAdhan(); return true; }
+  if (q('calOverlay').classList.contains('on')) { closeCalendar(); return true; }
+  if (q('mvNav').classList.contains('on')) { mvNavToggle(false); return true; }
+  if (q('mushafViewer').classList.contains('on')) { closeMushaf(); return true; }
+  const mf = document.querySelector('.map-full'); if (mf) { mf.classList.remove('map-full'); setTimeout(() => map.invalidateSize(), 250); return true; }
   if (q('modalOverlay').classList.contains('active')) { closeModal(); return true; }
   if (q('quranReader').classList.contains('active')) {
     if (!q('readerSearch').classList.contains('hidden')) { q('readerSearch').classList.add('hidden'); return true; }
@@ -2023,32 +2071,37 @@ function changeLanguage(lang, el) {
   showToast(lang === 'ar' ? 'تم تغيير اللغة' : 'Language changed', 'fas fa-language');
 }
 function selectMode(el) { el.parentElement.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active')); el.classList.add('active'); }
-const BG_SRC = [['مكة','Kaaba','#0a5c36,#d4af37'],['المدينة',"Prophet's_Mosque",'#1e3a5f,#d4af37'],['الجزائر','Great_Mosque_of_Algiers','#7f1d1d,#d4af37'],['الأقصى','Al-Aqsa_Mosque','#0a5c36,#f4c430'],['الأزهر','Al-Azhar_Mosque','#2a1a05,#d4af37']];
+const BG_SRC = [['مكة', 'bg/mecca.jpg'], ['المدينة', 'bg/madina.jpg'], ['الجزائر', 'bg/algeria.jpg'], ['الأقصى', 'bg/aqsa.jpg'], ['الأزهر', 'bg/azhar.jpg']];
 const BG_URL = {};
-function bgApply(i, u) { BG_URL[i] = u; const el = document.querySelector(`.bg-thumb[data-i="${i}"]`); if (el) el.style.backgroundImage = `url("${u}")`; }
-function initAdhanBgs() {
-  const saved = store.get('adhanBg', 0);
-  document.getElementById('bgPreview').innerHTML = BG_SRC.map((b, i) => { const c = b[2].split(','); return `<div class="bg-thumb ${i === saved ? 'selected' : ''}" data-i="${i}" onclick="selectBg(this)" style="background:linear-gradient(135deg,${c[0]},${c[1]})"><div class="bg-thumb-label">${b[0]}</div></div>`; }).join('') +
-    `<div class="bg-thumb ${saved === 99 ? 'selected' : ''}" data-i="99" onclick="document.getElementById('bgFile').click()" style="background:rgba(244,196,48,.1);display:flex;align-items:center;justify-content:center"><i class="fas fa-plus" style="color:var(--royal-gold);font-size:24px;z-index:1"></i><div class="bg-thumb-label">معرض</div></div>`;
-  BG_SRC.forEach(async (b, i) => {
-    let rec = null; try { rec = await QDB.get('bg_' + b[1]); } catch (e) {}
-    if (!rec) { try {
-      const j = await (await fetch('https://en.wikipedia.org/api/rest_v1/page/summary/' + encodeURIComponent(b[1]))).json();
-      const u = j.thumbnail && j.thumbnail.source;
-      if (u) { rec = await (await fetch(u.replace(/\/\d+px-/, '/960px-'))).blob(); await QDB.set('bg_' + b[1], rec); }
-    } catch (e) {} }
-    if (rec) bgApply(i, URL.createObjectURL(rec));
-  });
-  QDB.get('bg_custom').then(c => { if (c) bgApply(99, URL.createObjectURL(c)); }).catch(() => {});
+function bgKey() { const v = store.get('adhanBg', 'b0'); return typeof v === 'number' ? 'b' + v : v; }
+function bgApply(k, u) { BG_URL[k] = u; const el = document.querySelector(`.bg-thumb[data-k="${k}"]`); if (el) el.style.backgroundImage = `url("${u}")`; }
+function renderBgs() {
+  const sel = bgKey(), ids = store.get('customBgIds', []);
+  const th = (k, label, extra) => `<div class="bg-thumb ${sel === k ? 'selected' : ''}" data-k="${k}" onclick="selectBg('${k}')">${extra || ''}<div class="bg-thumb-label">${label}</div></div>`;
+  document.getElementById('bgPreview').innerHTML = BG_SRC.map((b, i) => th('b' + i, b[0])).join('') +
+    ids.map(id => th('c' + id, 'صورتي', `<span class="bg-del" onclick="event.stopPropagation();delBg(${id})"><i class="fas fa-xmark"></i></span>`)).join('') +
+    `<div class="bg-thumb bg-add" onclick="document.getElementById('bgFile').click()"><i class="fas fa-plus"></i><div class="bg-thumb-label">إضافة صورة</div></div>`;
+  BG_SRC.forEach((b, i) => bgApply('b' + i, b[1]));
+  ids.forEach(async id => { try { const rec = await QDB.get('bgc_' + id); if (rec) bgApply('c' + id, URL.createObjectURL(rec)); } catch (e) {} });
 }
-function selectBg(el) {
-  document.querySelectorAll('.bg-thumb').forEach(b => b.classList.remove('selected'));
-  el.classList.add('selected'); store.set('adhanBg', +el.dataset.i);
-  showToast('تم حفظ الخلفية', 'fas fa-image');
-}
-function pickBgFile(inp) {
+function initAdhanBgs() { renderBgs(); }
+function selectBg(k) { store.set('adhanBg', k); document.querySelectorAll('.bg-thumb[data-k]').forEach(b => b.classList.toggle('selected', b.dataset.k === k)); showToast('تم حفظ الخلفية', 'fas fa-image'); }
+async function pickBgFile(inp) {
   const f = inp.files && inp.files[0]; if (!f) return;
-  QDB.set('bg_custom', f); bgApply(99, URL.createObjectURL(f)); selectBg(document.querySelector('.bg-thumb[data-i="99"]'));
+  try {
+    let bmp; try { bmp = await createImageBitmap(f); } catch (e) { bmp = await new Promise((res, rej) => { const im = new Image(); im.onload = () => res(im); im.onerror = rej; im.src = URL.createObjectURL(f); }); }
+    const w = bmp.width || bmp.naturalWidth, h = bmp.height || bmp.naturalHeight, sc = Math.min(1, 1280 / Math.max(w, h));
+    const cv = document.createElement('canvas'); cv.width = Math.round(w * sc); cv.height = Math.round(h * sc); cv.getContext('2d').drawImage(bmp, 0, 0, cv.width, cv.height);
+    const blob = await new Promise(r => cv.toBlob(r, 'image/jpeg', 0.85)), id = Date.now();
+    await QDB.set('bgc_' + id, blob); store.set('customBgIds', [...store.get('customBgIds', []), id]); store.set('adhanBg', 'c' + id);
+    renderBgs(); showToast('تمت إضافة الصورة وحفظها', 'fas fa-check');
+  } catch (e) { showToast('تعذر فتح هذه الصورة', 'fas fa-triangle-exclamation'); }
+  inp.value = '';
+}
+async function delBg(id) {
+  try { await QDB.set('bgc_' + id, null); } catch (e) {}
+  store.set('customBgIds', store.get('customBgIds', []).filter(x => x !== id)); if (bgKey() === 'c' + id) store.set('adhanBg', 'b0');
+  delete BG_URL['c' + id]; renderBgs(); showToast('تم حذف الصورة', 'fas fa-trash');
 }
 function toggleCheckbox(item) { const c = item.querySelector('.custom-checkbox'); c.classList.toggle('checked'); showToast(c.classList.contains('checked') ? 'تمت الموافقة على الشروط' : 'تم إلغاء الموافقة', 'fas fa-file-contract'); }
 function shareApp() {
@@ -2156,14 +2209,30 @@ function stopAdhan() {
 }
 const hijriStr = d => d.toLocaleDateString('ar-SA-u-ca-islamic-umalqura-nu-latn', { day: 'numeric', month: 'long', year: 'numeric' });
 const hhmm = d => d.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
-function playAdhan(p) {
+const adhanList = () => ADHANS.concat(store.get('adhanCustom', null) ? [{ name: 'ملف من هاتفي: ' + store.get('adhanCustom'), custom: true }] : []);
+async function adhanSrc(i) {
+  const a = adhanList()[i] || ADHANS[0];
+  if (a.custom) { const b = await QDB.get('adhan_custom'); return b ? URL.createObjectURL(b) : null; }
+  try { const b = await QDB.get('adhan_' + i); if (b) return URL.createObjectURL(b); } catch (e) {}
+  fetch(a.url).then(r => r.blob()).then(b => QDB.set('adhan_' + i, b)).catch(() => {});
+  return a.url;
+}
+async function pickAdhanFile(inp) {
+  const f = inp.files && inp.files[0]; if (!f) return;
+  await QDB.set('adhan_custom', f); store.set('adhanCustom', f.name);
+  ['fajr', 'dhuhr', 'asr', 'maghrib', 'isha'].forEach(p => store.set('adhanSel_' + p, 3));
+  renderAdhanCards(); showToast('تم حفظ الأذان من هاتفك', 'fas fa-check'); inp.value = '';
+}
+async function playAdhan(p) {
   stopAdhan();
-  const a = adhanAudio = new Audio(ADHANS[adhanPref(p)].url);
+  const src = await adhanSrc(adhanPref(p));
+  if (!src) { showToast('اختر ملف أذان من هاتفك أولاً', 'fas fa-music'); return; }
+  const a = adhanAudio = new Audio(src);
   a.volume = store.get('adhanVol', 1); a.onended = stopAdhan;
-  a.onerror = () => { stopAdhan(); showToast('تعذر تشغيل الأذان - تحقق من الإنترنت', 'fas fa-triangle-exclamation'); };
+  a.onerror = () => { stopAdhan(); showToast('تعذر تشغيل الأذان - اختر ملفاً من هاتفك', 'fas fa-triangle-exclamation'); };
   a.play().catch(() => {});
   if (adhanModeOf(p) === 'full') {
-    const o = document.getElementById('adhanOverlay'), img = BG_URL[store.get('adhanBg', 0)];
+    const o = document.getElementById('adhanOverlay'), img = BG_URL[bgKey()];
     o.style.backgroundImage = img ? `url("${img}")` : '';
     document.getElementById('aoName').textContent = t(p); document.getElementById('aoTime').textContent = state.prayerTimes[p] || '';
     document.getElementById('aoDate').textContent = hijriStr(new Date()); document.getElementById('aoVol').value = Math.round(a.volume * 100);
@@ -2190,16 +2259,17 @@ function computeEvents() {
   return ev.sort((a, b) => a.t - b.t);
 }
 async function postOngoing(LN) {
-  try { await LN.createChannel({ id: 'persist', name: 'الصلاة القادمة', description: 'إشعار دائم بموعد الصلاة القادمة', importance: 2, vibration: false }); } catch (e) {}
-  const ev = computeEvents(), now = Date.now(), i = ev.findIndex(e => e.t.getTime() > now); if (i < 0) return;
-  const mk = (e, from, at) => { const m = Math.max(0, Math.round((e.t - from) / 60000)); return { id: 1000, title: `الصلاة القادمة: ${t(e.p)} ${hhmm(e.t)}`, body: `${hijriStr(new Date(from))} • بعد ${Math.floor(m / 60)} س ${m % 60} د`, ongoing: true, autoCancel: false, channelId: 'persist', schedule: { at: new Date(at), allowWhileIdle: true } }; };
-  await LN.schedule({ notifications: [mk(ev[i], now, now + 1500)] });
-  if (ev[i + 1]) { await new Promise(r => setTimeout(r, 4000)); await LN.schedule({ notifications: [mk(ev[i + 1], ev[i].t.getTime(), ev[i].t.getTime() + 2000)] }); }
+  try {
+    const PN = Capacitor.registerPlugin('PrayerNotif'), ev = computeEvents(), now = Date.now(), out = []; let prev = now;
+    ev.forEach(e => { const tm = e.t.getTime(); if (tm > now) { out.push({ t: tm, name: t(e.p), time: hhmm(e.t), hijri: hijriStr(new Date(prev)) }); prev = tm; } });
+    await PN.setEvents({ events: out });
+  } catch (e) { console.log('PN error', e); }
 }
 function addMapButtons() {
   const mkBtn = (icon, title, fn) => { const C = L.control({ position: 'topleft' }); C.onAdd = () => { const d = L.DomUtil.create('div', 'leaflet-bar'); d.innerHTML = `<a href="#" title="${title}" style="display:block;text-align:center"><i class="fas ${icon}"></i></a>`; L.DomEvent.on(d, 'click', e => { L.DomEvent.stop(e); fn(); }); return d; }; C.addTo(map); };
   mkBtn('fa-crosshairs', 'موقعي', () => map.setView([state.location.lat, state.location.lng], 16));
   mkBtn('fa-route', 'الطريق إلى الكعبة', () => updateMapLocation(true));
+  mkBtn('fa-expand', 'تكبير الخريطة', () => { const c = document.getElementById('map').parentElement; c.classList.toggle('map-full'); setTimeout(() => map.invalidateSize(), 250); });
 }
 async function warmCache() {
   try {
@@ -2213,7 +2283,73 @@ if (NATIVE) {
   const LN = Capacitor.Plugins.LocalNotifications;
   if (LN && LN.addListener) LN.addListener('localNotificationActionPerformed', e => { const x = e.notification && e.notification.extra; if (x && x.prayer && Date.now() - x.at < 300000) playAdhan(x.prayer); });
 }
+const MUSHAF_START = [1, 2, 50, 77, 106, 128, 151, 177, 187, 208, 221, 235, 249, 255, 262, 267, 282, 293, 305, 312, 322, 332, 342, 350, 359, 367, 377, 385, 396, 404, 411, 415, 418, 428, 434, 440, 446, 453, 458, 467, 477, 483, 489, 496, 499, 502, 507, 511, 515, 518, 520, 523, 526, 528, 531, 534, 537, 542, 545, 549, 551, 553, 554, 556, 558, 560, 562, 564, 566, 568, 570, 572, 574, 575, 577, 578, 580, 582, 583, 585, 586, 587, 587, 589, 590, 591, 591, 592, 593, 594, 595, 595, 596, 596, 597, 597, 598, 598, 599, 599, 600, 600, 601, 601, 602, 602, 602, 603, 603, 603, 604, 604, 604, 604];
+const JUZ_START = [1, 22, 42, 62, 82, 102, 121, 142, 162, 182, 201, 222, 242, 262, 282, 302, 322, 342, 362, 382, 402, 422, 442, 462, 482, 502, 522, 542, 562, 582];
+let mvPage = 1, mvZ = { s: 1, x: 0, y: 0 };
+const pgFile = p => 'mushaf/p' + String(p).padStart(3, '0') + '.webp';
+function mvApply() { document.getElementById('mvImg').style.transform = `translate(${mvZ.x}px,${mvZ.y}px) scale(${mvZ.s})`; }
+function mvGo(p) {
+  p = Math.max(1, Math.min(604, Math.round(p))); mvPage = p; store.set('mushafPage', p); mvZ = { s: 1, x: 0, y: 0 }; mvApply();
+  document.getElementById('mvImg').src = pgFile(p); document.getElementById('mvPageNo').textContent = p; document.getElementById('mvRange').value = p;
+  [p + 1, p - 1].forEach(n => { if (n >= 1 && n <= 604) { const i = new Image(); i.src = pgFile(n); } });
+}
+function openMushaf() { document.getElementById('mushafViewer').classList.add('on'); mvGo(store.get('mushafPage', 1)); }
+function closeMushaf() { document.getElementById('mvNav').classList.remove('on'); document.getElementById('mushafViewer').classList.remove('on'); }
+function mvNavToggle(force) {
+  const n = document.getElementById('mvNav'); const on = force === undefined ? !n.classList.contains('on') : force;
+  if (on && !n.innerHTML) n.innerHTML = '<div class="mv-sec">الأجزاء</div><div class="mv-grid">' + JUZ_START.map((p, i) => `<div class="mv-chip" onclick="mvGo(${p});mvNavToggle(false)">الجزء ${i + 1}</div>`).join('') + '</div><div class="mv-sec">السور</div><div class="mv-grid">' + surahs.map((s, i) => `<div class="mv-chip" onclick="mvGo(${MUSHAF_START[i]});mvNavToggle(false)">${i + 1}. ${s.name}</div>`).join('') + '</div>';
+  n.classList.toggle('on', on);
+}
+(function () {
+  const st = document.getElementById('mvStage'); let t0 = null, d0 = 0, s0 = 1, last = 0;
+  const dist = e => Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+  st.addEventListener('touchstart', e => { if (e.touches.length === 2) { d0 = dist(e); s0 = mvZ.s; t0 = null; } else if (e.touches.length === 1) t0 = { x: e.touches[0].clientX, y: e.touches[0].clientY, ox: mvZ.x, oy: mvZ.y }; }, { passive: true });
+  st.addEventListener('touchmove', e => {
+    if (e.touches.length === 2 && d0) { e.preventDefault(); mvZ.s = Math.max(1, Math.min(4, s0 * dist(e) / d0)); if (mvZ.s === 1) { mvZ.x = 0; mvZ.y = 0; } mvApply(); }
+    else if (e.touches.length === 1 && t0 && mvZ.s > 1) { e.preventDefault(); mvZ.x = t0.ox + e.touches[0].clientX - t0.x; mvZ.y = t0.oy + e.touches[0].clientY - t0.y; mvApply(); }
+  }, { passive: false });
+  st.addEventListener('touchend', e => {
+    if (t0 && e.changedTouches.length) {
+      const dx = e.changedTouches[0].clientX - t0.x, dy = e.changedTouches[0].clientY - t0.y;
+      if (mvZ.s === 1 && Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.5) mvGo(mvPage + (dx < 0 ? 1 : -1));
+      else if (Math.abs(dx) < 10 && Math.abs(dy) < 10) { const n = Date.now(); if (n - last < 300) { mvZ = mvZ.s > 1 ? { s: 1, x: 0, y: 0 } : { s: 2.2, x: 0, y: 0 }; mvApply(); } last = n; }
+    }
+    d0 = 0; t0 = null;
+  });
+})();
+const hijriParts = d => { const o = {}; new Intl.DateTimeFormat('en-u-ca-islamic-umalqura-nu-latn', { day: 'numeric', month: 'numeric', year: 'numeric' }).formatToParts(d).forEach(p => { if (['day', 'month', 'year'].includes(p.type)) o[p.type] = +p.value; }); return o; };
+let calAnchor = new Date(), calFirst = null, calLen = 30;
+function openCalendar() { calAnchor = new Date(); renderCalendar(); document.getElementById('calOverlay').classList.add('on'); }
+function closeCalendar() { document.getElementById('calOverlay').classList.remove('on'); }
+function calToday() { calAnchor = new Date(); renderCalendar(); }
+function calNav(dir) { calAnchor = dir > 0 ? new Date(calFirst.getTime() + (calLen + 0.5) * 86400000) : new Date(calFirst.getTime() - 0.5 * 86400000); renderCalendar(); }
+function renderCalendar() {
+  const a = new Date(calAnchor.getFullYear(), calAnchor.getMonth(), calAnchor.getDate(), 12), h = hijriParts(a);
+  calFirst = new Date(a.getTime() - (h.day - 1) * 86400000); calLen = 0;
+  while (calLen < 31 && hijriParts(new Date(calFirst.getTime() + calLen * 86400000)).month === h.month) calLen++;
+  const last = new Date(calFirst.getTime() + (calLen - 1) * 86400000), td = new Date();
+  const hm = new Intl.DateTimeFormat('ar-SA-u-ca-islamic-umalqura-nu-latn', { month: 'long' }).format(a), gm = x => x.toLocaleDateString('ar-u-nu-latn', { month: 'long', year: 'numeric' });
+  document.getElementById('calTitle').textContent = `${hm} ${h.year} هـ`;
+  document.getElementById('calSub').textContent = gm(calFirst) === gm(last) ? gm(calFirst) : `${calFirst.toLocaleDateString('ar-u-nu-latn', { month: 'long' })} - ${gm(last)}`;
+  document.getElementById('calWeek').innerHTML = ['سبت', 'أحد', 'اثنين', 'ثلاثاء', 'أربعاء', 'خميس', 'جمعة'].map(x => `<div>${x}</div>`).join('');
+  let html = ''; const lead = (calFirst.getDay() + 1) % 7;
+  for (let i = 0; i < lead; i++) html += '<div></div>';
+  for (let i = 0; i < calLen; i++) {
+    const g = new Date(calFirst.getTime() + i * 86400000), isT = g.getFullYear() === td.getFullYear() && g.getMonth() === td.getMonth() && g.getDate() === td.getDate();
+    html += `<div class="cal-cell ${isT ? 'today' : ''} ${g.getDay() === 5 ? 'fri' : ''}"><b>${i + 1}</b><small>${g.getDate()}/${g.getMonth() + 1}</small></div>`;
+  }
+  document.getElementById('calGrid').innerHTML = html;
+}
+setTimeout(() => { if (navigator.onLine) adhanList().forEach((a, i) => { if (!a.custom) adhanSrc(i); }); }, 8000);
 </script>
+<div id="calOverlay" dir="rtl"><div class="cal-card">
+<div class="cal-head"><button onclick="calNav(-1)"><i class="fas fa-chevron-right"></i></button><div><div id="calTitle"></div><div id="calSub"></div></div><button onclick="calNav(1)"><i class="fas fa-chevron-left"></i></button></div>
+<div class="cal-week" id="calWeek"></div><div class="cal-grid" id="calGrid"></div>
+<div class="cal-foot"><button onclick="calToday()">اليوم</button><button onclick="closeCalendar()">إغلاق</button></div></div></div>
+<div id="mushafViewer" dir="rtl"><div class="mv-top"><button onclick="closeMushaf()"><i class="fas fa-arrow-right"></i></button><div class="mv-title">مصحف ورش • صفحة <span id="mvPageNo">1</span></div><button onclick="mvNavToggle()"><i class="fas fa-list"></i></button></div>
+<div class="mv-stage" id="mvStage"><img id="mvImg" alt="" onerror="showToast('صفحات المصحف متوفرة في تطبيق الأندرويد فقط','fas fa-triangle-exclamation')"></div>
+<div class="mv-bar"><button onclick="mvGo(mvPage-1)"><i class="fas fa-chevron-right"></i></button><input type="range" id="mvRange" min="1" max="604" value="1" oninput="mvGo(+this.value)"><button onclick="mvGo(mvPage+1)"><i class="fas fa-chevron-left"></i></button></div>
+<div id="mvNav"></div></div>
 <div id="adhanOverlay"><div class="ao-in"><div class="ao-sub">حان الآن موعد صلاة</div><div class="ao-name" id="aoName"></div><div class="ao-time" id="aoTime"></div><div class="ao-date" id="aoDate"></div><input type="range" id="aoVol" min="0" max="100" oninput="setAdhanVol(this.value/100)"><button class="ao-stop" onclick="stopAdhan()"><i class="fas fa-stop"></i> إيقاف الأذان</button></div></div>
 <button id="adhanStop" onclick="stopAdhan()"><i class="fas fa-stop"></i> إيقاف الأذان</button>
 </body>

@@ -6,6 +6,7 @@ self.addEventListener('activate', e => { e.waitUntil(caches.keys().then(k => Pro
 self.addEventListener('fetch', e => {
   const r = e.request; if (r.method !== 'GET' || r.destination === 'audio' || r.headers.has('range')) return;
   const u = new URL(r.url);
+  if (u.pathname.includes('/mushaf/')) return;
   if (u.hostname === 'api.alquran.cloud' || u.hostname === 'en.wikipedia.org') {
     e.respondWith(fetch(r).then(x => { const c = x.clone(); caches.open(V).then(h => h.put(r, c)); return x; }).catch(() => caches.match(r)));
     return;
