@@ -7,18 +7,43 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
+import android.os.SystemClock;
+import android.widget.RemoteViews;
 import androidx.core.app.NotificationCompat;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class PrayerReceiver extends BroadcastReceiver {
-  static final String CH = "persist_v2";
+  static final String CH = "persist_v3";
 
   @Override
   public void onReceive(Context c, Intent i) {
+    if (i == null || i.getAction() == null) fire(c);
     show(c);
     scheduleNext(c);
+  }
+
+  static void fire(Context c) {
+    try {
+      SharedPreferences sp = c.getSharedPreferences("mishkat", 0);
+      JSONArray a = new JSONArray(sp.getString("events", "[]"));
+      long now = System.currentTimeMillis();
+      long last = sp.getLong("lastFired", 0);
+      long maxT = last;
+      for (int k = 0; k < a.length(); k++) {
+        JSONObject o = a.getJSONObject(k);
+        long t = o.getLong("t");
+        if (t > last && t <= now + 3000 && now - t < 300000) {
+          if (t > maxT) maxT = t;
+          if (o.optBoolean("adhan", false)) {
+            AdhanService.start(c, o.optString("p"), o.optString("name"), o.optString("file"), (float) o.optDouble("vol", 1.0), o.optString("mode", "notif"));
+          }
+        }
+      }
+      if (maxT > last) sp.edit().putLong("lastFired", maxT).apply();
+    } catch (Exception e) {}
   }
 
   static JSONObject nextEvent(Context c) {
@@ -33,6 +58,10 @@ public class PrayerReceiver extends BroadcastReceiver {
     return null;
   }
 
+  static int rid(Context c, String name, String type) {
+    return c.getResources().getIdentifier(name, type, c.getPackageName());
+  }
+
   static void show(Context c) {
     NotificationManager nm = (NotificationManager) c.getSystemService(Context.NOTIFICATION_SERVICE);
     JSONObject e = nextEvent(c);
@@ -43,20 +72,31 @@ public class PrayerReceiver extends BroadcastReceiver {
       nm.createNotificationChannel(ch);
     }
     try {
+      String pkg = c.getPackageName();
+      long t = e.getLong("t");
+      RemoteViews rv = new RemoteViews(pkg, rid(c, "notif_prayer", "layout"));
+      rv.setTextViewText(rid(c, "n_name", "id"), e.getString("name") + "  " + e.getString("time"));
+      rv.setTextViewText(rid(c, "n_sub", "id"), e.getString("hijri"));
+      int cid = rid(c, "n_chrono", "id");
+      if (Build.VERSION.SDK_INT >= 24) rv.setChronometerCountDown(cid, true);
+      rv.setChronometer(cid, SystemClock.elapsedRealtime() + (t - System.currentTimeMillis()), null, true);
       Intent li = c.getPackageManager().getLaunchIntentForPackage(c.getPackageName());
       PendingIntent pi = li == null ? null : PendingIntent.getActivity(c, 0, li, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
-      int icon = c.getResources().getIdentifier("ic_stat_mosque", "drawable", c.getPackageName());
+      PendingIntent pDel = PendingIntent.getBroadcast(c, 3, new Intent(c, PrayerReceiver.class).setAction("REPOST"), PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+      int icon = rid(c, "ic_stat_mosque", "drawable");
       NotificationCompat.Builder b = new NotificationCompat.Builder(c, CH)
         .setSmallIcon(icon)
         .setContentTitle("الصلاة القادمة: " + e.getString("name") + " " + e.getString("time"))
         .setContentText(e.getString("hijri"))
+        .setCustomContentView(rv)
+        .setCustomBigContentView(rv)
+        .setStyle(new NotificationCompat.DecoratedCustomViewStyle())
         .setOngoing(true)
         .setOnlyAlertOnce(true)
-        .setShowWhen(true)
-        .setWhen(e.getLong("t"))
-        .setUsesChronometer(true)
-        .setChronometerCountDown(true)
+        .setShowWhen(false)
+        .setAutoCancel(false)
         .setColor(0xFFD4AF37)
+        .setDeleteIntent(pDel)
         .setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
       if (pi != null) b.setContentIntent(pi);
       nm.notify(1000, b.build());
@@ -69,9 +109,35 @@ public class PrayerReceiver extends BroadcastReceiver {
     JSONObject e = nextEvent(c);
     if (e == null) { am.cancel(pi); return; }
     try {
-      long t = e.getLong("t") + 1500;
+      long t = e.getLong("t");
       if (Build.VERSION.SDK_INT >= 31 && !am.canScheduleExactAlarms()) am.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, t, pi);
       else am.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, t, pi);
     } catch (Exception ex) {}
+  }
+
+  static void plainNotify(Context c, String name, String prayer, String mode) {
+    try {
+      NotificationManager nm = (NotificationManager) c.getSystemService(Context.NOTIFICATION_SERVICE);
+      if (Build.VERSION.SDK_INT >= 26 && nm.getNotificationChannel("adhan_plain") == null) {
+        nm.createNotificationChannel(new NotificationChannel("adhan_plain", "Adhan alert", NotificationManager.IMPORTANCE_HIGH));
+      }
+      Intent li = c.getPackageManager().getLaunchIntentForPackage(c.getPackageName());
+      if (li != null) li.putExtra("adhan_prayer", prayer);
+      PendingIntent pi = li == null ? null : PendingIntent.getActivity(c, 9, li, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+      NotificationCompat.Builder b = new NotificationCompat.Builder(c, "adhan_plain")
+        .setSmallIcon(rid(c, "ic_stat_mosque", "drawable"))
+        .setContentTitle("حان الآن موعد صلاة " + name)
+        .setContentText("حيّ على الصلاة")
+        .setPriority(NotificationCompat.PRIORITY_MAX)
+        .setCategory(NotificationCompat.CATEGORY_ALARM)
+        .setAutoCancel(true)
+        .setDefaults(NotificationCompat.DEFAULT_ALL)
+        .setColor(0xFFD4AF37);
+      if (pi != null) {
+        b.setContentIntent(pi);
+        if ("full".equals(mode)) b.setFullScreenIntent(pi, true);
+      }
+      nm.notify(2001, b.build());
+    } catch (Exception e) {}
   }
 }

@@ -1846,7 +1846,7 @@ async function testNativeNotif() {
 function hideTop() {
   const q = id => document.getElementById(id);
   if (!q('permissionModal').classList.contains('off')) return true;
-  if (q('adhanOverlay').classList.contains('on') || q('adhanStop').classList.contains('on')) { stopAdhan(); return true; }
+  if (q('adhanOverlay').classList.contains('on') || q('adhanStop').classList.contains('on')) { userStopAdhan(); return true; }
   if (q('calOverlay').classList.contains('on')) { closeCalendar(); return true; }
   if (q('mvNav').classList.contains('on')) { mvNavToggle(false); return true; }
   if (q('mushafViewer').classList.contains('on')) { closeMushaf(); return true; }
@@ -2184,7 +2184,6 @@ function scheduleNativeNotifs() {
           if (!state.prayerToggles[p]) return;
           const at = times[p].getTime();
           if (state.preAlerts && at - 1800000 > now) list.push({ id: id++, title: 'مشكاة الأنوار', body: PRE_ALERT_TEXT + ' • ' + t(p), schedule: { at: new Date(at - 1800000), allowWhileIdle: true } });
-          if (at > now) list.push({ id: id++, title: 'حان الآن موعد صلاة ' + t(p), body: 'حيّ على الصلاة', extra: { prayer: p, at }, schedule: { at: new Date(at), allowWhileIdle: true } });
         });
       }
       if (list.length) await LN.schedule({ notifications: list });
@@ -2220,26 +2219,44 @@ async function adhanSrc(i) {
 async function pickAdhanFile(inp) {
   const f = inp.files && inp.files[0]; if (!f) return;
   await QDB.set('adhan_custom', f); store.set('adhanCustom', f.name);
+  if (NATIVE) { const b64 = await new Promise(r => { const fr = new FileReader(); fr.onload = () => r(String(fr.result).split(',')[1]); fr.readAsDataURL(f); }); await PN().saveAdhan({ name: 'adhan_custom.mp3', data: b64 }); }
   ['fajr', 'dhuhr', 'asr', 'maghrib', 'isha'].forEach(p => store.set('adhanSel_' + p, 3));
   renderAdhanCards(); showToast('تم حفظ الأذان من هاتفك', 'fas fa-check'); inp.value = '';
 }
-async function playAdhan(p) {
-  stopAdhan();
-  const src = await adhanSrc(adhanPref(p));
-  if (!src) { showToast('اختر ملف أذان من هاتفك أولاً', 'fas fa-music'); return; }
-  const a = adhanAudio = new Audio(src);
-  a.volume = store.get('adhanVol', 1); a.onended = stopAdhan;
-  a.onerror = () => { stopAdhan(); showToast('تعذر تشغيل الأذان - اختر ملفاً من هاتفك', 'fas fa-triangle-exclamation'); };
-  a.play().catch(() => {});
+const PN = () => (window.__pn || (window.__pn = Capacitor.registerPlugin('PrayerNotif')));
+async function ensureAdhanFile(i, quiet) {
+  const a = adhanList()[i]; if (!a || a.custom || store.get('adhanDl_' + i, false)) return;
+  let r = null; try { r = await PN().downloadAdhan({ url: a.url, name: 'adhan_' + i + '.mp3' }); } catch (e) {}
+  if (r && r.ok) store.set('adhanDl_' + i, true); else if (!quiet) showToast('تعذر تنزيل ملف الأذان - اختر ملفاً من هاتفك', 'fas fa-triangle-exclamation');
+}
+const adhanFile = p => { const i = adhanPref(p), a = adhanList()[i]; return a && a.custom ? 'adhan_custom.mp3' : 'adhan_' + i + '.mp3'; };
+function showAdhanScreen(p) {
   if (adhanModeOf(p) === 'full') {
     const o = document.getElementById('adhanOverlay'), img = BG_URL[bgKey()];
     o.style.backgroundImage = img ? `url("${img}")` : '';
     document.getElementById('aoName').textContent = t(p); document.getElementById('aoTime').textContent = state.prayerTimes[p] || '';
-    document.getElementById('aoDate').textContent = hijriStr(new Date()); document.getElementById('aoVol').value = Math.round(a.volume * 100);
+    document.getElementById('aoDate').textContent = hijriStr(new Date()); document.getElementById('aoVol').value = Math.round(store.get('adhanVol', 1) * 100);
     o.classList.add('on');
   } else document.getElementById('adhanStop').classList.add('on');
 }
+function userStopAdhan() { stopAdhan(); if (NATIVE) { try { PN().stopAdhan(); } catch (e) {} } }
+async function playAdhan(p) {
+  stopAdhan();
+  if (NATIVE) {
+    await ensureAdhanFile(adhanPref(p));
+    PN().startAdhan({ prayer: p, name: t(p), file: adhanFile(p), vol: store.get('adhanVol', 1), mode: adhanModeOf(p) });
+    return;
+  }
+  const src = await adhanSrc(adhanPref(p));
+  if (!src) { showToast('اختر ملف أذان من هاتفك أولاً', 'fas fa-music'); return; }
+  const a = adhanAudio = new Audio(src);
+  a.volume = store.get('adhanVol', 1); a.onended = stopAdhan;
+  a.onerror = () => { stopAdhan(); showToast('تعذر تشغيل الأذان', 'fas fa-triangle-exclamation'); };
+  a.play().catch(() => {});
+  showAdhanScreen(p);
+}
 function checkAdhanTime() {
+  if (NATIVE) return;
   const now = Date.now();
   prayerKeys.forEach(p => {
     if (p === 'dhuha') return;
@@ -2260,9 +2277,11 @@ function computeEvents() {
 }
 async function postOngoing(LN) {
   try {
-    const PN = Capacitor.registerPlugin('PrayerNotif'), ev = computeEvents(), now = Date.now(), out = []; let prev = now;
-    ev.forEach(e => { const tm = e.t.getTime(); if (tm > now) { out.push({ t: tm, name: t(e.p), time: hhmm(e.t), hijri: hijriStr(new Date(prev)) }); prev = tm; } });
-    await PN.setEvents({ events: out });
+    const ev = computeEvents(), now = Date.now(), out = []; let prev = now;
+    ev.forEach(e => { const tm = e.t.getTime(); if (tm > now) { out.push({ t: tm, p: e.p, name: t(e.p), time: hhmm(e.t), hijri: hijriStr(new Date(prev)), adhan: e.p !== 'dhuha' && !!state.prayerToggles[e.p], mode: adhanModeOf(e.p), file: adhanFile(e.p), vol: store.get('adhanVol', 1) }); prev = tm; } });
+    const r = await PN().setEvents({ events: out });
+    if (r && r.exact === false && !store.get('exactAsked', false)) { store.set('exactAsked', true); showToast('اسمح للتطبيق بـ«المنبهات والتذكيرات» ليبدأ الأذان في وقته', 'fas fa-bell'); setTimeout(() => PN().openExactSettings(), 1800); }
+    new Set(['fajr', 'dhuhr', 'asr', 'maghrib', 'isha'].filter(p => state.prayerToggles[p]).map(p => adhanPref(p))).forEach(i => ensureAdhanFile(i, true));
   } catch (e) { console.log('PN error', e); }
 }
 function addMapButtons() {
@@ -2341,6 +2360,7 @@ function renderCalendar() {
   document.getElementById('calGrid').innerHTML = html;
 }
 setTimeout(() => { if (navigator.onLine) adhanList().forEach((a, i) => { if (!a.custom) adhanSrc(i); }); }, 8000);
+if (NATIVE) { try { const P = PN(); P.addListener('adhanStarted', e => showAdhanScreen(e.prayer)); P.addListener('adhanEnded', () => stopAdhan()); } catch (e) {} }
 </script>
 <div id="calOverlay" dir="rtl"><div class="cal-card">
 <div class="cal-head"><button onclick="calNav(-1)"><i class="fas fa-chevron-right"></i></button><div><div id="calTitle"></div><div id="calSub"></div></div><button onclick="calNav(1)"><i class="fas fa-chevron-left"></i></button></div>
@@ -2350,7 +2370,7 @@ setTimeout(() => { if (navigator.onLine) adhanList().forEach((a, i) => { if (!a.
 <div class="mv-stage" id="mvStage"><img id="mvImg" alt="" onerror="showToast('صفحات المصحف متوفرة في تطبيق الأندرويد فقط','fas fa-triangle-exclamation')"></div>
 <div class="mv-bar"><button onclick="mvGo(mvPage-1)"><i class="fas fa-chevron-right"></i></button><input type="range" id="mvRange" min="1" max="604" value="1" oninput="mvGo(+this.value)"><button onclick="mvGo(mvPage+1)"><i class="fas fa-chevron-left"></i></button></div>
 <div id="mvNav"></div></div>
-<div id="adhanOverlay"><div class="ao-in"><div class="ao-sub">حان الآن موعد صلاة</div><div class="ao-name" id="aoName"></div><div class="ao-time" id="aoTime"></div><div class="ao-date" id="aoDate"></div><input type="range" id="aoVol" min="0" max="100" oninput="setAdhanVol(this.value/100)"><button class="ao-stop" onclick="stopAdhan()"><i class="fas fa-stop"></i> إيقاف الأذان</button></div></div>
-<button id="adhanStop" onclick="stopAdhan()"><i class="fas fa-stop"></i> إيقاف الأذان</button>
+<div id="adhanOverlay"><div class="ao-in"><div class="ao-sub">حان الآن موعد صلاة</div><div class="ao-name" id="aoName"></div><div class="ao-time" id="aoTime"></div><div class="ao-date" id="aoDate"></div><input type="range" id="aoVol" min="0" max="100" oninput="setAdhanVol(this.value/100)"><button class="ao-stop" onclick="userStopAdhan()"><i class="fas fa-stop"></i> إيقاف الأذان</button></div></div>
+<button id="adhanStop" onclick="userStopAdhan()"><i class="fas fa-stop"></i> إيقاف الأذان</button>
 </body>
 </html>
