@@ -15,15 +15,21 @@ jobs:
           java-version: 17
       - run: npm install
       - run: npx cap add android
-      - name: Permissions
+      - name: Permissions and receivers
         run: |
           M=android/app/src/main/AndroidManifest.xml
-          sed -i 's#<application#<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/><uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/><uses-permission android:name="android.permission.POST_NOTIFICATIONS"/><uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/><uses-permission android:name="android.permission.VIBRATE"/><application#' $M
-      - name: Icons and resources
+          sed -i 's#<application#<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/><uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/><uses-permission android:name="android.permission.POST_NOTIFICATIONS"/><uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/><uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/><uses-permission android:name="android.permission.VIBRATE"/><application#' $M
+          sed -i 's#</application>#<receiver android:name=".PrayerReceiver" android:exported="false"/><receiver android:name=".BootReceiver" android:exported="true"><intent-filter><action android:name="android.intent.action.BOOT_COMPLETED"/></intent-filter></receiver></application>#' $M
+      - name: Icons, Java and resources
         run: |
           cp -r resources/* android/app/src/main/res/
           mkdir -p android/app/src/main/java/com/mishkat/anwar
-          cp android-overrides/MainActivity.java android/app/src/main/java/com/mishkat/anwar/MainActivity.java
+          cp android-overrides/*.java android/app/src/main/java/com/mishkat/anwar/
+      - name: Mushaf pages
+        run: |
+          mkdir -p www/mushaf
+          for z in mushaf*.zip; do unzip -oq "$z" -d www/mushaf; done
+          ls www/mushaf | wc -l
       - run: npx cap sync android
       - run: cd android && chmod +x gradlew && ./gradlew assembleDebug
       - uses: actions/upload-artifact@v4
