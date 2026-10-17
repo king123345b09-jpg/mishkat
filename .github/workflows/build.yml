@@ -19,19 +19,11 @@ jobs:
         run: |
           M=android/app/src/main/AndroidManifest.xml
           sed -i 's#<application#<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/><uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/><uses-permission android:name="android.permission.POST_NOTIFICATIONS"/><uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/><uses-permission android:name="android.permission.VIBRATE"/><application#' $M
-      - name: App icon
-        continue-on-error: true
+      - name: Icons and resources
         run: |
-          set -e
-          R=android/app/src/main/res
-          for p in mdpi:48 hdpi:72 xhdpi:96 xxhdpi:144 xxxhdpi:192; do
-            d=${p%%:*}
-            s=${p##*:}
-            convert www/icon-512.png -resize ${s}x${s} $R/mipmap-$d/ic_launcher.png
-            cp $R/mipmap-$d/ic_launcher.png $R/mipmap-$d/ic_launcher_round.png
-            cp $R/mipmap-$d/ic_launcher.png $R/mipmap-$d/ic_launcher_foreground.png
-          done
-          rm -rf $R/mipmap-anydpi-v26
+          cp -r resources/* android/app/src/main/res/
+          mkdir -p android/app/src/main/java/com/mishkat/anwar
+          cp android-overrides/MainActivity.java android/app/src/main/java/com/mishkat/anwar/MainActivity.java
       - run: npx cap sync android
       - run: cd android && chmod +x gradlew && ./gradlew assembleDebug
       - uses: actions/upload-artifact@v4
