@@ -10,6 +10,8 @@ import android.content.res.AssetFileDescriptor;
 import android.content.pm.ServiceInfo;
 import android.media.AudioAttributes;
 import android.media.MediaPlayer;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.IBinder;
 import androidx.core.app.NotificationCompat;
@@ -47,8 +49,8 @@ public class AdhanService extends Service {
     String file = i.getStringExtra("file");
     String mode = i.getStringExtra("mode");
     float vol = i.getFloatExtra("vol", 1f);
-    NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
     
+    NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
     if (Build.VERSION.SDK_INT >= 26 && nm.getNotificationChannel(CH) == null) {
       NotificationChannel ch = new NotificationChannel(CH, "Adhan", NotificationManager.IMPORTANCE_HIGH);
       ch.setSound(null, null);
@@ -105,8 +107,22 @@ public class AdhanService extends Service {
       }
     } catch (Exception e) {}
     
-    PrayerReceiver.plainNotify(this, name, prayer, mode);
-    stopAll();
+    // إذا لم يجد الملف، يشغل نغمة المنبه الافتراضية ليعمل زر التجربة
+    try {
+      Uri alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+      if (alert == null) alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+      mp = new MediaPlayer();
+      mp.setDataSource(this, alert);
+      mp.setAudioAttributes(new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_ALARM).setContentType(AudioAttributes.CONTENT_TYPE_MUSIC).build());
+      mp.prepare();
+      mp.setVolume(vol, vol);
+      mp.setOnCompletionListener(m -> stopAll());
+      mp.start();
+    } catch (Exception e) {
+      PrayerReceiver.plainNotify(this, name, prayer, mode);
+      stopAll();
+    }
+    
     return START_NOT_STICKY;
   }
 
