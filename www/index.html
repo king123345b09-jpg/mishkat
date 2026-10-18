@@ -524,6 +524,7 @@ html,body{overscroll-behavior:none}
 #mvMsg.on{opacity:1;transform:translateX(-50%) translateY(0)}
 .mv-title div:first-child{font-size:18px}
 .hidden{display:none!important}
+.mv-animate { transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1) !important; }
 @media (max-width:360px){.splash-title{font-size:38px}.next-prayer-name{font-size:26px}.tasbih-counter{font-size:52px}.qibla-compass{width:250px;height:250px}.tick{transform-origin:50% 111px}.qibla-needle{height:90px}.wird-results{grid-template-columns:repeat(2,1fr)}}
 </style>
 </head>
@@ -2237,12 +2238,32 @@ function showAdhanScreen(p) {
 function userStopAdhan() { stopAdhan(); if (NATIVE) { try { PN().stopAdhan(); } catch (e) {} } }
 async function playAdhan(p) {
   stopAdhan();
-  if (NATIVE) { PN().startAdhan({ prayer: p, name: t(p), file: adhanFile(p), vol: store.get('adhanVol', 1), mode: adhanModeOf(p) }); return; }
-  const a = adhanAudio = new Audio(ADHANS[adhanPref(p)].web);
-  a.volume = store.get('adhanVol', 1); a.onended = stopAdhan;
-  a.onerror = () => { stopAdhan(); showToast('ملف الأذان غير متوفر في نسخة الويب', 'fas fa-triangle-exclamation'); };
-  a.play().catch(() => {});
-  showAdhanScreen(p);
+  showToast('جاري تشغيل الأذان...', 'fas fa-play');
+  
+  if (NATIVE) {
+    try {
+       PN().startAdhan({ prayer: p, name: t(p), file: adhanFile(p), vol: store.get('adhanVol', 1), mode: adhanModeOf(p) });
+    } catch (e) {
+       showToast('تعذر تشغيل الأذان في التطبيق', 'fas fa-triangle-exclamation');
+    }
+    return;
+  }
+  
+  // نسخة الويب: استخدام رابط احتياطي يعمل لزر التجربة
+  const fallbackUrl = 'https://www.islamcan.com/audio/adhan/azan1.mp3';
+  const a = adhanAudio = new Audio(fallbackUrl); 
+  a.volume = store.get('adhanVol', 1);
+  a.onended = stopAdhan;
+  a.onerror = () => { 
+      stopAdhan(); 
+      showToast('تعذر تشغيل الصوت، تأكد من اتصالك بالإنترنت', 'fas fa-triangle-exclamation'); 
+  };
+  a.play().then(() => {
+      showAdhanScreen(p);
+  }).catch((err) => {
+      stopAdhan();
+      showToast('المتصفح منع التشغيل التلقائي، يرجى التفاعل مع الشاشة أولاً', 'fas fa-hand-pointer');
+  });
 }
 function checkAdhanTime() {
   if (NATIVE) return;
@@ -2299,7 +2320,15 @@ const MUSHAF_START = [1, 2, 50, 77, 106, 128, 151, 177, 187, 208, 221, 235, 249,
 const JUZ_START = [1, 22, 42, 62, 82, 102, 121, 142, 162, 182, 201, 222, 242, 262, 282, 302, 322, 342, 362, 382, 402, 422, 442, 462, 482, 502, 522, 542, 562, 582];
 let mvPage = 1, mvZ = { s: 1, x: 0, y: 0 };
 const pgFile = p => 'mushaf/p' + String(p).padStart(3, '0') + '.webp';
-function mvApply() { document.getElementById('mvImg').style.transform = `translate(${mvZ.x}px,${mvZ.y}px) scale(${mvZ.s})`; }
+function mvApply(animate) {
+    const img = document.getElementById('mvImg');
+    if (animate) {
+        img.classList.add('mv-animate');
+    } else {
+        img.classList.remove('mv-animate');
+    }
+    img.style.transform = `translate(${mvZ.x}px,${mvZ.y}px) scale(${mvZ.s})`;
+}
 function surahOfPage(p) {
   const st = []; MUSHAF_START.forEach((s, i) => { if (s === p) st.push(i); });
   if (st.length) return st;
@@ -2318,7 +2347,7 @@ function mvAnnounce(p) {
   } else { const j = JUZ_START.indexOf(p); if (j > 0) mvMsg(`أكملت الجزء ${j} • بدأ الجزء ${j + 1}`); }
 }
 function mvGo(p, silent) {
-  p = Math.max(1, Math.min(604, Math.round(p))); mvPage = p; store.set('mushafPage', p); mvZ = { s: 1, x: 0, y: 0 }; mvApply();
+  p = Math.max(1, Math.min(604, Math.round(p))); mvPage = p; store.set('mushafPage', p); mvZ = { s: 1, x: 0, y: 0 }; mvApply(false);
   document.getElementById('mvImg').src = pgFile(p); document.getElementById('mvPageNo').textContent = p; document.getElementById('mvRange').value = p;
   document.getElementById('mvSurah').textContent = 'سورة ' + surahOfPage(p).map(i => surahs[i].name).join(' • ');
   document.getElementById('mvJuz').textContent = juzOfPage(p);
@@ -2336,25 +2365,63 @@ function mvNavToggle(force) {
   const st = document.getElementById('mvStage'); if (!st) return;
   let t0 = null, d0 = 0, s0 = 1, last = 0;
   const dist = e => Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
-  st.addEventListener('touchstart', e => { if (e.touches.length === 2) { d0 = dist(e); s0 = mvZ.s; t0 = null; } else if (e.touches.length === 1) t0 = { x: e.touches[0].clientX, y: e.touches[0].clientY, ox: mvZ.x, oy: mvZ.y }; }, { passive: true });
+  
+  st.addEventListener('touchstart', e => {
+      if (e.touches.length === 2) { d0 = dist(e); s0 = mvZ.s; t0 = null; }
+      else if (e.touches.length === 1) { t0 = { x: e.touches[0].clientX, y: e.touches[0].clientY, ox: mvZ.x, oy: mvZ.y }; }
+      document.getElementById('mvImg').classList.remove('mv-animate');
+  }, { passive: true });
+
   st.addEventListener('touchmove', e => {
-    if (e.touches.length === 2 && d0) { e.preventDefault(); mvZ.s = Math.max(1, Math.min(4, s0 * dist(e) / d0)); if (mvZ.s === 1) { mvZ.x = 0; mvZ.y = 0; } mvApply(); }
-    else if (e.touches.length === 1 && t0) {
-      e.preventDefault();
-      if (mvZ.s > 1) { mvZ.x = t0.ox + e.touches[0].clientX - t0.x; mvZ.y = t0.oy + e.touches[0].clientY - t0.y; }
-      else { mvZ.x = (e.touches[0].clientX - t0.x) * 0.6; mvZ.y = 0; }
-      mvApply();
-    }
+      if (e.touches.length === 2 && d0) {
+          e.preventDefault();
+          mvZ.s = Math.max(1, Math.min(4, s0 * dist(e) / d0));
+          if (mvZ.s === 1) { mvZ.x = 0; mvZ.y = 0; }
+          mvApply(false);
+      } else if (e.touches.length === 1 && t0) {
+          e.preventDefault();
+          if (mvZ.s > 1) {
+              mvZ.x = t0.ox + e.touches[0].clientX - t0.x;
+              mvZ.y = t0.oy + e.touches[0].clientY - t0.y;
+          } else {
+              mvZ.x = (e.touches[0].clientX - t0.x) * 0.8;
+              mvZ.y = 0;
+          }
+          mvApply(false);
+      }
   }, { passive: false });
+
   st.addEventListener('touchend', e => {
-    if (t0 && e.changedTouches.length) {
-      const dx = e.changedTouches[0].clientX - t0.x, dy = e.changedTouches[0].clientY - t0.y;
-      if (mvZ.s === 1) {
-        if (Math.abs(dx) > 70 && Math.abs(dx) > Math.abs(dy) * 1.3) mvGo(mvPage + (dx > 0 ? 1 : -1));
-        else { mvZ.x = 0; mvApply(); if (Math.abs(dx) < 10 && Math.abs(dy) < 10) { const n = Date.now(); if (n - last < 300) { mvZ = { s: 2.2, x: 0, y: 0 }; mvApply(); } last = n; } }
-      } else if (Math.abs(dx) < 10 && Math.abs(dy) < 10) { const n = Date.now(); if (n - last < 300) { mvZ = { s: 1, x: 0, y: 0 }; mvApply(); } last = n; }
-    }
-    d0 = 0; t0 = null;
+      if (t0 && e.changedTouches.length) {
+          const dx = e.changedTouches[0].clientX - t0.x;
+          const dy = e.changedTouches[0].clientY - t0.y;
+          
+          if (mvZ.s === 1) {
+              if (Math.abs(dx) > 70 && Math.abs(dx) > Math.abs(dy) * 1.3) {
+                  const nextPage = mvPage + (dx > 0 ? 1 : -1);
+                  mvZ.x = dx > 0 ? window.innerWidth : -window.innerWidth;
+                  mvApply(true);
+                  setTimeout(() => {
+                      mvGo(nextPage, true);
+                      mvZ.x = dx > 0 ? -window.innerWidth : window.innerWidth;
+                      mvApply(false);
+                      void document.getElementById('mvImg').offsetWidth;
+                      mvZ.x = 0;
+                      mvApply(true);
+                  }, 280);
+              } else {
+                  mvZ.x = 0;
+                  mvApply(true);
+              }
+          } else {
+              if (Math.abs(dx) < 10 && Math.abs(dy) < 10) {
+                  const n = Date.now();
+                  if (n - last < 300) { mvZ = { s: 1, x: 0, y: 0 }; mvApply(true); }
+                  last = n;
+              }
+          }
+      }
+      d0 = 0; t0 = null;
   });
 })();
 const hijriParts = d => { const o = {}; new Intl.DateTimeFormat('en-u-ca-islamic-umalqura-nu-latn', { day: 'numeric', month: 'numeric', year: 'numeric' }).formatToParts(d).forEach(p => { if (['day', 'month', 'year'].includes(p.type)) o[p.type] = +p.value; }); return o; };
