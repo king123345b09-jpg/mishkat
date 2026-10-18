@@ -98,7 +98,7 @@ html,body{font-family:'Cairo','Inter',sans-serif;background:var(--royal-green-de
 /* Hero */
 .hero-card{margin:16px;background:var(--gradient-primary);border:1px solid var(--royal-gold);border-radius:24px;padding:22px;position:relative;overflow:hidden;box-shadow:var(--shadow-green)}
 .hero-card::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle,rgba(244,196,48,.08) 0%,transparent 40%);pointer-events:none}
-.hero-date{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;position:relative;z-index:1}
+.hero-date{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;position:relative;z-index:1;cursor:pointer}
 .hijri-date{font-family:'Amiri',serif;font-size:18px;color:var(--royal-gold-light);font-weight:700}
 .gregorian-date{font-size:12px;color:var(--cream);opacity:.8}
 .next-prayer-label{font-size:13px;color:var(--royal-gold);margin-bottom:5px;position:relative;z-index:1}
@@ -135,7 +135,7 @@ html,body{font-family:'Cairo','Inter',sans-serif;background:var(--royal-green-de
 /* Map */
 .map-section{margin:20px 16px 12px;border-radius:20px;overflow:hidden;border:2px solid var(--royal-gold);box-shadow:var(--shadow-green);position:relative}
 #map{height:230px;width:100%;background:var(--royal-green-deep)}
-.map-overlay{position:absolute;top:10px;right:10px;background:rgba(5,46,26,.9);backdrop-filter:blur(10px);border:1px solid var(--royal-gold);border-radius:12px;padding:8px 12px;color:var(--royal-gold-light);font-size:11px;z-index:1000;display:flex;align-items:center;gap:6px}
+.map-overlay{position:absolute;top:10px;right:10px;background:rgba(5,46,26,.9);backdrop-filter:blur(10px);border:1px solid var(--royal-gold);border-radius:12px;padding:8px 12px;color:var(--royal-gold-light);font-size:11px;z-index:1000;display:flex;align-items:center;gap:6px;cursor:pointer}
 .map-overlay i{color:var(--royal-gold)}
 .map-live{position:absolute;bottom:10px;left:10px;right:10px;z-index:1000;background:rgba(5,46,26,.92);border:1px solid rgba(212,175,55,.5);border-radius:12px;padding:8px 12px;display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--cream)}
 .map-live b{color:var(--royal-gold-light);font-family:'Inter',sans-serif;font-size:13px}
@@ -226,7 +226,16 @@ html,body{font-family:'Cairo','Inter',sans-serif;background:var(--royal-green-de
 .duaa-card:active{transform:scale(.96)}
 .duaa-card::before{content:'';position:absolute;top:-50%;right:-50%;width:200%;height:200%;background:radial-gradient(circle,rgba(244,196,48,.1) 0%,transparent 50%);pointer-events:none}
 .geo-icon{width:64px;height:64px;margin:0 auto 8px;position:relative;z-index:1}
-.geo-icon svg{width:100%;height:100%;animation:rotate 40s linear infinite}
+.geo-icon svg {
+    width: 100%; height: 100%;
+    animation: spinGlow 12s linear infinite;
+    filter: drop-shadow(0 0 10px rgba(244,196,48,.4));
+}
+@keyframes spinGlow {
+    0% { transform: rotate(0deg) scale(1); }
+    50% { transform: rotate(180deg) scale(1.05); }
+    100% { transform: rotate(360deg) scale(1); }
+}
 .geo-icon i{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:19px;color:var(--royal-gold-light)}
 .duaa-name{font-family:'Amiri',serif;font-size:15px;color:var(--royal-gold-light);font-weight:700;position:relative;z-index:1}
 .duaa-count{font-size:11px;color:var(--cream);opacity:.7;margin-top:4px;position:relative;z-index:1}
@@ -508,8 +517,12 @@ html,body{overscroll-behavior:none}
 #mushafViewer{background:#0a1f14}
 .mv-top{display:flex;align-items:center;gap:10px;padding:calc(10px + env(safe-area-inset-top)) 12px 10px;background:#052e1a;border-bottom:1px solid rgba(212,175,55,.4);color:#f4c430}
 .mv-title{flex:1;text-align:center;font-size:16px;font-weight:700}
-.mv-stage{flex:1;min-height:0;overflow:hidden;touch-action:none;background:#fff;display:flex;align-items:center;justify-content:center}
-.mv-stage img{max-width:100%;max-height:100%;transform-origin:center;user-select:none;-webkit-user-drag:none}
+.mv-stage{flex:1;min-height:0;overflow:hidden;touch-action:none;background:#fff;display:flex;align-items:center;justify-content:center;position:relative}
+.mv-img {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain;
+    transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+    background: #fff;
+}
 .mv-bar{display:flex;align-items:center;gap:10px;padding:10px 12px calc(10px + env(safe-area-inset-bottom));background:#052e1a;border-top:1px solid rgba(212,175,55,.4)}
 .mv-bar input{flex:1;accent-color:#f4c430}
 #mvNav{position:absolute;inset:0;background:rgba(3,22,13,.97);overflow-y:auto;padding:calc(70px + env(safe-area-inset-top)) 14px 20px;display:none;z-index:2}
@@ -524,7 +537,6 @@ html,body{overscroll-behavior:none}
 #mvMsg.on{opacity:1;transform:translateX(-50%) translateY(0)}
 .mv-title div:first-child{font-size:18px}
 .hidden{display:none!important}
-.mv-animate { transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1) !important; }
 @media (max-width:360px){.splash-title{font-size:38px}.next-prayer-name{font-size:26px}.tasbih-counter{font-size:52px}.qibla-compass{width:250px;height:250px}.tick{transform-origin:50% 111px}.qibla-needle{height:90px}.wird-results{grid-template-columns:repeat(2,1fr)}}
 </style>
 </head>
@@ -593,7 +605,7 @@ html,body{overscroll-behavior:none}
     <!-- HOME -->
     <div id="screen-home" class="screen active">
       <div class="hero-card">
-        <div class="hero-date" onclick="openCalendar()" style="cursor:pointer">
+        <div class="hero-date" onclick="openCalendar()">
           <div>
             <div class="hijri-date" id="hijriDate">١٥ جمادى الأولى ١٤٤٦</div>
             <div class="gregorian-date" id="gregorianDate">2024/12/17</div>
@@ -883,7 +895,10 @@ html,body{overscroll-behavior:none}
 <div class="cal-foot"><button onclick="calToday()">اليوم</button><button onclick="closeCalendar()">إغلاق</button></div></div></div>
 <div id="mushafViewer" dir="rtl"><div class="mv-top"><button onclick="closeMushaf()"><i class="fas fa-arrow-right"></i></button><div class="mv-title"><div id="mvSurah"></div><div style="font-size:12px;opacity:.85;font-weight:400">الجزء <span id="mvJuz">1</span> • صفحة <span id="mvPageNo">1</span></div></div><button onclick="mvNavToggle()"><i class="fas fa-list"></i></button></div>
 <div id="mvMsg"></div>
-<div class="mv-stage" id="mvStage"><img id="mvImg" alt="" onerror="showToast('صفحات المصحف متوفرة في تطبيق الأندرويد فقط','fas fa-triangle-exclamation')"></div>
+<div class="mv-stage" id="mvStage">
+    <img id="mvImgNext" class="mv-img" alt="" style="transform: translateX(100%); z-index: 1;">
+    <img id="mvImg" class="mv-img" alt="" style="z-index: 2;" onerror="showToast('صفحات المصحف متوفرة في تطبيق الأندرويد فقط','fas fa-triangle-exclamation')">
+</div>
 <div class="mv-bar"><button onclick="mvGo(mvPage-1)"><i class="fas fa-chevron-right"></i></button><input type="range" id="mvRange" min="1" max="604" value="1" oninput="mvGo(+this.value)"><button onclick="mvGo(mvPage+1)"><i class="fas fa-chevron-left"></i></button></div>
 <div id="mvNav"></div></div>
 <div id="adhanOverlay"><div class="ao-in"><div class="ao-sub">حان الآن موعد صلاة</div><div class="ao-name" id="aoName"></div><div class="ao-time" id="aoTime"></div><div class="ao-date" id="aoDate"></div><input type="range" id="aoVol" min="0" max="100" oninput="setAdhanVol(this.value/100)"><button class="ao-stop" onclick="userStopAdhan()"><i class="fas fa-stop"></i> إيقاف الأذان</button></div></div>
@@ -938,7 +953,6 @@ const SURAH_RAW = [
 ];
 const surahs = SURAH_RAW.map((s, i) => ({ number: i + 1, name: s[0], nameEn: s[1], verses: s[2], type: s[3] === 'م' ? 'مكية' : 'مدنية' }));
 
-// Reciters – strict priority: Yassine Al-Djazairi, then Abdul Rahman Al-Sudais
 const reciters = {
   yassine: { name: 'ياسين الجزائري', sub: 'رواية ورش عن نافع', folder: 'warsh/warsh_yassin_al_jazaery_64kbps' },
   sudais: { name: 'عبد الرحمن السديس', sub: 'رواية حفص عن عاصم', folder: 'Abdurrahmaan_As-Sudais_192kbps' },
@@ -955,7 +969,6 @@ const localVerses = {
 };
 const verseCache = {};
 
-// ==================== DUAA DATA (expanded) ====================
 const duaaData = {
   morning: [
     { text: 'أعوذ بالله من الشيطان الرجيم. اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ ۚ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ ۚ لَهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ ۗ مَنْ ذَا الَّذِي يَشْفَعُ عِنْدَهُ إِلَّا بِإِذْنِهِ ۚ يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ ۖ وَلَا يُحِيطُونَ بِشَيْءٍ مِنْ عِلْمِهِ إِلَّا بِمَا شَاءَ ۚ وَسِعَ كُرْسِيُّهُ السَّمَاوَاتِ وَالْأَرْضَ ۖ وَلَا يَئُودُهُ حِفْظُهُمَا ۚ وَهُوَ الْعَلِيُّ الْعَظِيمُ', translation: 'Ayat al-Kursi — protection until evening', count: 1, ref: 'البقرة 255' },
@@ -1080,7 +1093,6 @@ duaaCats.splice(7, 0,
 let duaaProgress = {};
 let currentDuaaCat = null;
 
-// ==================== INIT ====================
 window.addEventListener('load', () => {
   renderBrand();
   setQFS(store.get('qfs', 25));
@@ -1110,7 +1122,6 @@ window.addEventListener('load', () => {
   setInterval(() => { const d = new Date(); if (d.getHours() === 0 && d.getMinutes() === 0 && d.getSeconds() < 2) { calculatePrayerTimes(); updateHijriDate(); } }, 1000);
 });
 
-// ==================== ICONS ====================
 function mosqueIcon(p) {
   const bg = {
     fajr: ['#0b2f2a', '#14594a', '#3a7a5c'], dhuha: ['#0d7a48', '#14a05f', '#7fd19c'],
@@ -1164,7 +1175,6 @@ function geoIcon(c) {
     </g></svg><i class="fas ${c.icon}"></i></div>`;
 }
 
-// ==================== RENDER ====================
 const prayerKeys = ['fajr', 'dhuha', 'dhuhr', 'asr', 'maghrib', 'isha'];
 const prayerLatin = { fajr: 'Fajr', dhuha: 'Dhuha', dhuhr: 'Dhuhr', asr: 'Asr', maghrib: 'Maghrib', isha: 'Isha' };
 function renderPrayerGrid() {
@@ -1205,7 +1215,6 @@ function renderDuaaCategories() {
   }).join('');
 }
 
-// ==================== PERMISSIONS & GEO ====================
 let watchId = null, locFirst = true, geoTried = 0;
 function grantPermissions() {
   document.getElementById('permissionModal').classList.add('off');
@@ -1257,7 +1266,6 @@ function reverseGeocode() {
     .then(r => r.json()).then(j => { const a = j.address || {}; const n = a.city || a.town || a.village || a.county || a.state; if (n) lb.textContent = n; }).catch(() => {});
 }
 
-// ==================== MAP + LIVE ROUTE TO MAKKAH ====================
 let map, marker, kaabaMarker, routeLine, routeGlow;
 const toRad = d => d * Math.PI / 180, toDeg = r => r * 180 / Math.PI;
 function computeQibla(lat, lng) {
@@ -1315,7 +1323,6 @@ function updateMapLocation(fit, fallback) {
   if (!fallback) setLocStatus('تتبع مباشر' + (me.acc ? ` (±${Math.round(me.acc)}م)` : ''), true);
 }
 
-// ==================== PRAYER TIMES ====================
 const fmt = d => d ? `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}` : '--:--';
 function calculatePrayerTimes(n) {
   if (typeof adhan === 'undefined') { if ((n || 0) < 8) setTimeout(() => calculatePrayerTimes((n || 0) + 1), 1000); return; }
@@ -1328,6 +1335,7 @@ function calculatePrayerTimes(n) {
     prayerKeys.forEach(p => { state.prayerTimes[p] = fmt(state.prayerDates[p]); const el = document.getElementById('time-' + p); if (el) el.textContent = state.prayerTimes[p]; });
     updateNextPrayer();
     scheduleNativeNotifs();
+    setTimeout(postOngoing, 1000); 
   } catch (e) { console.log('Prayer calc error:', e); }
 }
 function updateNextPrayer() {
@@ -1378,7 +1386,6 @@ function startCountdown() {
     updatePrayerSubs();
   }, 1000);
 }
-// Background pre-prayer scheduler: exactly 30 min before each active prayer
 function checkPrePrayer(now) {
   if (!state.preAlerts) return;
   const dayKey = now.toDateString();
@@ -1427,7 +1434,6 @@ function togglePrayer(el, prayer) {
   showToast(on ? `تم تفعيل تنبيه ${t(prayer)}` : `تم كتم تنبيه ${t(prayer)}`, on ? 'fas fa-bell' : 'fas fa-bell-slash');
 }
 
-// ==================== NAVIGATION ====================
 function switchScreen(screen, navItem) {
   const target = document.getElementById(`screen-${screen}`);
   if (!target) return;
@@ -1448,7 +1454,6 @@ function scrollToTasbih() {
   mc.scrollTo({ top: el.offsetTop - 10, behavior: 'smooth' });
 }
 
-// ==================== QIBLA / CALIBRATION ====================
 const dirNames = ['شمال', 'شمال شرق', 'شرق', 'جنوب شرق', 'جنوب', 'جنوب غرب', 'غرب', 'شمال غرب'];
 const dirName = d => dirNames[Math.round(((d % 360) + 360) % 360 / 45) % 8];
 function initTicks() {
@@ -1541,9 +1546,7 @@ function handleOrientation(e) {
   if (off > 8) handleOrientation._buzz = false;
 }
 
-// ==================== TASBIH (string physics) ====================
 const presets = ['سبحان الله', 'الحمد لله', 'الله أكبر', 'لا إله إلا الله', 'أستغفر الله', 'لا حول ولا قوة إلا بالله', 'اللهم صل على محمد'];
-// Automated profanity regex parser (Arabic + Latin)
 const PROFANITY_AR = /(كلب|حمار|خنزير|حقير|وسخ|قذر|منيوك|منيك|نيك|ني[كچ]|زب|زبي|طيز|شرموط|شرموطة|عاهر|عاهرة|قحب|قحبة|كس|كسم|لعن|ملعون|يلعن|خرا|خرى|تفو|زامل|زاملة|حيوان|غبي|تبا|سافل|منحط|ديوث|لوطي)/;
 const PROFANITY_LAT = /\b(f+u+c+k+\w*|sh+i+t+\w*|bitch\w*|bastard|asshole|dick\w*|pussy|whore|slut|cunt|damn|nigg\w*|fag\w*|merde|putain|connard|salope|puta\w*|mierda|cabr[oó]n|pendejo)\b/i;
 function normalizeArabic(s) {
@@ -1663,16 +1666,13 @@ function tasbihLoop() {
 function drawTasbih(g) {
   const ctx = TS.ctx, W = TS.W, H = TS.H, col = TS.colors;
   ctx.clearRect(0, 0, W, H);
-  // string
   ctx.beginPath();
   for (let x = 6; x <= W - 6; x += 4) { const y = stringY(x); x === 6 ? ctx.moveTo(x, y) : ctx.lineTo(x, y); }
   ctx.strokeStyle = col.gold; ctx.lineWidth = 2; ctx.globalAlpha = .8; ctx.stroke(); ctx.globalAlpha = 1;
-  // tassel (left end, imam bead)
   const ix = 10, iy = stringY(ix);
   ctx.strokeStyle = col.gold; ctx.lineWidth = 1.4;
   for (let k = -3; k <= 3; k++) { ctx.beginPath(); ctx.moveTo(ix, iy + 6); ctx.quadraticCurveTo(ix + k * 1.5, iy + 22, ix + k * 2.4 + Math.sin(TS.time * .05 + k) * 1.5, iy + 36); ctx.stroke(); }
   drawBead(ix, iy, 7, true);
-  // gap marker
   const gx = (g.pad + g.r + TS.local * g.d + targetX(TS.local)) / 2;
   if (TS.local < TS.N) { ctx.fillStyle = 'rgba(244,196,48,.18)'; ctx.beginPath(); ctx.arc(gx, stringY(gx), 3, 0, 7); ctx.fill(); }
   TS.beads.forEach((b, j) => drawBead(b.x, stringY(b.x), g.r, false, j < TS.local, TS.drag && TS.drag.j === j));
@@ -1724,7 +1724,6 @@ function updateTarget() {
   document.getElementById('tasbihProgress').style.width = Math.min(state.tasbihCount / val * 100, 100) + '%';
 }
 
-// ==================== QURAN ====================
 function renderReciters() {
   state.reciter = store.get('reciter', 'yassine');
   if (!reciters[state.reciter]) state.reciter = 'yassine';
@@ -1949,7 +1948,6 @@ function toggleWifi() {
   showToast(state.wifiOnly ? 'البث عبر Wi-Fi فقط' : 'السماح بالبث عبر بيانات الجوال', 'fas fa-wifi');
 }
 
-// ==================== WIRD CALCULATOR ====================
 const QURAN = { pages: 604, juz: 30, hizb: 60, ayat: 6236 };
 function initWird() {
   state.wifiOnly = store.get('wifiOnly', true);
@@ -1986,7 +1984,6 @@ function startKhatma() {
   showToast('بدأت الختمة، أعانك الله', 'fas fa-flag-checkered');
 }
 
-// ==================== DUAA DETAIL ====================
 function openDuaaDetail(cat) {
   currentDuaaCat = cat;
   const c = duaaCats.find(x => x.key === cat);
@@ -2036,7 +2033,6 @@ function tapDuaa(e, el) {
   counter.innerHTML = '<i class="fas fa-check"></i>';
   el.classList.add('done'); el.classList.remove('current');
   updateDuaaProgress();
-  // auto-scroll to the next active card
   const items = [...document.querySelectorAll('#duaaDetailContent .duaa-item')];
   let next = items.slice(i + 1).find(it => rem[+it.dataset.i] > 0) || items.find(it => rem[+it.dataset.i] > 0);
   if (next) {
@@ -2055,7 +2051,6 @@ function resetDuaaCategory() {
 }
 function closeDuaaDetail() { document.getElementById('duaaDetail').classList.remove('active'); }
 
-// ==================== SETTINGS ====================
 function changeTheme(theme, el) {
   state.currentTheme = theme;
   ['--royal-green-deep', '--royal-green', '--royal-green-light', '--royal-green-soft', '--gradient-primary', '--gradient-luxury'].forEach(v => document.documentElement.style.removeProperty(v));
@@ -2140,7 +2135,6 @@ function showCreator(e) {
   document.getElementById('modalOverlay').classList.add('active');
 }
 
-// ==================== MODAL / GIFT / TOAST ====================
 function setModalVisual(html) { document.getElementById('modalVisual').innerHTML = html; }
 function showModal(title, text, icon, warn) {
   setModalVisual(`<div class="modal-icon"><i class="${icon || 'fas fa-check'}"></i></div>`);
@@ -2222,7 +2216,6 @@ const hijriStr = d => d.toLocaleDateString('ar-SA-u-ca-islamic-umalqura-nu-latn'
 const hhmm = d => d.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
 const adhanList = () => ADHANS;
 
-
 const PN = () => (window.__pn || (window.__pn = Capacitor.registerPlugin('PrayerNotif')));
 
 const adhanFile = p => ADHANS[adhanPref(p)].raw;
@@ -2249,7 +2242,6 @@ async function playAdhan(p) {
     return;
   }
   
-  // نسخة الويب: استخدام رابط احتياطي يعمل لزر التجربة
   const fallbackUrl = 'https://www.islamcan.com/audio/adhan/azan1.mp3';
   const a = adhanAudio = new Audio(fallbackUrl); 
   a.volume = store.get('adhanVol', 1);
@@ -2320,15 +2312,16 @@ const MUSHAF_START = [1, 2, 50, 77, 106, 128, 151, 177, 187, 208, 221, 235, 249,
 const JUZ_START = [1, 22, 42, 62, 82, 102, 121, 142, 162, 182, 201, 222, 242, 262, 282, 302, 322, 342, 362, 382, 402, 422, 442, 462, 482, 502, 522, 542, 562, 582];
 let mvPage = 1, mvZ = { s: 1, x: 0, y: 0 };
 const pgFile = p => 'mushaf/p' + String(p).padStart(3, '0') + '.webp';
+
 function mvApply(animate) {
     const img = document.getElementById('mvImg');
-    if (animate) {
-        img.classList.add('mv-animate');
-    } else {
-        img.classList.remove('mv-animate');
-    }
-    img.style.transform = `translate(${mvZ.x}px,${mvZ.y}px) scale(${mvZ.s})`;
+    const next = document.getElementById('mvImgNext');
+    img.style.transition = animate ? 'transform 0.3s ease' : 'none';
+    next.style.transition = animate ? 'transform 0.3s ease' : 'none';
+    img.style.transform = `translateX(${mvZ.x}px) scale(${mvZ.s})`;
+    next.style.transform = `translateX(${mvZ.x + (mvZ.x > 0 ? -window.innerWidth : window.innerWidth)}px) scale(${mvZ.s})`;
 }
+
 function surahOfPage(p) {
   const st = []; MUSHAF_START.forEach((s, i) => { if (s === p) st.push(i); });
   if (st.length) return st;
@@ -2369,7 +2362,8 @@ function mvNavToggle(force) {
   st.addEventListener('touchstart', e => {
       if (e.touches.length === 2) { d0 = dist(e); s0 = mvZ.s; t0 = null; }
       else if (e.touches.length === 1) { t0 = { x: e.touches[0].clientX, y: e.touches[0].clientY, ox: mvZ.x, oy: mvZ.y }; }
-      document.getElementById('mvImg').classList.remove('mv-animate');
+      document.getElementById('mvImg').style.transition = 'none';
+      document.getElementById('mvImgNext').style.transition = 'none';
   }, { passive: true });
 
   st.addEventListener('touchmove', e => {
@@ -2398,17 +2392,24 @@ function mvNavToggle(force) {
           
           if (mvZ.s === 1) {
               if (Math.abs(dx) > 70 && Math.abs(dx) > Math.abs(dy) * 1.3) {
-                  const nextPage = mvPage + (dx > 0 ? 1 : -1);
-                  mvZ.x = dx > 0 ? window.innerWidth : -window.innerWidth;
+                  const nextPage = mvPage + (dx > 0 ? -1 : 1); // RTL logic: swipe right -> previous page, swipe left -> next page
+                  const nextImg = document.getElementById('mvImgNext');
+                  nextImg.src = pgFile(nextPage);
+                  
+                  const dir = dx > 0 ? 1 : -1;
+                  mvZ.x = dir * window.innerWidth;
                   mvApply(true);
+                  
                   setTimeout(() => {
-                      mvGo(nextPage, true);
-                      mvZ.x = dx > 0 ? -window.innerWidth : window.innerWidth;
-                      mvApply(false);
-                      void document.getElementById('mvImg').offsetWidth;
+                      mvPage = nextPage;
+                      document.getElementById('mvImg').src = nextImg.src;
+                      document.getElementById('mvPageNo').textContent = nextPage;
+                      document.getElementById('mvRange').value = nextPage;
+                      document.getElementById('mvSurah').textContent = 'سورة ' + surahOfPage(nextPage).map(i => surahs[i].name).join(' • ');
+                      document.getElementById('mvJuz').textContent = juzOfPage(nextPage);
                       mvZ.x = 0;
-                      mvApply(true);
-                  }, 280);
+                      mvApply(false);
+                  }, 310);
               } else {
                   mvZ.x = 0;
                   mvApply(true);
@@ -2424,6 +2425,7 @@ function mvNavToggle(force) {
       d0 = 0; t0 = null;
   });
 })();
+
 const hijriParts = d => { const o = {}; new Intl.DateTimeFormat('en-u-ca-islamic-umalqura-nu-latn', { day: 'numeric', month: 'numeric', year: 'numeric' }).formatToParts(d).forEach(p => { if (['day', 'month', 'year'].includes(p.type)) o[p.type] = +p.value; }); return o; };
 let calAnchor = new Date(), calFirst = null, calLen = 30;
 function openCalendar() { calAnchor = new Date(); renderCalendar(); document.getElementById('calOverlay').classList.add('on'); }
