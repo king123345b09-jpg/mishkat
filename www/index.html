@@ -2183,9 +2183,9 @@ function scheduleNativeNotifs() {
 }
 const NATIVE = !!(window.Capacitor && Capacitor.isNativePlatform && Capacitor.isNativePlatform());
 const ADHANS = [
-  { name: 'رباح بن دراح الجزائري', raw: 'adhan_rabah', web: 'adhan/rabah.mp3' },
-  { name: 'محمد رمضان السعد', raw: 'adhan_ramadan', web: 'adhan/ramadan.mp3' },
-  { name: 'ناصر القطامي', raw: 'adhan_nasser', web: 'adhan/nasser.mp3' }
+  { name: 'رباح بن دراح الجزائري', raw: 'رباح بن دراح الجزائري', web: 'adhan/رباح بن دراح الجزائري.mp3' },
+  { name: 'محمد رمضان السعد', raw: 'محمد رمضان السعد', web: 'adhan/محمد رمضان السعد.mp3' },
+  { name: 'ناصر القطامي', raw: 'ناصر القاطمي', web: 'adhan/ناصر القاطمي.mp3' }
 ];
 const firedAdhan = {}; let adhanAudio = null;
 const adhanPref = p => Math.min(ADHANS.length - 1, store.get('adhanSel_' + p, 0));
