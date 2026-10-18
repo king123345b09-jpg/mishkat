@@ -91,6 +91,7 @@ public class AdhanService extends Service {
     PrayerNotifPlugin.emit("adhanStarted", prayer);
     releasePlayer();
     
+    // 1. محاولة تشغيل الملف من res/raw
     try {
       int rid = file == null ? 0 : getResources().getIdentifier(file, "raw", getPackageName());
       if (rid != 0) {
@@ -107,7 +108,7 @@ public class AdhanService extends Service {
       }
     } catch (Exception e) {}
     
-    // إذا لم يجد الملف، يشغل نغمة المنبه الافتراضية ليعمل زر التجربة
+    // 2. إذا لم يجد الملف (أو حدث خطأ)، تشغيل نغمة المنبه الافتراضية فوراً
     try {
       Uri alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
       if (alert == null) alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
