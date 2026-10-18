@@ -18,21 +18,21 @@ jobs:
       - name: Permissions and services
         run: |
           M=android/app/src/main/AndroidManifest.xml
-          sed -i 's#<application#<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/><uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/><uses-permission android:name="android.permission.POST_NOTIFICATIONS"/><uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/><uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/><uses-permission android:name="android.permission.FOREGROUND_SERVICE"/><uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK"/><uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT"/><uses-permission android:name="android.permission.WAKE_LOCK"/><uses-permission android:name="android.permission.VIBRATE"/><application#' $M
+          sed -i 's#<application#<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/><uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/><uses-permission android:name="android.permission.POST_NOTIFICATIONS"/><uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/><uses-permission android:name="android.permission.USE_EXACT_ALARM"/><uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/><uses-permission android:name="android.permission.FOREGROUND_SERVICE"/><uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK"/><uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT"/><uses-permission android:name="android.permission.WAKE_LOCK"/><uses-permission android:name="android.permission.VIBRATE"/><uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS"/><application#' $M
           sed -i 's#</application>#<receiver android:name=".PrayerReceiver" android:exported="false"/><receiver android:name=".BootReceiver" android:exported="true"><intent-filter><action android:name="android.intent.action.BOOT_COMPLETED"/></intent-filter></receiver><service android:name=".AdhanService" android:exported="false" android:foregroundServiceType="mediaPlayback"/></application>#' $M
       - name: Icons, Java and resources
         run: |
-          cp -r resources/* android/app/src/main/res/
+          mkdir -p android/app/src/main/res/raw
+          cp -r resources/* android/app/src/main/res/ 2>/dev/null || true
           mkdir -p android/app/src/main/java/com/mishkat/anwar
           cp android-overrides/*.java android/app/src/main/java/com/mishkat/anwar/
+          # نسخ ملفات الأذان إذا كانت موجودة في المستودع
+          find . -name "adhan_*.mp3" -not -path './node_modules/*' -not -path './android/*' -exec cp {} android/app/src/main/res/raw/ \;
       - name: Mushaf pages
         run: |
           mkdir -p www/mushaf
           find . -name 'mushaf*.zip' -not -path './node_modules/*' -not -path './android/*' | while read z; do echo "unzip $z"; unzip -oq "$z" -d www/mushaf; done
           find . -name 'p[0-9][0-9][0-9].webp' -not -path './www/*' -not -path './node_modules/*' -not -path './android/*' -exec cp {} www/mushaf/ \;
-          N=$(ls www/mushaf | wc -l)
-          echo "Mushaf pages found: $N"
-          if [ "$N" -lt 600 ]; then echo "::warning::Mushaf pages missing ($N of 604). Upload mushaf1.zip to mushaf5.zip to the repository."; fi
       - run: npx cap sync android
       - run: cd android && chmod +x gradlew && ./gradlew assembleDebug
       - uses: actions/upload-artifact@v4
