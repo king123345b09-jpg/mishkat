@@ -26,8 +26,8 @@ jobs:
           cp -r resources/* android/app/src/main/res/ 2>/dev/null || true
           mkdir -p android/app/src/main/java/com/mishkat/anwar
           cp android-overrides/*.java android/app/src/main/java/com/mishkat/anwar/
-          # نسخ ملفات الأذان إذا كانت موجودة في المستودع
-          find . -name "adhan_*.mp3" -not -path './node_modules/*' -not -path './android/*' -exec cp {} android/app/src/main/res/raw/ \;
+          # نسخ ملفات الأذان إلى res/raw ليعمل بدون إنترنت
+          if [ -d "adhan" ]; then cp adhan/*.mp3 android/app/src/main/res/raw/ 2>/dev/null || true; fi
       - name: Mushaf pages
         run: |
           mkdir -p www/mushaf
