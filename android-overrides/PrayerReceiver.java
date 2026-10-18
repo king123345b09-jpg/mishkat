@@ -31,10 +31,17 @@ public class PrayerReceiver extends BroadcastReceiver {
       JSONArray a = new JSONArray(sp.getString("events", "[]"));
       long now = System.currentTimeMillis();
       long last = sp.getLong("lastFired", 0);
+      long lastPre = sp.getLong("lastPre", 0);
       long maxT = last;
+      long maxP = lastPre;
       for (int k = 0; k < a.length(); k++) {
         JSONObject o = a.getJSONObject(k);
         long t = o.getLong("t");
+        long tp = t - 1800000L;
+        if (o.optBoolean("pre", false) && tp > lastPre && tp <= now + 3000 && now - tp < 300000) {
+          if (tp > maxP) maxP = tp;
+          preNotify(c, o.optString("preBody"));
+        }
         if (t > last && t <= now + 3000 && now - t < 300000) {
           if (t > maxT) maxT = t;
           if (o.optBoolean("adhan", false)) {
@@ -42,7 +49,31 @@ public class PrayerReceiver extends BroadcastReceiver {
           }
         }
       }
-      if (maxT > last) sp.edit().putLong("lastFired", maxT).apply();
+      SharedPreferences.Editor ed = sp.edit();
+      if (maxT > last) ed.putLong("lastFired", maxT);
+      if (maxP > lastPre) ed.putLong("lastPre", maxP);
+      ed.apply();
+    } catch (Exception e) {}
+  }
+
+  static void preNotify(Context c, String body) {
+    try {
+      NotificationManager nm = (NotificationManager) c.getSystemService(Context.NOTIFICATION_SERVICE);
+      if (Build.VERSION.SDK_INT >= 26 && nm.getNotificationChannel("prealert_v1") == null) {
+        nm.createNotificationChannel(new NotificationChannel("prealert_v1", "Pre-prayer alert", NotificationManager.IMPORTANCE_HIGH));
+      }
+      Intent li = c.getPackageManager().getLaunchIntentForPackage(c.getPackageName());
+      PendingIntent pi = li == null ? null : PendingIntent.getActivity(c, 10, li, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+      NotificationCompat.Builder b = new NotificationCompat.Builder(c, "prealert_v1")
+        .setSmallIcon(rid(c, "ic_stat_mosque", "drawable"))
+        .setContentTitle("مشكاة الأنوار")
+        .setContentText(body)
+        .setPriority(NotificationCompat.PRIORITY_HIGH)
+        .setAutoCancel(true)
+        .setDefaults(NotificationCompat.DEFAULT_ALL)
+        .setColor(0xFFD4AF37);
+      if (pi != null) b.setContentIntent(pi);
+      nm.notify(3000, b.build());
     } catch (Exception e) {}
   }
 
@@ -106,12 +137,24 @@ public class PrayerReceiver extends BroadcastReceiver {
   static void scheduleNext(Context c) {
     AlarmManager am = (AlarmManager) c.getSystemService(Context.ALARM_SERVICE);
     PendingIntent pi = PendingIntent.getBroadcast(c, 1, new Intent(c, PrayerReceiver.class), PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
-    JSONObject e = nextEvent(c);
-    if (e == null) { am.cancel(pi); return; }
+    long best = Long.MAX_VALUE;
+    long now = System.currentTimeMillis();
     try {
-      long t = e.getLong("t");
-      if (Build.VERSION.SDK_INT >= 31 && !am.canScheduleExactAlarms()) am.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, t, pi);
-      else am.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, t, pi);
+      JSONArray a = new JSONArray(c.getSharedPreferences("mishkat", 0).getString("events", "[]"));
+      for (int k = 0; k < a.length(); k++) {
+        JSONObject o = a.getJSONObject(k);
+        long t = o.getLong("t");
+        if (t > now + 1000 && t < best) best = t;
+        if (o.optBoolean("pre", false)) {
+          long tp = t - 1800000L;
+          if (tp > now + 1000 && tp < best) best = tp;
+        }
+      }
+    } catch (Exception e) {}
+    if (best == Long.MAX_VALUE) { am.cancel(pi); return; }
+    try {
+      if (Build.VERSION.SDK_INT >= 31 && !am.canScheduleExactAlarms()) am.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, best, pi);
+      else am.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, best, pi);
     } catch (Exception ex) {}
   }
 

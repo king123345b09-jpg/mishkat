@@ -3,6 +3,7 @@ package com.mishkat.anwar;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import androidx.activity.OnBackPressedCallback;
 import com.getcapacitor.BridgeActivity;
 
 public class MainActivity extends BridgeActivity {
@@ -11,6 +12,26 @@ public class MainActivity extends BridgeActivity {
     registerPlugin(PrayerNotifPlugin.class);
     super.onCreate(savedInstanceState);
     handleAdhan(getIntent());
+    getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+      @Override
+      public void handleOnBackPressed() {
+        try {
+          getBridge().getWebView().evaluateJavascript(
+            "(function(){try{return window.__hardBack?window.__hardBack():false}catch(e){return false}})()",
+            value -> {
+              if (!"true".equals(value)) {
+                setEnabled(false);
+                getOnBackPressedDispatcher().onBackPressed();
+                setEnabled(true);
+              }
+            });
+        } catch (Exception e) {
+          setEnabled(false);
+          getOnBackPressedDispatcher().onBackPressed();
+          setEnabled(true);
+        }
+      }
+    });
   }
 
   @Override

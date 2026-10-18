@@ -6,13 +6,13 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.content.res.AssetFileDescriptor;
 import android.content.pm.ServiceInfo;
 import android.media.AudioAttributes;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.IBinder;
 import androidx.core.app.NotificationCompat;
-import java.io.File;
 import android.content.Context;
 
 public class AdhanService extends Service {
@@ -83,11 +83,13 @@ public class AdhanService extends Service {
     PrayerNotifPlugin.emit("adhanStarted", prayer);
     releasePlayer();
     try {
-      File f = file == null ? null : new File(getFilesDir(), file);
-      if (f != null && f.exists()) {
+      int rid = file == null ? 0 : getResources().getIdentifier(file, "raw", getPackageName());
+      if (rid != 0) {
+        AssetFileDescriptor afd = getResources().openRawResourceFd(rid);
         mp = new MediaPlayer();
         mp.setAudioAttributes(new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_ALARM).setContentType(AudioAttributes.CONTENT_TYPE_MUSIC).build());
-        mp.setDataSource(f.getAbsolutePath());
+        mp.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
+        afd.close();
         mp.prepare();
         mp.setVolume(vol, vol);
         mp.setOnCompletionListener(m -> stopAll());

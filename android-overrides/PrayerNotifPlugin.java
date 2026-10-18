@@ -6,18 +6,12 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
-import android.util.Base64;
 import com.getcapacitor.JSArray;
 import com.getcapacitor.JSObject;
 import com.getcapacitor.Plugin;
 import com.getcapacitor.PluginCall;
 import com.getcapacitor.PluginMethod;
 import com.getcapacitor.annotation.CapacitorPlugin;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
 @CapacitorPlugin(name = "PrayerNotif")
 public class PrayerNotifPlugin extends Plugin {
@@ -74,48 +68,6 @@ public class PrayerNotifPlugin extends Plugin {
   public void stopAdhan(PluginCall call) {
     try { getContext().startService(new Intent(getContext(), AdhanService.class).setAction("STOP")); } catch (Exception e) {}
     call.resolve();
-  }
-
-  @PluginMethod
-  public void downloadAdhan(PluginCall call) {
-    final String url = call.getString("url");
-    final String name = call.getString("name");
-    new Thread(() -> {
-      try {
-        HttpURLConnection cn = (HttpURLConnection) new URL(url).openConnection();
-        cn.setConnectTimeout(15000);
-        cn.setReadTimeout(30000);
-        cn.setInstanceFollowRedirects(true);
-        String ct = cn.getContentType();
-        if (cn.getResponseCode() != 200 || (ct != null && ct.startsWith("text"))) { call.resolve(res(false)); return; }
-        File tmp = new File(getContext().getFilesDir(), name + ".tmp");
-        try (InputStream in = cn.getInputStream(); FileOutputStream out = new FileOutputStream(tmp)) {
-          byte[] buf = new byte[16384];
-          int n;
-          while ((n = in.read(buf)) > 0) out.write(buf, 0, n);
-        }
-        if (tmp.length() < 50000) { tmp.delete(); call.resolve(res(false)); return; }
-        File dst = new File(getContext().getFilesDir(), name);
-        if (dst.exists()) dst.delete();
-        tmp.renameTo(dst);
-        call.resolve(res(true));
-      } catch (Exception e) {
-        call.resolve(res(false));
-      }
-    }).start();
-  }
-
-  @PluginMethod
-  public void saveAdhan(PluginCall call) {
-    try {
-      byte[] d = Base64.decode(call.getString("data"), Base64.DEFAULT);
-      try (FileOutputStream o = new FileOutputStream(new File(getContext().getFilesDir(), call.getString("name")))) {
-        o.write(d);
-      }
-      call.resolve(res(true));
-    } catch (Exception e) {
-      call.resolve(res(false));
-    }
   }
 
   @PluginMethod
