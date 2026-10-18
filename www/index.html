@@ -98,7 +98,7 @@ html,body{font-family:'Cairo','Inter',sans-serif;background:var(--royal-green-de
 /* Hero */
 .hero-card{margin:16px;background:var(--gradient-primary);border:1px solid var(--royal-gold);border-radius:24px;padding:22px;position:relative;overflow:hidden;box-shadow:var(--shadow-green)}
 .hero-card::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle,rgba(244,196,48,.08) 0%,transparent 40%);pointer-events:none}
-.hero-date{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;position:relative;z-index:1;cursor:pointer}
+.hero-date{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;position:relative;z-index:1}
 .hijri-date{font-family:'Amiri',serif;font-size:18px;color:var(--royal-gold-light);font-weight:700}
 .gregorian-date{font-size:12px;color:var(--cream);opacity:.8}
 .next-prayer-label{font-size:13px;color:var(--royal-gold);margin-bottom:5px;position:relative;z-index:1}
@@ -135,7 +135,7 @@ html,body{font-family:'Cairo','Inter',sans-serif;background:var(--royal-green-de
 /* Map */
 .map-section{margin:20px 16px 12px;border-radius:20px;overflow:hidden;border:2px solid var(--royal-gold);box-shadow:var(--shadow-green);position:relative}
 #map{height:230px;width:100%;background:var(--royal-green-deep)}
-.map-overlay{position:absolute;top:10px;right:10px;background:rgba(5,46,26,.9);backdrop-filter:blur(10px);border:1px solid var(--royal-gold);border-radius:12px;padding:8px 12px;color:var(--royal-gold-light);font-size:11px;z-index:1000;display:flex;align-items:center;gap:6px;cursor:pointer}
+.map-overlay{position:absolute;top:10px;right:10px;background:rgba(5,46,26,.9);backdrop-filter:blur(10px);border:1px solid var(--royal-gold);border-radius:12px;padding:8px 12px;color:var(--royal-gold-light);font-size:11px;z-index:1000;display:flex;align-items:center;gap:6px}
 .map-overlay i{color:var(--royal-gold)}
 .map-live{position:absolute;bottom:10px;left:10px;right:10px;z-index:1000;background:rgba(5,46,26,.92);border:1px solid rgba(212,175,55,.5);border-radius:12px;padding:8px 12px;display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--cream)}
 .map-live b{color:var(--royal-gold-light);font-family:'Inter',sans-serif;font-size:13px}
@@ -143,6 +143,8 @@ html,body{font-family:'Cairo','Inter',sans-serif;background:var(--royal-green-de
 .live-dot.on{background:#4ade80;box-shadow:0 0 8px #4ade80}
 @keyframes blink{50%{opacity:.3}}
 .leaflet-popup-content-wrapper{border-radius:12px}
+/* تصحيح مكان أزرار الخريطة */
+.leaflet-bottom.leaflet-left { bottom: 40px; left: 10px; }
 .btn-row{display:flex;gap:10px;padding:0 16px 20px}
 .btn-row .perm-btn{margin-top:0;font-size:14px;padding:14px}
 
@@ -226,15 +228,15 @@ html,body{font-family:'Cairo','Inter',sans-serif;background:var(--royal-green-de
 .duaa-card:active{transform:scale(.96)}
 .duaa-card::before{content:'';position:absolute;top:-50%;right:-50%;width:200%;height:200%;background:radial-gradient(circle,rgba(244,196,48,.1) 0%,transparent 50%);pointer-events:none}
 .geo-icon{width:64px;height:64px;margin:0 auto 8px;position:relative;z-index:1}
+/* الحركة الدائرية المستمرة من اليمين لليسار */
 .geo-icon svg {
     width: 100%; height: 100%;
-    animation: spinGlow 12s linear infinite;
+    animation: spinGlow 10s linear infinite;
     filter: drop-shadow(0 0 10px rgba(244,196,48,.4));
 }
 @keyframes spinGlow {
-    0% { transform: rotate(0deg) scale(1); }
-    50% { transform: rotate(180deg) scale(1.05); }
-    100% { transform: rotate(360deg) scale(1); }
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(-360deg); }
 }
 .geo-icon i{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:19px;color:var(--royal-gold-light)}
 .duaa-name{font-family:'Amiri',serif;font-size:15px;color:var(--royal-gold-light);font-weight:700;position:relative;z-index:1}
@@ -471,7 +473,7 @@ html,body{overscroll-behavior:none}
 .toast{top:calc(env(safe-area-inset-top) + 14px);transform:translateX(-50%) translateY(-30px);opacity:0;visibility:hidden;pointer-events:none;transition:transform .35s ease,opacity .35s ease,visibility .35s}
 .toast.show{transform:translateX(-50%) translateY(0);opacity:1;visibility:visible}
 .pre-banner{top:calc(env(safe-area-inset-top) + 12px)}
-.geo-icon svg{overflow:visible;animation:none}
+.geo-icon svg{overflow:visible;}
 .pre-banner{transform:translateX(-50%) translateY(-150%);opacity:0;visibility:hidden;pointer-events:none}
 .pre-banner.show{transform:translateX(-50%) translateY(0);opacity:1;visibility:visible;pointer-events:auto}
 .verses-block{font-family:'Amiri Quran','Scheherazade New',serif!important;line-height:2.5}
@@ -518,11 +520,7 @@ html,body{overscroll-behavior:none}
 .mv-top{display:flex;align-items:center;gap:10px;padding:calc(10px + env(safe-area-inset-top)) 12px 10px;background:#052e1a;border-bottom:1px solid rgba(212,175,55,.4);color:#f4c430}
 .mv-title{flex:1;text-align:center;font-size:16px;font-weight:700}
 .mv-stage{flex:1;min-height:0;overflow:hidden;touch-action:none;background:#fff;display:flex;align-items:center;justify-content:center;position:relative}
-.mv-img {
-    position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain;
-    transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
-    background: #fff;
-}
+.mv-img {position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain; background:#fff; will-change: transform;}
 .mv-bar{display:flex;align-items:center;gap:10px;padding:10px 12px calc(10px + env(safe-area-inset-bottom));background:#052e1a;border-top:1px solid rgba(212,175,55,.4)}
 .mv-bar input{flex:1;accent-color:#f4c430}
 #mvNav{position:absolute;inset:0;background:rgba(3,22,13,.97);overflow-y:auto;padding:calc(70px + env(safe-area-inset-top)) 14px 20px;display:none;z-index:2}
@@ -563,25 +561,6 @@ html,body{overscroll-behavior:none}
   </div>
 </div>
 
-<!-- Calibration -->
-<div id="calibrationScreen">
-  <div class="calibration-title">معايرة البوصلة</div>
-  <div class="calibration-desc">لتحديد اتجاه القبلة بدقة، حرّك جهازك في الهواء بحركة رقم 8 اللانهائية (∞) بشكل مستمر وسلس</div>
-  <svg class="infinity-svg" viewBox="0 0 200 100">
-    <path id="infPath" class="inf-track" d="M100,50 C125,15 185,15 185,50 C185,85 125,85 100,50 C75,15 15,15 15,50 C15,85 75,85 100,50 Z"/>
-    <path class="inf-flow" d="M100,50 C125,15 185,15 185,50 C185,85 125,85 100,50 C75,15 15,15 15,50 C15,85 75,85 100,50 Z"/>
-    <g>
-      <rect x="-7" y="-11" width="14" height="22" rx="3" fill="#ffe066" stroke="#052e1a" stroke-width="1.5"/>
-      <rect x="-4.5" y="-8" width="9" height="14" rx="1" fill="#0a5c36"/>
-      <animateMotion dur="3s" repeatCount="indefinite" rotate="auto"><mpath href="#infPath"/></animateMotion>
-    </g>
-  </svg>
-  <div class="loop-count"><i class="fas fa-infinity"></i> <span id="loopCount">0</span> / 3</div>
-  <div style="color:var(--royal-gold-light);font-size:14px;margin-top:10px"><i class="fas fa-sync-alt fa-spin"></i> <span id="calibStatus">جاري المعايرة...</span></div>
-  <div class="calibration-progress"><div class="calibration-bar" id="calibrationBar"></div></div>
-  <button class="calibration-btn" onclick="completeCalibration()"><i class="fas fa-check"></i> إنهاء المعايرة</button>
-</div>
-
 <!-- App -->
 <div id="app">
   <div class="app-header">
@@ -607,7 +586,7 @@ html,body{overscroll-behavior:none}
       <div class="hero-card">
         <div class="hero-date" onclick="openCalendar()">
           <div>
-            <div class="hijri-date" id="hijriDate">١٥ جمادى الأولى ١٤٤٦</div>
+            <div class="hijri-date" id="hijriDate">جاري التحميل...</div>
             <div class="gregorian-date" id="gregorianDate">2024/12/17</div>
           </div>
           <div class="icon-btn" style="background:rgba(244,196,48,.2)"><i class="fas fa-calendar-alt"></i></div>
@@ -889,15 +868,15 @@ html,body{overscroll-behavior:none}
 
 <div class="toast" id="toast"><i class="fas fa-info-circle"></i><span id="toastText">رسالة</span></div>
 
-<div id="calOverlay" dir="rtl"><div class="cal-card">
+<div id="calOverlay" dir="rtl"><div class="cal-card" id="calCard">
 <div class="cal-head"><button onclick="calNav(-1)"><i class="fas fa-chevron-right"></i></button><div><div id="calTitle"></div><div id="calSub"></div></div><button onclick="calNav(1)"><i class="fas fa-chevron-left"></i></button></div>
 <div class="cal-week" id="calWeek"></div><div class="cal-grid" id="calGrid"></div>
 <div class="cal-foot"><button onclick="calToday()">اليوم</button><button onclick="closeCalendar()">إغلاق</button></div></div></div>
 <div id="mushafViewer" dir="rtl"><div class="mv-top"><button onclick="closeMushaf()"><i class="fas fa-arrow-right"></i></button><div class="mv-title"><div id="mvSurah"></div><div style="font-size:12px;opacity:.85;font-weight:400">الجزء <span id="mvJuz">1</span> • صفحة <span id="mvPageNo">1</span></div></div><button onclick="mvNavToggle()"><i class="fas fa-list"></i></button></div>
 <div id="mvMsg"></div>
 <div class="mv-stage" id="mvStage">
-    <img id="mvImgNext" class="mv-img" alt="" style="transform: translateX(100%); z-index: 1;">
-    <img id="mvImg" class="mv-img" alt="" style="z-index: 2;" onerror="showToast('صفحات المصحف متوفرة في تطبيق الأندرويد فقط','fas fa-triangle-exclamation')">
+    <img id="mvImgNext" class="mv-img" alt="" style="z-index: 1;">
+    <img id="mvImg" class="mv-img" alt="" style="z-index: 2;">
 </div>
 <div class="mv-bar"><button onclick="mvGo(mvPage-1)"><i class="fas fa-chevron-right"></i></button><input type="range" id="mvRange" min="1" max="604" value="1" oninput="mvGo(+this.value)"><button onclick="mvGo(mvPage+1)"><i class="fas fa-chevron-left"></i></button></div>
 <div id="mvNav"></div></div>
@@ -1093,6 +1072,7 @@ duaaCats.splice(7, 0,
 let duaaProgress = {};
 let currentDuaaCat = null;
 
+// ==================== INIT ====================
 window.addEventListener('load', () => {
   renderBrand();
   setQFS(store.get('qfs', 25));
@@ -1119,9 +1099,11 @@ window.addEventListener('load', () => {
   initTasbih();
   startCountdown();
   updateHijriDate();
+  initCalendarSwipe();
   setInterval(() => { const d = new Date(); if (d.getHours() === 0 && d.getMinutes() === 0 && d.getSeconds() < 2) { calculatePrayerTimes(); updateHijriDate(); } }, 1000);
 });
 
+// ==================== ICONS ====================
 function mosqueIcon(p) {
   const bg = {
     fajr: ['#0b2f2a', '#14594a', '#3a7a5c'], dhuha: ['#0d7a48', '#14a05f', '#7fd19c'],
@@ -1175,6 +1157,7 @@ function geoIcon(c) {
     </g></svg><i class="fas ${c.icon}"></i></div>`;
 }
 
+// ==================== RENDER ====================
 const prayerKeys = ['fajr', 'dhuha', 'dhuhr', 'asr', 'maghrib', 'isha'];
 const prayerLatin = { fajr: 'Fajr', dhuha: 'Dhuha', dhuhr: 'Dhuhr', asr: 'Asr', maghrib: 'Maghrib', isha: 'Isha' };
 function renderPrayerGrid() {
@@ -1215,6 +1198,7 @@ function renderDuaaCategories() {
   }).join('');
 }
 
+// ==================== PERMISSIONS & GEO ====================
 let watchId = null, locFirst = true, geoTried = 0;
 function grantPermissions() {
   document.getElementById('permissionModal').classList.add('off');
@@ -1222,6 +1206,7 @@ function grantPermissions() {
   requestOrientationPermission();
   if ('Notification' in window && Notification.permission === 'default') { try { Notification.requestPermission(); } catch (e) {} }
   requestLocation();
+  if (NATIVE) setTimeout(postOngoing, 1000);
 }
 function useSavedLocation() {
   const v = store.get('lastLoc', null);
@@ -1266,6 +1251,7 @@ function reverseGeocode() {
     .then(r => r.json()).then(j => { const a = j.address || {}; const n = a.city || a.town || a.village || a.county || a.state; if (n) lb.textContent = n; }).catch(() => {});
 }
 
+// ==================== MAP + LIVE ROUTE TO MAKKAH ====================
 let map, marker, kaabaMarker, routeLine, routeGlow;
 const toRad = d => d * Math.PI / 180, toDeg = r => r * 180 / Math.PI;
 function computeQibla(lat, lng) {
@@ -1294,8 +1280,8 @@ function greatCircle(a, b, n = 64) {
 }
 function initMap() {
   try {
-    map = L.map('map', { zoomControl: true, attributionControl: false }).setView([state.location.lat, state.location.lng], 13);
-    try { addMapButtons(); } catch (e) {}
+    map = L.map('map', { zoomControl: false, attributionControl: false }).setView([state.location.lat, state.location.lng], 13);
+    L.control.zoom({ position: 'bottomleft' }).addTo(map); // نقل الأزرار لليسار
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19 }).addTo(map);
     const goldIcon = L.divIcon({ className: '', html: '<div style="width:22px;height:22px;background:linear-gradient(135deg,#f4c430,#d4af37);border:3px solid #0a5c36;border-radius:50%;box-shadow:0 0 0 6px rgba(244,196,48,.25),0 0 20px rgba(244,196,48,.8)"></div>', iconSize: [22, 22], iconAnchor: [11, 11] });
     const kaabaIcon = L.divIcon({ className: '', html: '<div style="width:30px;height:30px;background:#111;border:2px solid #f4c430;border-radius:8px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 18px rgba(244,196,48,.9)"><i class="fas fa-kaaba" style="color:#f4c430;font-size:15px"></i></div>', iconSize: [30, 30], iconAnchor: [15, 15] });
@@ -1323,6 +1309,7 @@ function updateMapLocation(fit, fallback) {
   if (!fallback) setLocStatus('تتبع مباشر' + (me.acc ? ` (±${Math.round(me.acc)}م)` : ''), true);
 }
 
+// ==================== PRAYER TIMES ====================
 const fmt = d => d ? `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}` : '--:--';
 function calculatePrayerTimes(n) {
   if (typeof adhan === 'undefined') { if ((n || 0) < 8) setTimeout(() => calculatePrayerTimes((n || 0) + 1), 1000); return; }
@@ -1434,6 +1421,7 @@ function togglePrayer(el, prayer) {
   showToast(on ? `تم تفعيل تنبيه ${t(prayer)}` : `تم كتم تنبيه ${t(prayer)}`, on ? 'fas fa-bell' : 'fas fa-bell-slash');
 }
 
+// ==================== NAVIGATION ====================
 function switchScreen(screen, navItem) {
   const target = document.getElementById(`screen-${screen}`);
   if (!target) return;
@@ -1454,6 +1442,7 @@ function scrollToTasbih() {
   mc.scrollTo({ top: el.offsetTop - 10, behavior: 'smooth' });
 }
 
+// ==================== QIBLA / CALIBRATION ====================
 const dirNames = ['شمال', 'شمال شرق', 'شرق', 'جنوب شرق', 'جنوب', 'جنوب غرب', 'غرب', 'شمال غرب'];
 const dirName = d => dirNames[Math.round(((d % 360) + 360) % 360 / 45) % 8];
 function initTicks() {
@@ -1546,6 +1535,7 @@ function handleOrientation(e) {
   if (off > 8) handleOrientation._buzz = false;
 }
 
+// ==================== TASBIH ====================
 const presets = ['سبحان الله', 'الحمد لله', 'الله أكبر', 'لا إله إلا الله', 'أستغفر الله', 'لا حول ولا قوة إلا بالله', 'اللهم صل على محمد'];
 const PROFANITY_AR = /(كلب|حمار|خنزير|حقير|وسخ|قذر|منيوك|منيك|نيك|ني[كچ]|زب|زبي|طيز|شرموط|شرموطة|عاهر|عاهرة|قحب|قحبة|كس|كسم|لعن|ملعون|يلعن|خرا|خرى|تفو|زامل|زاملة|حيوان|غبي|تبا|سافل|منحط|ديوث|لوطي)/;
 const PROFANITY_LAT = /\b(f+u+c+k+\w*|sh+i+t+\w*|bitch\w*|bastard|asshole|dick\w*|pussy|whore|slut|cunt|damn|nigg\w*|fag\w*|merde|putain|connard|salope|puta\w*|mierda|cabr[oó]n|pendejo)\b/i;
@@ -1724,6 +1714,7 @@ function updateTarget() {
   document.getElementById('tasbihProgress').style.width = Math.min(state.tasbihCount / val * 100, 100) + '%';
 }
 
+// ==================== QURAN ====================
 function renderReciters() {
   state.reciter = store.get('reciter', 'yassine');
   if (!reciters[state.reciter]) state.reciter = 'yassine';
@@ -2310,16 +2301,21 @@ if (NATIVE) {
 }
 const MUSHAF_START = [1, 2, 50, 77, 106, 128, 151, 177, 187, 208, 221, 235, 249, 255, 262, 267, 282, 293, 305, 312, 322, 332, 342, 350, 359, 367, 377, 385, 396, 404, 411, 415, 418, 428, 434, 440, 446, 453, 458, 467, 477, 483, 489, 496, 499, 502, 507, 511, 515, 518, 520, 523, 526, 528, 531, 534, 537, 542, 545, 549, 551, 553, 554, 556, 558, 560, 562, 564, 566, 568, 570, 572, 574, 575, 577, 578, 580, 582, 583, 585, 586, 587, 587, 589, 590, 591, 591, 592, 593, 594, 595, 595, 596, 596, 597, 597, 598, 598, 599, 599, 600, 600, 601, 601, 602, 602, 602, 603, 603, 603, 604, 604, 604, 604];
 const JUZ_START = [1, 22, 42, 62, 82, 102, 121, 142, 162, 182, 201, 222, 242, 262, 282, 302, 322, 342, 362, 382, 402, 422, 442, 462, 482, 502, 522, 542, 562, 582];
-let mvPage = 1, mvZ = { s: 1, x: 0, y: 0 };
+let mvPage = 1, mvZ = { x: 0 };
 const pgFile = p => 'mushaf/p' + String(p).padStart(3, '0') + '.webp';
 
 function mvApply(animate) {
     const img = document.getElementById('mvImg');
     const next = document.getElementById('mvImgNext');
-    img.style.transition = animate ? 'transform 0.3s ease' : 'none';
-    next.style.transition = animate ? 'transform 0.3s ease' : 'none';
-    img.style.transform = `translateX(${mvZ.x}px) scale(${mvZ.s})`;
-    next.style.transform = `translateX(${mvZ.x + (mvZ.x > 0 ? -window.innerWidth : window.innerWidth)}px) scale(${mvZ.s})`;
+    img.style.transition = animate ? 'transform 0.3s cubic-bezier(0.25, 1, 0.5, 1)' : 'none';
+    next.style.transition = animate ? 'transform 0.3s cubic-bezier(0.25, 1, 0.5, 1)' : 'none';
+    
+    img.style.transform = `translate3d(${mvZ.x}px, 0, 0)`;
+    // RTL Logic: 
+    // Swipe Left (mvZ.x < 0) => Next page comes from right (+window.innerWidth)
+    // Swipe Right (mvZ.x > 0) => Prev page comes from left (-window.innerWidth)
+    const offset = mvZ.x < 0 ? window.innerWidth : -window.innerWidth;
+    next.style.transform = `translate3d(${mvZ.x + offset}px, 0, 0)`;
 }
 
 function surahOfPage(p) {
@@ -2340,7 +2336,7 @@ function mvAnnounce(p) {
   } else { const j = JUZ_START.indexOf(p); if (j > 0) mvMsg(`أكملت الجزء ${j} • بدأ الجزء ${j + 1}`); }
 }
 function mvGo(p, silent) {
-  p = Math.max(1, Math.min(604, Math.round(p))); mvPage = p; store.set('mushafPage', p); mvZ = { s: 1, x: 0, y: 0 }; mvApply(false);
+  p = Math.max(1, Math.min(604, Math.round(p))); mvPage = p; store.set('mushafPage', p); mvZ = { x: 0 }; mvApply(false);
   document.getElementById('mvImg').src = pgFile(p); document.getElementById('mvPageNo').textContent = p; document.getElementById('mvRange').value = p;
   document.getElementById('mvSurah').textContent = 'سورة ' + surahOfPage(p).map(i => surahs[i].name).join(' • ');
   document.getElementById('mvJuz').textContent = juzOfPage(p);
@@ -2392,11 +2388,12 @@ function mvNavToggle(force) {
           
           if (mvZ.s === 1) {
               if (Math.abs(dx) > 70 && Math.abs(dx) > Math.abs(dy) * 1.3) {
-                  const nextPage = mvPage + (dx > 0 ? -1 : 1); // RTL logic: swipe right -> previous page, swipe left -> next page
+                  // RTL logic: Swipe Left (dx < 0) -> Next Page, Swipe Right (dx > 0) -> Prev Page
+                  const nextPage = mvPage + (dx < 0 ? 1 : -1); 
                   const nextImg = document.getElementById('mvImgNext');
                   nextImg.src = pgFile(nextPage);
                   
-                  const dir = dx > 0 ? 1 : -1;
+                  const dir = dx < 0 ? -1 : 1;
                   mvZ.x = dir * window.innerWidth;
                   mvApply(true);
                   
@@ -2432,6 +2429,17 @@ function openCalendar() { calAnchor = new Date(); renderCalendar(); document.get
 function closeCalendar() { document.getElementById('calOverlay').classList.remove('on'); }
 function calToday() { calAnchor = new Date(); renderCalendar(); }
 function calNav(dir) { calAnchor = dir > 0 ? new Date(calFirst.getTime() + calLen * 86400000) : new Date(calFirst.getTime() - 86400000); renderCalendar(); }
+
+function initCalendarSwipe() {
+  let startX = 0;
+  const card = document.getElementById('calCard');
+  card.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, {passive: true});
+  card.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - startX;
+    if (Math.abs(dx) > 50) calNav(dx > 0 ? 1 : -1);
+  });
+}
+
 function renderCalendar() {
   const a = new Date(calAnchor.getFullYear(), calAnchor.getMonth(), calAnchor.getDate(), 12), h = hijriParts(a);
   calFirst = new Date(a.getTime() - (h.day - 1) * 86400000); calLen = 0;
