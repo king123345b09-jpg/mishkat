@@ -2126,8 +2126,9 @@ async function delBg(id) {
 }
 function toggleCheckbox(item) { const c = item.querySelector('.custom-checkbox'); c.classList.toggle('checked'); showToast(c.classList.contains('checked') ? 'تمت الموافقة على الشروط' : 'تم إلغاء الموافقة', 'fas fa-file-contract'); }
 function shareApp() {
-  const data = { title: 'مشكاة الأنوار', text: 'تطبيق مشكاة الأنوار - مواقيت الصلاة والقبلة والأذكار والقرآن', url: location.href };
-  if (navigator.share) navigator.share(data).catch(() => {}); else { try { navigator.clipboard.writeText(location.href); showToast('تم نسخ رابط المشاركة', 'fas fa-share-alt'); } catch (e) { showToast(location.href, 'fas fa-share-alt'); } }
+  const url = 'https://gofile.io/d/o98w9Qei';
+  const data = { title: 'مشكاة الأنوار', text: 'تطبيق مشكاة الأنوار - مواقيت الصلاة والقبلة والأذكار والقرآن\nتحميل التطبيق:', url: url };
+  if (navigator.share) navigator.share(data).catch(() => {}); else { try { navigator.clipboard.writeText(url); showToast('تم نسخ رابط التحميل: https://gofile.io/d/o98w9Qei', 'fas fa-share-alt'); } catch (e) { showToast(url, 'fas fa-share-alt'); } }
 }
 function showCreator(e) {
   if (e) e.stopPropagation();
