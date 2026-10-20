@@ -61,7 +61,7 @@ public class PrayerNotifPlugin extends Plugin {
   public void startAdhan(PluginCall call) {
     Float v = call.getFloat("vol");
     AdhanService.start(getContext(), call.getString("prayer"), call.getString("name"), call.getString("file"), v == null ? 1f : v, call.getString("mode", "notif"));
-    call.resolve(res(true));
+    call.resolve();
   }
 
   @PluginMethod

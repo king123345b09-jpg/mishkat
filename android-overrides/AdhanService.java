@@ -10,8 +10,6 @@ import android.content.res.AssetFileDescriptor;
 import android.content.pm.ServiceInfo;
 import android.media.AudioAttributes;
 import android.media.MediaPlayer;
-import android.media.RingtoneManager;
-import android.net.Uri;
 import android.os.Build;
 import android.os.IBinder;
 import androidx.core.app.NotificationCompat;
@@ -49,7 +47,6 @@ public class AdhanService extends Service {
     String file = i.getStringExtra("file");
     String mode = i.getStringExtra("mode");
     float vol = i.getFloatExtra("vol", 1f);
-    
     NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
     if (Build.VERSION.SDK_INT >= 26 && nm.getNotificationChannel(CH) == null) {
       NotificationChannel ch = new NotificationChannel(CH, "Adhan", NotificationManager.IMPORTANCE_HIGH);
@@ -57,29 +54,39 @@ public class AdhanService extends Service {
       ch.enableVibration(false);
       nm.createNotificationChannel(ch);
     }
-    
     Intent open = getPackageManager().getLaunchIntentForPackage(getPackageName());
     if (open != null) open.putExtra("adhan_prayer", prayer);
     PendingIntent pOpen = open == null ? null : PendingIntent.getActivity(this, 7, open, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
     PendingIntent pStop = PendingIntent.getService(this, 8, new Intent(this, AdhanService.class).setAction("STOP"), PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
-    
     int icon = getResources().getIdentifier("ic_stat_mosque", "drawable", getPackageName());
-    NotificationCompat.Builder b = new NotificationCompat.Builder(this, CH)
-      .setSmallIcon(icon)
-      .setContentTitle("حان الآن موعد صلاة " + name)
-      .setContentText("حيّ على الصلاة")
+    int layoutId = getResources().getIdentifier("notif_adhan", "layout", getPackageName());
+
+    NotificationCompat.Builder b = new NotificationCompat.Builder(this, CH);
+
+    if (layoutId != 0) {
+      android.widget.RemoteViews rv = new android.widget.RemoteViews(getPackageName(), layoutId);
+      rv.setTextViewText(getResources().getIdentifier("n_prayer_name", "id", getPackageName()), name);
+      rv.setOnClickPendingIntent(getResources().getIdentifier("n_stop_btn", "id", getPackageName()), pStop);
+
+      b.setCustomContentView(rv)
+       .setCustomBigContentView(rv)
+       .setStyle(new NotificationCompat.DecoratedCustomViewStyle());
+    } else {
+      b.setContentTitle("حان الآن موعد صلاة " + name)
+       .setContentText("حيّ على الصلاة")
+       .addAction(0, "إيقاف الأذان", pStop);
+    }
+
+    b.setSmallIcon(icon)
       .setPriority(NotificationCompat.PRIORITY_MAX)
       .setCategory(NotificationCompat.CATEGORY_ALARM)
       .setOngoing(true)
       .setColor(0xFFD4AF37)
-      .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-      .addAction(0, "إيقاف الأذان", pStop);
-      
+      .setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
     if (pOpen != null) {
       b.setContentIntent(pOpen);
       if ("full".equals(mode)) b.setFullScreenIntent(pOpen, true);
     }
-    
     Notification n = b.build();
     try {
       if (Build.VERSION.SDK_INT >= 29) startForeground(2000, n, ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK);
@@ -87,11 +94,8 @@ public class AdhanService extends Service {
     } catch (Exception e) {
       nm.notify(2000, n);
     }
-    
     PrayerNotifPlugin.emit("adhanStarted", prayer);
     releasePlayer();
-    
-    // 1. محاولة تشغيل الملف من res/raw
     try {
       int rid = file == null ? 0 : getResources().getIdentifier(file, "raw", getPackageName());
       if (rid != 0) {
@@ -107,23 +111,8 @@ public class AdhanService extends Service {
         return START_NOT_STICKY;
       }
     } catch (Exception e) {}
-    
-    // 2. إذا لم يجد الملف (أو حدث خطأ)، تشغيل نغمة المنبه الافتراضية فوراً
-    try {
-      Uri alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
-      if (alert == null) alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-      mp = new MediaPlayer();
-      mp.setDataSource(this, alert);
-      mp.setAudioAttributes(new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_ALARM).setContentType(AudioAttributes.CONTENT_TYPE_MUSIC).build());
-      mp.prepare();
-      mp.setVolume(vol, vol);
-      mp.setOnCompletionListener(m -> stopAll());
-      mp.start();
-    } catch (Exception e) {
-      PrayerReceiver.plainNotify(this, name, prayer, mode);
-      stopAll();
-    }
-    
+    PrayerReceiver.plainNotify(this, name, prayer, mode);
+    stopAll();
     return START_NOT_STICKY;
   }
 
