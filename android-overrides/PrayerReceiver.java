@@ -115,8 +115,14 @@ public class PrayerReceiver extends BroadcastReceiver {
       String pkg = c.getPackageName();
       long t = e.getLong("t");
       RemoteViews rv = new RemoteViews(pkg, rid(c, "notif_prayer", "layout"));
+      
+      // عرض اسم الصلاة والوقت
       rv.setTextViewText(rid(c, "n_name", "id"), e.getString("name") + "  " + e.getString("time"));
-      rv.setTextViewText(rid(c, "n_sub", "id"), e.getString("hijri"));
+      
+      // عرض التاريخ الهجري والولاية معاً
+      String hijri = e.optString("hijri", "");
+      String city = e.optString("city", "");
+      rv.setTextViewText(rid(c, "n_sub", "id"), hijri + (city.isEmpty() ? "" : " • " + city));
       
       int cid = rid(c, "n_chrono", "id");
       if (Build.VERSION.SDK_INT >= 24) rv.setChronometerCountDown(cid, true);
@@ -130,7 +136,7 @@ public class PrayerReceiver extends BroadcastReceiver {
       NotificationCompat.Builder b = new NotificationCompat.Builder(c, CH)
         .setSmallIcon(icon)
         .setContentTitle("الصلاة القادمة: " + e.getString("name") + " " + e.getString("time"))
-        .setContentText(e.getString("hijri"))
+        .setContentText(hijri + (city.isEmpty() ? "" : " • " + city))
         .setCustomContentView(rv)
         .setCustomBigContentView(rv)
         .setStyle(new NotificationCompat.DecoratedCustomViewStyle())
