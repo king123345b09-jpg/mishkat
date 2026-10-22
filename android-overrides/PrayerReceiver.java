@@ -8,8 +8,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Build;
+import android.os.PowerManager;
 import android.os.SystemClock;
+import android.provider.Settings;
 import android.widget.RemoteViews;
 import androidx.core.app.NotificationCompat;
 import org.json.JSONArray;
@@ -38,10 +41,12 @@ public class PrayerReceiver extends BroadcastReceiver {
         JSONObject o = a.getJSONObject(k);
         long t = o.getLong("t");
         long tp = t - 1800000L;
+        // إشعار التنبيه المسبق (30 دقيقة)
         if (o.optBoolean("pre", false) && tp > lastPre && tp <= now + 3000 && now - tp < 300000) {
           if (tp > maxP) maxP = tp;
           preNotify(c, o.optString("preBody"));
         }
+        // إشعار الأذان
         if (t > last && t <= now + 3000 && now - t < 300000) {
           if (t > maxT) maxT = t;
           if (o.optBoolean("adhan", false)) {
@@ -56,6 +61,7 @@ public class PrayerReceiver extends BroadcastReceiver {
     } catch (Exception e) {}
   }
 
+  // إشعار التنبيه المسبق (يظهر كإشعار عادي)
   static void preNotify(Context c, String body) {
     try {
       NotificationManager nm = (NotificationManager) c.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -67,7 +73,7 @@ public class PrayerReceiver extends BroadcastReceiver {
       NotificationCompat.Builder b = new NotificationCompat.Builder(c, "prealert_v1")
         .setSmallIcon(rid(c, "ic_stat_mosque", "drawable"))
         .setContentTitle("مشكاة الأنوار")
-        .setContentText(body)
+        .setContentText(body) // النص: متبقي 30 دقيقة على صلاة...
         .setPriority(NotificationCompat.PRIORITY_HIGH)
         .setAutoCancel(true)
         .setDefaults(NotificationCompat.DEFAULT_ALL)
@@ -93,27 +99,33 @@ public class PrayerReceiver extends BroadcastReceiver {
     return c.getResources().getIdentifier(name, type, c.getPackageName());
   }
 
+  // الإشعار الدائم (الذي يظهر فيه العد التنازلي)
   static void show(Context c) {
     NotificationManager nm = (NotificationManager) c.getSystemService(Context.NOTIFICATION_SERVICE);
     JSONObject e = nextEvent(c);
     if (e == null) { nm.cancel(1000); return; }
+    
     if (Build.VERSION.SDK_INT >= 26 && nm.getNotificationChannel(CH) == null) {
       NotificationChannel ch = new NotificationChannel(CH, "Next prayer", NotificationManager.IMPORTANCE_LOW);
       ch.setShowBadge(false);
       nm.createNotificationChannel(ch);
     }
+    
     try {
       String pkg = c.getPackageName();
       long t = e.getLong("t");
       RemoteViews rv = new RemoteViews(pkg, rid(c, "notif_prayer", "layout"));
       rv.setTextViewText(rid(c, "n_name", "id"), e.getString("name") + "  " + e.getString("time"));
       rv.setTextViewText(rid(c, "n_sub", "id"), e.getString("hijri"));
+      
       int cid = rid(c, "n_chrono", "id");
       if (Build.VERSION.SDK_INT >= 24) rv.setChronometerCountDown(cid, true);
       rv.setChronometer(cid, SystemClock.elapsedRealtime() + (t - System.currentTimeMillis()), null, true);
+      
       Intent li = c.getPackageManager().getLaunchIntentForPackage(c.getPackageName());
       PendingIntent pi = li == null ? null : PendingIntent.getActivity(c, 0, li, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
       PendingIntent pDel = PendingIntent.getBroadcast(c, 3, new Intent(c, PrayerReceiver.class).setAction("REPOST"), PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+      
       int icon = rid(c, "ic_stat_mosque", "drawable");
       NotificationCompat.Builder b = new NotificationCompat.Builder(c, CH)
         .setSmallIcon(icon)
@@ -139,6 +151,7 @@ public class PrayerReceiver extends BroadcastReceiver {
     PendingIntent pi = PendingIntent.getBroadcast(c, 1, new Intent(c, PrayerReceiver.class), PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
     long best = Long.MAX_VALUE;
     long now = System.currentTimeMillis();
+    
     try {
       JSONArray a = new JSONArray(c.getSharedPreferences("mishkat", 0).getString("events", "[]"));
       for (int k = 0; k < a.length(); k++) {
@@ -151,7 +164,9 @@ public class PrayerReceiver extends BroadcastReceiver {
         }
       }
     } catch (Exception e) {}
+    
     if (best == Long.MAX_VALUE) { am.cancel(pi); return; }
+    
     try {
       if (Build.VERSION.SDK_INT >= 31 && !am.canScheduleExactAlarms()) am.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, best, pi);
       else am.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, best, pi);
@@ -167,6 +182,7 @@ public class PrayerReceiver extends BroadcastReceiver {
       Intent li = c.getPackageManager().getLaunchIntentForPackage(c.getPackageName());
       if (li != null) li.putExtra("adhan_prayer", prayer);
       PendingIntent pi = li == null ? null : PendingIntent.getActivity(c, 9, li, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+      
       NotificationCompat.Builder b = new NotificationCompat.Builder(c, "adhan_plain")
         .setSmallIcon(rid(c, "ic_stat_mosque", "drawable"))
         .setContentTitle("حان الآن موعد صلاة " + name)
@@ -182,5 +198,19 @@ public class PrayerReceiver extends BroadcastReceiver {
       }
       nm.notify(2001, b.build());
     } catch (Exception e) {}
+  }
+
+  public static void requestIgnoreBatteryOptimizations(Context c) {
+    if (Build.VERSION.SDK_INT >= 23) {
+      PowerManager pm = (PowerManager) c.getSystemService(Context.POWER_SERVICE);
+      if (!pm.isIgnoringBatteryOptimizations(c.getPackageName())) {
+        try {
+          Intent intent = new Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+          intent.setData(Uri.parse("package:" + c.getPackageName()));
+          intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+          c.startActivity(intent);
+        } catch (Exception e) {}
+      }
+    }
   }
 }
