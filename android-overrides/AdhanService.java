@@ -14,6 +14,7 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.IBinder;
+import android.util.Log;
 import androidx.core.app.NotificationCompat;
 import android.content.Context;
 
@@ -31,6 +32,7 @@ public class AdhanService extends Service {
     try {
       if (Build.VERSION.SDK_INT >= 26) c.startForegroundService(i); else c.startService(i);
     } catch (Exception e) {
+      Log.e("AdhanService", "Failed to start service", e);
       PrayerReceiver.plainNotify(c, name, prayer, mode);
     }
   }
@@ -65,7 +67,6 @@ public class AdhanService extends Service {
     
     int icon = getResources().getIdentifier("ic_stat_mosque", "drawable", getPackageName());
     
-    // بناء إشعار يشبه إشعارات التطبيقات العادية (مع زر إغلاق)
     NotificationCompat.Builder b = new NotificationCompat.Builder(this, CH)
       .setSmallIcon(icon)
       .setContentTitle("حان الآن موعد صلاة " + name)
@@ -75,7 +76,7 @@ public class AdhanService extends Service {
       .setOngoing(true)
       .setColor(0xFFD4AF37)
       .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-      .addAction(0, "إغلاق", pStop); // زر الإغلاق المأطر
+      .addAction(0, "إغلاق", pStop);
       
     if (pOpen != null) {
       b.setContentIntent(pOpen);
@@ -87,13 +88,14 @@ public class AdhanService extends Service {
       if (Build.VERSION.SDK_INT >= 29) startForeground(2000, n, ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK);
       else startForeground(2000, n);
     } catch (Exception e) {
+      Log.e("AdhanService", "startForeground failed", e);
       nm.notify(2000, n);
     }
     
     PrayerNotifPlugin.emit("adhanStarted", prayer);
     releasePlayer();
     
-    // 1. تشغيل الملف من res/raw
+    // محاولة تشغيل الصوت من res/raw
     try {
       int rid = file == null ? 0 : getResources().getIdentifier(file, "raw", getPackageName());
       if (rid != 0) {
@@ -107,10 +109,14 @@ public class AdhanService extends Service {
         mp.setOnCompletionListener(m -> stopAll());
         mp.start();
         return START_NOT_STICKY;
+      } else {
+        Log.w("AdhanService", "Raw file not found: " + file);
       }
-    } catch (Exception e) {}
+    } catch (Exception e) {
+      Log.e("AdhanService", "Error playing raw file", e);
+    }
     
-    // 2. الاحتياطي: نغمة المنبه الافتراضية
+    // الاحتياطي: نغمة المنبه الافتراضية
     try {
       Uri alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
       if (alert == null) alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
@@ -121,11 +127,14 @@ public class AdhanService extends Service {
       mp.setVolume(vol, vol);
       mp.setOnCompletionListener(m -> stopAll());
       mp.start();
+      return START_NOT_STICKY;
     } catch (Exception e) {
-      PrayerReceiver.plainNotify(this, name, prayer, mode);
-      stopAll();
+      Log.e("AdhanService", "Fallback ringtone failed", e);
     }
     
+    // إذا فشل كل شيء، أظهر إشعاراً عادياً
+    PrayerReceiver.plainNotify(this, name, prayer, mode);
+    stopAll();
     return START_NOT_STICKY;
   }
 
