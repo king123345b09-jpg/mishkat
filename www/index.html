@@ -284,23 +284,30 @@ html,body{font-family:'Cairo','Inter',sans-serif;background:var(--royal-green-de
 #tasbihCanvas{width:100%;height:120px;display:block;cursor:grab}
 #tasbihCanvas:active{cursor:grabbing}
 .string-hint{text-align:center;font-size:11px;color:var(--cream);opacity:.7;margin-top:6px}
-.tasbih-button{width:130px;height:130px;border-radius:50%;background:var(--gradient-gold);border:4px solid var(--royal-gold-light);margin:20px auto 10px;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 10px 40px rgba(244,196,48,.5),inset 0 -5px 15px rgba(0,0,0,.2);transition:all .15s;position:relative;overflow:hidden}
-.tasbih-button:active{transform:scale(.94);box-shadow:0 5px 20px rgba(244,196,48,.5),inset 0 -2px 10px rgba(0,0,0,.3)}
-.tasbih-button i{font-size:46px;color:var(--royal-green-deep);position:relative;z-index:1}
 .tasbih-controls{display:flex;gap:10px;justify-content:center;margin-top:10px;flex-wrap:wrap}
 .tasbih-ctrl-btn{padding:10px 18px;background:rgba(244,196,48,.15);border:1px solid var(--royal-gold);border-radius:12px;color:var(--royal-gold-light);font-family:'Cairo',sans-serif;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px}
 .target-input{width:80px;padding:10px;background:rgba(5,46,26,.6);border:1px solid rgba(212,175,55,.4);border-radius:10px;color:var(--royal-gold-light);text-align:center;font-family:'Inter',sans-serif;font-size:14px;font-weight:700;outline:none}
+.tasbih-button{width:130px;height:130px;border-radius:50%;background:var(--gradient-gold);border:4px solid var(--royal-gold-light);margin:20px auto 10px;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 10px 40px rgba(244,196,48,.5),inset 0 -5px 15px rgba(0,0,0,.2);transition:all .15s;position:relative;overflow:hidden}
+.tasbih-button:active{transform:scale(.94);box-shadow:0 5px 20px rgba(244,196,48,.5),inset 0 -2px 10px rgba(0,0,0,.3)}
+.tasbih-button i{font-size:46px;color:var(--royal-green-deep);position:relative;z-index:1}
+/* ألوان السبحة */
+.tasbih-color-picker {
+    display: flex; gap: 10px; justify-content: center; margin-top: 15px;
+}
+.color-circle {
+    width: 30px; height: 30px; border-radius: 50%; cursor: pointer; border: 2px solid transparent;
+}
+.color-circle.active { border-color: #fff; }
 
 /* Quran */
 .quran-header{padding:20px 16px;text-align:center;background:var(--gradient-primary);border-bottom:1px solid rgba(212,175,55,.3)}
 .quran-title{font-family:'Amiri',serif;font-size:28px;color:var(--royal-gold-light);font-weight:700;margin-bottom:5px}
 .quran-subtitle{font-size:13px;color:var(--cream);opacity:.8}
-.reciter-row{display:flex;gap:8px;padding:14px 16px 0;overflow-x:auto;scrollbar-width:none}
+.reciter-row{display:flex;gap:8px;padding:14px 16px 0;overflow-x:auto;scrollbar-width:none;flex-wrap:wrap;justify-content:center}
 .reciter-row::-webkit-scrollbar{display:none}
-.reciter-chip{flex-shrink:0;display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:14px;border:1px solid rgba(212,175,55,.35);background:rgba(244,196,48,.07);cursor:pointer;color:var(--cream);font-size:12px;font-weight:600}
-.reciter-chip .rank{width:20px;height:20px;border-radius:50%;background:rgba(244,196,48,.25);display:flex;align-items:center;justify-content:center;font-family:'Inter';font-size:10px;color:var(--royal-gold-light)}
+.reciter-chip{flex:1 1 calc(33% - 8px);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px 4px;border-radius:14px;border:1px solid rgba(212,175,55,.35);background:rgba(244,196,48,.07);cursor:pointer;color:var(--cream);font-size:11px;font-weight:600;text-align:center}
+.reciter-chip .rank{display:none} /* إخفاء الرقم لجمالية أكثر */
 .reciter-chip.active{background:var(--gradient-gold);color:var(--royal-green-deep)}
-.reciter-chip.active .rank{background:var(--royal-green-deep)}
 .wird-card{margin:16px;background:var(--gradient-primary);border:1px solid var(--royal-gold);border-radius:20px;padding:18px;box-shadow:var(--shadow-green);position:relative;overflow:hidden}
 .wird-head{display:flex;align-items:center;gap:10px;margin-bottom:12px}
 .wird-head .adhan-icon{width:40px;height:40px}
@@ -523,6 +530,8 @@ html,body{overscroll-behavior:none}
 .mv-img {position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain; background:#fff; will-change: transform;}
 .mv-bar{display:flex;align-items:center;gap:10px;padding:10px 12px calc(10px + env(safe-area-inset-bottom));background:#052e1a;border-top:1px solid rgba(212,175,55,.4)}
 .mv-bar input{flex:1;accent-color:#f4c430}
+/* إزالة الشريط السفلي للمصحف كما طلبت */
+.mv-bar { display: none !important; }
 #mvNav{position:absolute;inset:0;background:rgba(3,22,13,.97);overflow-y:auto;padding:calc(70px + env(safe-area-inset-top)) 14px 20px;display:none;z-index:2}
 #mvNav.on{display:block}
 .mv-sec{color:#f4c430;font-weight:700;margin:14px 0 8px}
@@ -679,7 +688,19 @@ html,body{overscroll-behavior:none}
           <canvas id="tasbihCanvas"></canvas>
         </div>
         <div class="string-hint"><i class="fas fa-hand-pointer"></i> اسحب الحبة التالية إلى اليسار أو انقر على الخيط للتسبيح</div>
-        <div class="tasbih-button" id="tasbihBtn"><i class="fas fa-hand-pointer"></i></div>
+        <div style="display:flex;align-items:center;justify-content:center;gap:20px;margin-top:20px">
+          <div class="tasbih-button" id="tasbihBtn" style="margin:0"><i class="fas fa-hand-pointer"></i></div>
+          <button class="tasbih-ctrl-btn" onclick="openTasbihColorPicker()" style="height:50px;width:50px;border-radius:50%;justify-content:center;padding:0"><i class="fas fa-palette" style="font-size:20px"></i></button>
+        </div>
+        
+        <!-- ألوان السبحة -->
+        <div id="tasbihColorPicker" style="display:none;justify-content:center;gap:15px;margin-top:15px">
+            <div class="color-circle" style="background:#f4c430" onclick="setTasbihColor('#f4c430','#ffe066')"></div>
+            <div class="color-circle" style="background:#333" onclick="setTasbihColor('#333','#666')"></div>
+            <div class="color-circle" style="background:#dc2626" onclick="setTasbihColor('#dc2626','#ef4444')"></div>
+            <div class="color-circle" style="background:#0a5c36" onclick="setTasbihColor('#0a5c36','#1a9a5e')"></div>
+        </div>
+
         <div class="tasbih-controls">
           <button class="tasbih-ctrl-btn" onclick="resetTasbih()"><i class="fas fa-redo"></i> إعادة</button>
           <div style="display:flex;align-items:center;gap:8px">
@@ -898,7 +919,7 @@ html,body{overscroll-behavior:none}
     <img id="mvImgNext" class="mv-img" alt="" style="z-index: 1;">
     <img id="mvImg" class="mv-img" alt="" style="z-index: 2;">
 </div>
-<div class="mv-bar"><button onclick="mvGo(mvPage-1)"><i class="fas fa-chevron-right"></i></button><input type="range" id="mvRange" min="1" max="604" value="1" oninput="mvGo(+this.value)"><button onclick="mvGo(mvPage+1)"><i class="fas fa-chevron-left"></i></button></div>
+<!-- إزالة الشريط السفلي بناء على طلبك -->
 <div id="mvNav"></div></div>
 <div id="adhanOverlay"><div class="ao-in"><div class="ao-sub">حان الآن موعد صلاة</div><div class="ao-name" id="aoName"></div><div class="ao-time" id="aoTime"></div><div class="ao-date" id="aoDate"></div><input type="range" id="aoVol" min="0" max="100" oninput="setAdhanVol(this.value/100)"><button class="ao-stop" onclick="userStopAdhan()"><i class="fas fa-stop"></i> إيقاف الأذان</button></div></div>
 <button id="adhanStop" onclick="userStopAdhan()"><i class="fas fa-stop"></i> إيقاف الأذان</button>
@@ -1041,7 +1062,7 @@ const duaaCats = [
   { key: 'travel', title: 'دعاء السفر', icon: 'fa-plane-departure', c1: '#ffe066', c2: '#c9a227' },
   { key: 'sleep', title: 'أذكار النوم', icon: 'fa-star-and-crescent', c1: '#f4c430', c2: '#8a6d12' },
   { key: 'food', title: 'أدعية الطعام', icon: 'fa-bowl-food', c1: '#ffe066', c2: '#d4af37' },
-  { key: 'tasbih', title: 'السبحة الذكية', icon: 'fa-circle-nodes', c1: '#f4c430', c2: '#b8941f' }
+  { key: 'tasbih', title: 'السبحة الذكية', icon: 'fa-ring', c1: '#f4c430', c2: '#b8941f' } // تم تغيير الأيقونة إلى خاتم/سبحة
 ];
 Object.assign(duaaData, {
   'after-prayer': [
@@ -1627,8 +1648,23 @@ function initTasbih() {
   requestAnimationFrame(tasbihLoop);
 }
 function refreshTasbihColors() {
-  const cs = getComputedStyle(document.documentElement);
-  TS.colors = { gold: cs.getPropertyValue('--royal-gold').trim() || '#d4af37', light: cs.getPropertyValue('--royal-gold-soft').trim() || '#ffe066', deep: cs.getPropertyValue('--royal-green-deep').trim() || '#052e1a' };
+  const savedColor = store.get('tasbihColor', null);
+  if (savedColor) {
+    TS.colors = savedColor;
+  } else {
+    const cs = getComputedStyle(document.documentElement);
+    TS.colors = { gold: cs.getPropertyValue('--royal-gold').trim() || '#d4af37', light: cs.getPropertyValue('--royal-gold-soft').trim() || '#ffe066', deep: cs.getPropertyValue('--royal-green-deep').trim() || '#052e1a' };
+  }
+}
+function openTasbihColorPicker() {
+  const picker = document.getElementById('tasbihColorPicker');
+  picker.style.display = picker.style.display === 'none' ? 'flex' : 'none';
+}
+function setTasbihColor(gold, light) {
+  TS.colors = { gold: gold, light: light, deep: '#052e1a' };
+  store.set('tasbihColor', TS.colors);
+  document.getElementById('tasbihColorPicker').style.display = 'none';
+  showToast('تم تغيير لون السبحة', 'fas fa-palette');
 }
 function resizeTasbih(init) {
   const c = TS.canvas; if (!c) return;
@@ -1740,7 +1776,7 @@ function renderReciters() {
   if (!reciters[state.reciter]) state.reciter = 'yassine';
   document.getElementById('reciterRow').innerHTML = reciterPriority.map((k, i) => `
     <div class="reciter-chip ${k === state.reciter ? 'active' : ''}" onclick="setReciter('${k}')">
-      <span class="rank">${i + 1}</span><span>${reciters[k].name}<br><small style="opacity:.75;font-weight:400">${reciters[k].sub}</small></span>
+      <span>${reciters[k].name}</span>
     </div>`).join('');
   document.getElementById('settingsReciter').textContent = reciters[state.reciter].name;
   document.getElementById('audioReciter').textContent = `${reciters[state.reciter].name} - ${reciters[state.reciter].sub}`;
@@ -2134,11 +2170,7 @@ async function delBg(id) {
 function toggleCheckbox(item) { const c = item.querySelector('.custom-checkbox'); c.classList.toggle('checked'); showToast(c.classList.contains('checked') ? 'تمت الموافقة على الشروط' : 'تم إلغاء الموافقة', 'fas fa-file-contract'); }
 function shareApp() {
   const data = { title: 'مشكاة الأنوار', text: 'تطبيق مشكاة الأنوار - مواقيت الصلاة والقبلة والأذكار والقرآن', url: 'https://gofile.io/d/o98w9Qei' };
-  if (navigator.share) navigator.share(data).catch(() => {}); 
-  else { 
-    try { navigator.clipboard.writeText(data.url); showToast('تم نسخ رابط تحميل التطبيق', 'fas fa-share-alt'); } 
-    catch (e) { showToast(data.url, 'fas fa-share-alt'); } 
-  }
+  if (navigator.share) navigator.share(data).catch(() => {}); else { try { navigator.clipboard.writeText(data.url); showToast('تم نسخ رابط تحميل التطبيق', 'fas fa-share-alt'); } catch (e) { showToast(data.url, 'fas fa-share-alt'); } }
 }
 function showCreator(e) {
   if (e) e.stopPropagation();
@@ -2298,7 +2330,7 @@ async function postOngoing() {
     const ev = computeEvents(7), now = Date.now(), out = []; let prev = now;
     ev.forEach(e => {
       const tm = e.t.getTime(); if (tm <= now) return;
-      out.push({ t: tm, p: e.p, name: t(e.p), time: hhmm(e.t), hijri: hijriStr(new Date(prev)), adhan: e.p !== 'dhuha' && !!state.prayerToggles[e.p], mode: adhanModeOf(e.p), file: adhanFile(e.p), vol: store.get('adhanVol', 1), pre: e.p !== 'dhuha' && !!state.preAlerts && !!state.prayerToggles[e.p], preBody: PRE_ALERT_TEXT + ' • ' + t(e.p) });
+      out.push({ t: tm, p: e.p, name: t(e.p), time: hhmm(e.t), hijri: hijriStr(new Date(prev)), city: document.getElementById('locationLabel').textContent || 'موقعك', adhan: e.p !== 'dhuha' && !!state.prayerToggles[e.p], mode: adhanModeOf(e.p), file: adhanFile(e.p), vol: store.get('adhanVol', 1), pre: e.p !== 'dhuha' && !!state.preAlerts && !!state.prayerToggles[e.p], preBody: PRE_ALERT_TEXT + ' • ' + t(e.p) });
       prev = tm;
     });
     const r = await PN().setEvents({ events: out });
@@ -2365,6 +2397,8 @@ function mvGo(p, silent) {
   document.getElementById('mvSurah').textContent = 'سورة ' + surahOfPage(p).map(i => surahs[i].name).join(' • ');
   document.getElementById('mvJuz').textContent = juzOfPage(p);
   if (!silent) mvAnnounce(p);
+  
+  // تحميل الصفحة التالية والسابقة مسبقاً لضمان سلاسة السحب
   [p + 1, p - 1].forEach(n => { if (n >= 1 && n <= 604) { const i = new Image(); i.src = pgFile(n); } });
 }
 function openMushaf() { document.getElementById('mushafViewer').classList.add('on'); mvGo(store.get('mushafPage', 1), true); }
