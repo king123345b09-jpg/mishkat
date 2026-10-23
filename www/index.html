@@ -290,14 +290,11 @@ html,body{font-family:'Cairo','Inter',sans-serif;background:var(--royal-green-de
 .tasbih-button{width:130px;height:130px;border-radius:50%;background:var(--gradient-gold);border:4px solid var(--royal-gold-light);margin:20px auto 10px;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 10px 40px rgba(244,196,48,.5),inset 0 -5px 15px rgba(0,0,0,.2);transition:all .15s;position:relative;overflow:hidden}
 .tasbih-button:active{transform:scale(.94);box-shadow:0 5px 20px rgba(244,196,48,.5),inset 0 -2px 10px rgba(0,0,0,.3)}
 .tasbih-button i{font-size:46px;color:var(--royal-green-deep);position:relative;z-index:1}
+
 /* ألوان السبحة */
-.tasbih-color-picker {
-    display: flex; gap: 10px; justify-content: center; margin-top: 15px;
-}
-.color-circle {
-    width: 30px; height: 30px; border-radius: 50%; cursor: pointer; border: 2px solid transparent;
-}
-.color-circle.active { border-color: #fff; }
+.tasbih-color-picker { display: flex; gap: 15px; justify-content: center; margin-top: 15px; background: rgba(5,46,26,.8); padding: 10px; border-radius: 15px; border: 1px solid var(--royal-gold); }
+.color-circle { width: 35px; height: 35px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; }
+.color-circle.active { border-color: #fff; box-shadow: 0 0 10px rgba(255,255,255,.5); }
 
 /* Quran */
 .quran-header{padding:20px 16px;text-align:center;background:var(--gradient-primary);border-bottom:1px solid rgba(212,175,55,.3)}
@@ -694,7 +691,7 @@ html,body{overscroll-behavior:none}
         </div>
         
         <!-- ألوان السبحة -->
-        <div id="tasbihColorPicker" style="display:none;justify-content:center;gap:15px;margin-top:15px">
+        <div id="tasbihColorPicker" style="display:none;justify-content:center;gap:15px;margin-top:15px" class="tasbih-color-picker">
             <div class="color-circle" style="background:#f4c430" onclick="setTasbihColor('#f4c430','#ffe066')"></div>
             <div class="color-circle" style="background:#333" onclick="setTasbihColor('#333','#666')"></div>
             <div class="color-circle" style="background:#dc2626" onclick="setTasbihColor('#dc2626','#ef4444')"></div>
@@ -1062,7 +1059,7 @@ const duaaCats = [
   { key: 'travel', title: 'دعاء السفر', icon: 'fa-plane-departure', c1: '#ffe066', c2: '#c9a227' },
   { key: 'sleep', title: 'أذكار النوم', icon: 'fa-star-and-crescent', c1: '#f4c430', c2: '#8a6d12' },
   { key: 'food', title: 'أدعية الطعام', icon: 'fa-bowl-food', c1: '#ffe066', c2: '#d4af37' },
-  { key: 'tasbih', title: 'السبحة الذكية', icon: 'fa-ring', c1: '#f4c430', c2: '#b8941f' } // تم تغيير الأيقونة إلى خاتم/سبحة
+  { key: 'tasbih', title: 'السبحة الذكية', icon: 'fa-ring', c1: '#f4c430', c2: '#b8941f' }
 ];
 Object.assign(duaaData, {
   'after-prayer': [
@@ -2282,8 +2279,18 @@ async function playAdhan(p) {
   
   if (NATIVE) {
     try {
-       PN().startAdhan({ prayer: p, name: t(p), file: adhanFile(p), vol: store.get('adhanVol', 1), mode: adhanModeOf(p) });
+       // تأكد من أن دالة التسجيل متوفرة
+       if (typeof PN().startAdhan !== 'function') {
+           showToast('خطأ في النظام: يرجى إعادة تثبيت التطبيق', 'fas fa-triangle-exclamation');
+           return;
+       }
+       PN().startAdhan({ prayer: p, name: t(p), file: adhanFile(p), vol: store.get('adhanVol', 1), mode: adhanModeOf(p) })
+         .catch(err => {
+             console.error("Adhan Native Error:", err);
+             showToast('تعذر تشغيل الصوت، جرب تغيير الأذان من الإعدادات', 'fas fa-triangle-exclamation');
+         });
     } catch (e) {
+       console.error(e);
        showToast('تعذر تشغيل الأذان في التطبيق', 'fas fa-triangle-exclamation');
     }
     return;
@@ -2432,8 +2439,18 @@ function mvNavToggle(force) {
               mvZ.x = t0.ox + e.touches[0].clientX - t0.x;
               mvZ.y = t0.oy + e.touches[0].clientY - t0.y;
           } else {
-              mvZ.x = (e.touches[0].clientX - t0.x) * 0.8;
+              const dx = e.touches[0].clientX - t0.x;
+              mvZ.x = dx * 0.8;
               mvZ.y = 0;
+              // Load next page dynamically for smooth slide
+              const targetPage = mvPage + (dx < 0 ? 1 : -1);
+              const nextImg = document.getElementById('mvImgNext');
+              if (targetPage >= 1 && targetPage <= 604) {
+                  const targetSrc = pgFile(targetPage);
+                  if (!nextImg.src.endsWith(targetSrc)) {
+                      nextImg.src = targetSrc;
+                  }
+              }
           }
           mvApply(false);
       }
@@ -2448,6 +2465,8 @@ function mvNavToggle(force) {
               if (Math.abs(dx) > 70 && Math.abs(dx) > Math.abs(dy) * 1.3) {
                   // RTL logic: Swipe Left (dx < 0) -> Next Page, Swipe Right (dx > 0) -> Prev Page
                   const nextPage = mvPage + (dx < 0 ? 1 : -1); 
+                  if (nextPage < 1 || nextPage > 604) { mvZ.x = 0; mvApply(true); return; }
+                  
                   const nextImg = document.getElementById('mvImgNext');
                   nextImg.src = pgFile(nextPage);
                   
