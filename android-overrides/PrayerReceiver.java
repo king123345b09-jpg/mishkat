@@ -112,15 +112,18 @@ public class PrayerReceiver extends BroadcastReceiver {
     }
     
     String pkg = c.getPackageName();
-    long t = e.getLong("t");
-    String hijri = e.optString("hijri", "");
-    String city = e.optString("city", "");
     int icon = rid(c, "ic_stat_mosque", "drawable");
     
     try {
+      long t = e.getLong("t");
+      String name = e.optString("name", "");
+      String time = e.optString("time", "");
+      String hijri = e.optString("hijri", "");
+      String city = e.optString("city", "");
+      
       // محاولة استخدام التصميم المخصص
       RemoteViews rv = new RemoteViews(pkg, rid(c, "notif_prayer", "layout"));
-      rv.setTextViewText(rid(c, "n_name", "id"), e.getString("name") + "  " + e.getString("time"));
+      rv.setTextViewText(rid(c, "n_name", "id"), name + "  " + time);
       rv.setTextViewText(rid(c, "n_sub", "id"), hijri + (city.isEmpty() ? "" : " • " + city));
       
       int cid = rid(c, "n_chrono", "id");
@@ -133,7 +136,7 @@ public class PrayerReceiver extends BroadcastReceiver {
       
       NotificationCompat.Builder b = new NotificationCompat.Builder(c, CH)
         .setSmallIcon(icon)
-        .setContentTitle("الصلاة القادمة: " + e.getString("name") + " " + e.getString("time"))
+        .setContentTitle("الصلاة القادمة: " + name + " " + time)
         .setContentText(hijri + (city.isEmpty() ? "" : " • " + city))
         .setCustomContentView(rv)
         .setCustomBigContentView(rv)
@@ -150,17 +153,23 @@ public class PrayerReceiver extends BroadcastReceiver {
       
     } catch (Exception ex) {
       // الخطة البديلة: إذا فشل التصميم المخصص، نعرض إشعاراً عادياً يحتوي على كل المعلومات
-      Intent li = c.getPackageManager().getLaunchIntentForPackage(pkg);
-      PendingIntent pi = li == null ? null : PendingIntent.getActivity(c, 0, li, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
-      NotificationCompat.Builder b = new NotificationCompat.Builder(c, CH)
-        .setSmallIcon(icon)
-        .setContentTitle("الصلاة القادمة: " + e.getString("name") + " " + e.getString("time"))
-        .setContentText(hijri + (city.isEmpty() ? "" : " • " + city))
-        .setPriority(NotificationCompat.PRIORITY_LOW)
-        .setOngoing(true)
-        .setColor(0xFFD4AF37);
-      if (pi != null) b.setContentIntent(pi);
-      nm.notify(1000, b.build());
+      try {
+        String name = e.optString("name", "");
+        String time = e.optString("time", "");
+        String hijri = e.optString("hijri", "");
+        String city = e.optString("city", "");
+        Intent li = c.getPackageManager().getLaunchIntentForPackage(pkg);
+        PendingIntent pi = li == null ? null : PendingIntent.getActivity(c, 0, li, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+        NotificationCompat.Builder b = new NotificationCompat.Builder(c, CH)
+          .setSmallIcon(icon)
+          .setContentTitle("الصلاة القادمة: " + name + " " + time)
+          .setContentText(hijri + (city.isEmpty() ? "" : " • " + city))
+          .setPriority(NotificationCompat.PRIORITY_LOW)
+          .setOngoing(true)
+          .setColor(0xFFD4AF37);
+        if (pi != null) b.setContentIntent(pi);
+        nm.notify(1000, b.build());
+      } catch (Exception ex2) {}
     }
   }
 
