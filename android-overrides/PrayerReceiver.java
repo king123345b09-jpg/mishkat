@@ -99,7 +99,7 @@ public class PrayerReceiver extends BroadcastReceiver {
     return c.getResources().getIdentifier(name, type, c.getPackageName());
   }
 
-  // الإشعار الدائم (الذي يظهر فيه العد التنازلي)
+  // الإشعار الدائم
   static void show(Context c) {
     NotificationManager nm = (NotificationManager) c.getSystemService(Context.NOTIFICATION_SERVICE);
     JSONObject e = nextEvent(c);
@@ -111,28 +111,26 @@ public class PrayerReceiver extends BroadcastReceiver {
       nm.createNotificationChannel(ch);
     }
     
+    String pkg = c.getPackageName();
+    long t = e.getLong("t");
+    String hijri = e.optString("hijri", "");
+    String city = e.optString("city", "");
+    int icon = rid(c, "ic_stat_mosque", "drawable");
+    
     try {
-      String pkg = c.getPackageName();
-      long t = e.getLong("t");
+      // محاولة استخدام التصميم المخصص
       RemoteViews rv = new RemoteViews(pkg, rid(c, "notif_prayer", "layout"));
-      
-      // عرض اسم الصلاة والوقت
       rv.setTextViewText(rid(c, "n_name", "id"), e.getString("name") + "  " + e.getString("time"));
-      
-      // عرض التاريخ الهجري والولاية معاً
-      String hijri = e.optString("hijri", "");
-      String city = e.optString("city", "");
       rv.setTextViewText(rid(c, "n_sub", "id"), hijri + (city.isEmpty() ? "" : " • " + city));
       
       int cid = rid(c, "n_chrono", "id");
       if (Build.VERSION.SDK_INT >= 24) rv.setChronometerCountDown(cid, true);
       rv.setChronometer(cid, SystemClock.elapsedRealtime() + (t - System.currentTimeMillis()), null, true);
       
-      Intent li = c.getPackageManager().getLaunchIntentForPackage(c.getPackageName());
+      Intent li = c.getPackageManager().getLaunchIntentForPackage(pkg);
       PendingIntent pi = li == null ? null : PendingIntent.getActivity(c, 0, li, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
       PendingIntent pDel = PendingIntent.getBroadcast(c, 3, new Intent(c, PrayerReceiver.class).setAction("REPOST"), PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
       
-      int icon = rid(c, "ic_stat_mosque", "drawable");
       NotificationCompat.Builder b = new NotificationCompat.Builder(c, CH)
         .setSmallIcon(icon)
         .setContentTitle("الصلاة القادمة: " + e.getString("name") + " " + e.getString("time"))
@@ -149,7 +147,21 @@ public class PrayerReceiver extends BroadcastReceiver {
         .setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
       if (pi != null) b.setContentIntent(pi);
       nm.notify(1000, b.build());
-    } catch (Exception ex) {}
+      
+    } catch (Exception ex) {
+      // الخطة البديلة: إذا فشل التصميم المخصص، نعرض إشعاراً عادياً يحتوي على كل المعلومات
+      Intent li = c.getPackageManager().getLaunchIntentForPackage(pkg);
+      PendingIntent pi = li == null ? null : PendingIntent.getActivity(c, 0, li, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+      NotificationCompat.Builder b = new NotificationCompat.Builder(c, CH)
+        .setSmallIcon(icon)
+        .setContentTitle("الصلاة القادمة: " + e.getString("name") + " " + e.getString("time"))
+        .setContentText(hijri + (city.isEmpty() ? "" : " • " + city))
+        .setPriority(NotificationCompat.PRIORITY_LOW)
+        .setOngoing(true)
+        .setColor(0xFFD4AF37);
+      if (pi != null) b.setContentIntent(pi);
+      nm.notify(1000, b.build());
+    }
   }
 
   static void scheduleNext(Context c) {
