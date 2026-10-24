@@ -7,12 +7,10 @@
     android:gravity="center_vertical"
     android:padding="12dp"
     android:background="@drawable/notif_bg">
-  
   <ImageView
       android:layout_width="46dp"
       android:layout_height="46dp"
       android:src="@mipmap/ic_launcher_round" />
-  
   <LinearLayout
       android:layout_width="0dp"
       android:layout_height="wrap_content"
@@ -20,14 +18,12 @@
       android:orientation="vertical"
       android:paddingStart="12dp"
       android:paddingEnd="8dp">
-      
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="الصلاة القادمة"
         android:textColor="#F4C430"
         android:textSize="12sp" />
-        
     <TextView
         android:id="@+id/n_name"
         android:layout_width="wrap_content"
@@ -35,7 +31,6 @@
         android:textColor="#FFFFFF"
         android:textSize="18sp"
         android:textStyle="bold" />
-        
     <TextView
         android:id="@+id/n_sub"
         android:layout_width="wrap_content"
@@ -43,7 +38,6 @@
         android:textColor="#E8DDB5"
         android:textSize="12sp" />
   </LinearLayout>
-  
   <Chronometer
       android:id="@+id/n_chrono"
       android:layout_width="wrap_content"

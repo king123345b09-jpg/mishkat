@@ -8,8 +8,8 @@
     android:padding="12dp"
     android:background="@drawable/notif_bg">
   <ImageView
-      android:layout_width="46dp"
-      android:layout_height="46dp"
+      android:layout_width="48dp"
+      android:layout_height="48dp"
       android:src="@mipmap/ic_launcher_round" />
   <LinearLayout
       android:layout_width="0dp"
@@ -19,35 +19,37 @@
       android:paddingStart="12dp"
       android:paddingEnd="8dp">
     <TextView
-        android:id="@+id/n_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="حان الآن موعد الصلاة"
+        android:text="حان الآن موعد"
         android:textColor="#F4C430"
         android:textSize="12sp" />
     <TextView
-        android:id="@+id/n_prayer_name"
+        android:id="@+id/a_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="#FFFFFF"
-        android:textSize="18sp"
+        android:textSize="20sp"
         android:textStyle="bold" />
     <TextView
+        android:id="@+id/a_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="حيّ على الصلاة"
+        android:layoutDirection="ltr"
         android:textColor="#E8DDB5"
-        android:textSize="12sp" />
+        android:textSize="13sp" />
   </LinearLayout>
-  <Button
-      android:id="@+id/n_stop_btn"
+  <TextView
+      android:id="@+id/a_stop"
       android:layout_width="wrap_content"
-      android:layout_height="36dp"
+      android:layout_height="wrap_content"
+      android:background="@drawable/stop_btn"
+      android:paddingLeft="22dp"
+      android:paddingRight="22dp"
+      android:paddingTop="9dp"
+      android:paddingBottom="9dp"
       android:text="إيقاف"
-      android:textColor="#052E1A"
-      android:background="#FFFFFF"
-      android:paddingStart="16dp"
-      android:paddingEnd="16dp"
-      android:textSize="14sp"
+      android:textColor="#FFFFFF"
+      android:textSize="15sp"
       android:textStyle="bold" />
 </LinearLayout>
