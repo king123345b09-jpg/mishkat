@@ -37,6 +37,14 @@
         android:layout_height="wrap_content"
         android:textColor="#E8DDB5"
         android:textSize="12sp" />
+    <TextView
+        android:id="@+id/n_day"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:maxLines="2"
+        android:textColor="#BFE3CB"
+        android:textSize="11sp" />
   </LinearLayout>
   <Chronometer
       android:id="@+id/n_chrono"

@@ -118,6 +118,7 @@ public class PrayerReceiver extends BroadcastReceiver {
       RemoteViews rv = new RemoteViews(pkg, rid(c, "notif_prayer", "layout"));
       rv.setTextViewText(rid(c, "n_name", "id"), e.getString("name") + "  " + e.getString("time"));
       rv.setTextViewText(rid(c, "n_sub", "id"), e.getString("hijri"));
+      rv.setTextViewText(rid(c, "n_day", "id"), e.optString("day"));
       int cid = rid(c, "n_chrono", "id");
       if (Build.VERSION.SDK_INT >= 24) rv.setChronometerCountDown(cid, true);
       rv.setChronometer(cid, SystemClock.elapsedRealtime() + (t - System.currentTimeMillis()), null, true);

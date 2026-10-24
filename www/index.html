@@ -537,6 +537,13 @@ html,body{overscroll-behavior:none}
 .ao-date{font-size:15px;opacity:.9;margin:8px 0 36px}
 .ao-stop{display:flex;align-items:center;gap:10px;padding:16px 48px;border-radius:40px;background:linear-gradient(135deg,#ffe58a,#c9a227);color:#052e1a;border:3px solid rgba(255,255,255,.92);font-size:22px;font-weight:800;box-shadow:0 0 0 6px rgba(244,196,48,.25),0 10px 30px rgba(0,0,0,.5)}
 #aoVol{display:none}
+.nrow{display:flex;align-items:center;gap:10px;padding:11px 0;border-top:1px solid rgba(212,175,55,.2)}
+.nrow-ic{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(244,196,48,.15);color:#f4c430;flex:none}
+.nrow.ok .nrow-ic{background:rgba(74,222,128,.18);color:#4ade80}
+.nrow-tx{flex:1;min-width:0}.nrow-t{font-size:14px;font-weight:700;color:#f4e7b0}.nrow-s{font-size:11.5px;opacity:.85;line-height:1.5;margin-top:2px}
+.nrow-b{flex:none;padding:8px 14px;border-radius:12px;border:1px solid #d4af37;background:transparent;color:#f4c430;font-family:inherit;font-size:13px;font-weight:700}
+.nrow.ok .nrow-b{border-color:rgba(74,222,128,.5);color:#4ade80}
+.ntest{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:12px;padding:13px;border-radius:14px;background:linear-gradient(135deg,#f4c430,#b8941f);color:#052e1a;font-weight:800;font-size:15px}
 .hidden{display:none!important}
 @media (max-width:360px){.splash-title{font-size:38px}.next-prayer-name{font-size:26px}.tasbih-counter{font-size:52px}.qibla-compass{width:250px;height:250px}.tick{transform-origin:50% 111px}.qibla-needle{height:90px}.wird-results{grid-template-columns:repeat(2,1fr)}}
 </style>
@@ -1205,8 +1212,15 @@ function renderAdhanCards() {
         <div class="mode-btn" onclick="playAdhan('${p}')"><i class="fas fa-play"></i> تجربة</div>
       </div>
     </div>`;
-  const nat = NATIVE ? `<div class="adhan-card"><div class="adhan-header"><div class="adhan-icon"><i class="fas fa-bell"></i></div><div><div class="adhan-title">تفعيل الأذان في الخلفية</div><div class="adhan-subtitle" id="nativeStatus">جارٍ الفحص...</div></div></div>
-    <div class="mode-toggle" style="margin-top:12px"><div class="mode-btn" onclick="testRealAdhan()"><i class="fas fa-stopwatch"></i> اختبار 10 ث</div><div class="mode-btn" onclick="PN().openBatterySettings()"><i class="fas fa-battery-full"></i> البطارية</div><div class="mode-btn" onclick="PN().openOverlaySettings()"><i class="fas fa-window-restore"></i> العرض فوق</div></div></div>` : '';
+  const row = (id, icon, title, sub, btn, fn) => `<div class="nrow" id="${id}"><div class="nrow-ic"><i class="fas ${icon}"></i></div><div class="nrow-tx"><div class="nrow-t">${title}</div><div class="nrow-s" id="${id}S">${sub}</div></div><button class="nrow-b" onclick="${fn}">${btn}</button></div>`;
+  const nat = NATIVE ? `<div class="adhan-card"><div class="adhan-header"><div class="adhan-icon"><i class="fas fa-bell"></i></div><div><div class="adhan-title">تشغيل الأذان والتطبيق مغلق</div><div class="adhan-subtitle" id="nativeStatus">جارٍ الفحص...</div></div></div>
+    <div style="font-size:12.5px;line-height:1.7;opacity:.9;margin:10px 0 4px">لكي يبدأ الأذان في وقته دون أن تفتح التطبيق، فعّل الأمور التالية. اضغط «تفعيل» فيفتح إعداد الهاتف، اختر السماح ثم ارجع للتطبيق.</div>
+    ${row('nrN', 'fa-bell', '1. الإشعارات', 'جارٍ الفحص...', 'تفعيل', 'askNotifPerm()')}
+    ${row('nrO', 'fa-window-restore', '2. العرض فوق التطبيقات', 'جارٍ الفحص...', 'تفعيل', "pn('openOverlaySettings')")}
+    ${row('nrB', 'fa-battery-full', '3. البطارية بدون قيود', 'جارٍ الفحص...', 'تفعيل', "pn('openBatterySettings')")}
+    ${row('nrA', 'fa-power-off', '4. التشغيل التلقائي', 'في هواتف شاومي وأوبو وفيفو فعّل «التشغيل التلقائي» من إعدادات التطبيق', 'فتح', "pn('openAppSettings')")}
+    <div class="ntest" onclick="testRealAdhan()"><i class="fas fa-stopwatch"></i> اختبار حقيقي بعد 10 ثوانٍ</div>
+    <div style="font-size:11.5px;opacity:.85;margin-top:8px;line-height:1.6">اضغط الزر ثم اقفل الشاشة أو اخرج من التطبيق، وسيظهر إشعار الأذان كما يظهر وقت الصلاة.</div></div>` : '';
   const vol = `<div class="adhan-card"><div class="adhan-header"><div class="adhan-icon"><i class="fas fa-volume-high"></i></div><div><div class="adhan-title">مستوى صوت الأذان</div><div class="adhan-subtitle">ارفع صوت المنبّه في هاتفك أيضاً</div></div></div><input type="range" id="adhanVolRange" min="0" max="100" value="${Math.round(store.get('adhanVol', 1) * 100)}" oninput="setAdhanVol(this.value/100)" style="width:100%;accent-color:#f4c430;margin-top:10px"></div>`;
   document.getElementById('adhanCards').innerHTML = nat + vol + ['fajr', 'dhuhr', 'asr', 'maghrib', 'isha'].map(mk).join('');
   if (NATIVE) refreshNativeStatus();
@@ -2244,7 +2258,11 @@ const hhmm = d => d.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-di
 const adhanList = () => ADHANS;
 
 
-const PN = () => (window.__pn || (window.__pn = Capacitor.registerPlugin('PrayerNotif')));
+const PN = () => (window.Capacitor && Capacitor.Plugins && Capacitor.Plugins.PrayerNotif) || null;
+async function pn(m, a) {
+  const P = PN(); if (!P || typeof P[m] !== 'function') throw new Error('إضافة الإشعارات غير موجودة في هذه النسخة');
+  return a === undefined ? P[m]() : P[m](a);
+}
 
 const adhanFile = p => ADHANS[adhanPref(p)].raw;
 function showAdhanScreen(p) {
@@ -2256,28 +2274,43 @@ function showAdhanScreen(p) {
     o.classList.add('on');
   } else document.getElementById('adhanStop').classList.add('on');
 }
-function userStopAdhan() { stopAdhan(); if (NATIVE) { try { PN().stopAdhan(); } catch (e) {} } }
+function userStopAdhan() { stopAdhan(); if (NATIVE) pn('stopAdhan').catch(() => {}); }
 async function playAdhan(p) {
-  stopAdhan();
+  userStopAdhan();
+  if (NATIVE && PN()) {
+    try { await pn('startAdhan', { prayer: p, name: t(p), time: hhmm(new Date()), file: adhanFile(p), vol: store.get('adhanVol', 1), mode: adhanModeOf(p) }); return; }
+    catch (e) { showToast('تعذر تشغيل إشعار الأذان: ' + ((e && e.message) || e), 'fas fa-triangle-exclamation'); }
+  }
   const a = adhanAudio = new Audio(ADHANS[adhanPref(p)].web);
   a.volume = store.get('adhanVol', 1); a.onended = stopAdhan;
   a.onerror = () => { stopAdhan(); showToast('تعذر تشغيل ملف الأذان', 'fas fa-triangle-exclamation'); };
-  a.play().catch(e => { stopAdhan(); showToast('تعذر تشغيل الأذان: ' + (e && e.name || ''), 'fas fa-triangle-exclamation'); });
+  a.play().catch(e => { stopAdhan(); showToast('تعذر تشغيل الأذان: ' + ((e && e.name) || ''), 'fas fa-triangle-exclamation'); });
   showAdhanScreen(p);
 }
 async function refreshNativeStatus() {
-  const el = document.getElementById('nativeStatus'); if (!el || !NATIVE) return;
-  try { const s = await PN().status(); el.textContent = `الإشعارات: ${s.notif ? 'مسموحة' : 'محظورة'} • العرض فوق التطبيقات: ${s.overlay ? 'مسموح' : 'غير مسموح'} • مجدول: ${s.count}`; }
-  catch (e) { el.textContent = 'تعذر قراءة الحالة: ' + ((e && e.message) || e); }
+  if (!NATIVE) return; const el = document.getElementById('nativeStatus'); if (!el) return;
+  const set = (id, ok, okTxt, noTxt) => { const r = document.getElementById(id); if (!r) return; r.classList.toggle('ok', ok); const s = document.getElementById(id + 'S'); if (s) s.textContent = ok ? okTxt : noTxt; };
+  try {
+    const s = await pn('status');
+    set('nrN', s.notif, 'مفعّلة ✓', 'غير مفعّلة - اضغط تفعيل');
+    set('nrO', s.overlay, 'مفعّل ✓', 'غير مفعّل - ضروري للشاشة الكاملة');
+    set('nrB', s.battery, 'بدون قيود ✓', 'اضغط تفعيل ثم اختر «بدون قيود» للتطبيق');
+    el.textContent = s.count > 0 ? `تم جدولة ${s.count} موعداً قادماً ✓` : 'لم يُجدول شيء بعد - افتح التطبيق مرة واحدة بإنترنت لتحديد موقعك';
+  } catch (e) { el.textContent = 'إضافة الإشعارات غير متوفرة: ' + ((e && e.message) || e); }
+}
+async function askNotifPerm() {
+  try { const LN = Capacitor.Plugins.LocalNotifications; const r = LN ? await LN.requestPermissions() : null; if (!r || r.display !== 'granted') await pn('openAppSettings'); }
+  catch (e) { try { await pn('openAppSettings'); } catch (_) {} }
+  setTimeout(refreshNativeStatus, 1500);
 }
 async function testRealAdhan() {
   try {
-    await PN().scheduleTest({ prayer: 'dhuhr', name: t('dhuhr'), time: hhmm(new Date(Date.now() + 10000)), file: adhanFile('dhuhr'), vol: store.get('adhanVol', 1), mode: adhanModeOf('dhuhr'), delay: 10 });
-    showToast('بعد 10 ثوانٍ يبدأ الأذان - اقفل الشاشة أو اخرج من التطبيق', 'fas fa-stopwatch');
+    await pn('scheduleTest', { prayer: 'dhuhr', name: t('dhuhr'), time: hhmm(new Date(Date.now() + 10000)), file: adhanFile('dhuhr'), vol: store.get('adhanVol', 1), mode: adhanModeOf('dhuhr'), delay: 10 });
+    showToast('بعد 10 ثوانٍ يظهر إشعار الأذان - اقفل الشاشة أو اخرج من التطبيق', 'fas fa-stopwatch');
   } catch (e) { showToast('خطأ: ' + ((e && e.message) || e), 'fas fa-triangle-exclamation'); }
 }
 async function askOverlay() {
-  try { const s = await PN().status(); if (!s.overlay && !store.get('ovAsked', false)) { store.set('ovAsked', true); showToast('اسمح بـ«العرض فوق التطبيقات» لتظهر شاشة الأذان الكاملة', 'fas fa-window-restore'); setTimeout(() => PN().openOverlaySettings(), 1800); } } catch (e) {}
+  try { const s = await pn('status'); if (!s.overlay && !store.get('ovAsked', false)) { store.set('ovAsked', true); showToast('اسمح بـ«العرض فوق التطبيقات» لتظهر شاشة الأذان الكاملة', 'fas fa-window-restore'); setTimeout(() => pn('openOverlaySettings').catch(() => {}), 1800); } } catch (e) {}
 }
 function checkAdhanTime() {
   if (NATIVE) return;
@@ -2300,15 +2333,21 @@ function computeEvents(days) {
   }
   return ev.sort((a, b) => a.t - b.t);
 }
+function dayLine(d) {
+  const params = adhan.CalculationMethod.MuslimWorldLeague(); params.madhab = adhan.Madhab.Shafi;
+  const pt = new adhan.PrayerTimes(new adhan.Coordinates(state.location.lat, state.location.lng), d, params);
+  return `الفجر ${hhmm(pt.fajr)} • الظهر ${hhmm(pt.dhuhr)} • العصر ${hhmm(pt.asr)} • المغرب ${hhmm(pt.maghrib)} • العشاء ${hhmm(pt.isha)}`;
+}
 async function postOngoing() {
   try {
-    const ev = computeEvents(7), now = Date.now(), out = []; let prev = now;
+    const ev = computeEvents(7), now = Date.now(), out = []; let prev = now; const dl = {};
     ev.forEach(e => {
       const tm = e.t.getTime(); if (tm <= now) return;
-      out.push({ t: tm, p: e.p, name: t(e.p), time: hhmm(e.t), hijri: hijriStr(new Date(prev)), adhan: e.p !== 'dhuha' && !!state.prayerToggles[e.p], mode: adhanModeOf(e.p), file: adhanFile(e.p), vol: store.get('adhanVol', 1), pre: e.p !== 'dhuha' && !!state.preAlerts && !!state.prayerToggles[e.p], preBody: PRE_ALERT_TEXT + ' • ' + t(e.p) });
+      const k = e.t.toDateString(); if (!dl[k]) dl[k] = dayLine(e.t);
+      out.push({ t: tm, p: e.p, name: t(e.p), time: hhmm(e.t), hijri: hijriStr(new Date(prev)), day: dl[k], adhan: e.p !== 'dhuha' && !!state.prayerToggles[e.p], mode: adhanModeOf(e.p), file: adhanFile(e.p), vol: store.get('adhanVol', 1), pre: e.p !== 'dhuha' && !!state.preAlerts && !!state.prayerToggles[e.p], preBody: PRE_ALERT_TEXT + ' • ' + t(e.p) });
       prev = tm;
     });
-    await PN().setEvents({ events: out }); refreshNativeStatus();
+    await pn('setEvents', { events: out }); refreshNativeStatus();
   } catch (e) { console.log('PN error', e); showToast('تعذر جدولة الإشعارات: ' + ((e && e.message) || e), 'fas fa-triangle-exclamation'); }
 }
 function addMapButtons() {
@@ -2451,7 +2490,10 @@ function calNav(dir) { calSlide(dir); }
   v.addEventListener('touchmove', e => { if (x0 === null) return; dx = e.touches[0].clientX - x0; if (Math.abs(dx) > Math.abs(e.touches[0].clientY - y0)) { const tr = document.getElementById('calTrack'); tr.style.transition = 'none'; tr.style.transform = `translateX(calc(-33.3333% + ${dx}px))`; } }, { passive: true });
   v.addEventListener('touchend', () => { if (x0 === null) return; if (Math.abs(dx) > 60) calSlide(dx > 0 ? 1 : -1); else { const tr = document.getElementById('calTrack'); tr.style.transition = 'transform .25s'; tr.style.transform = 'translateX(-33.3333%)'; } x0 = null; });
 })();
-if (NATIVE) { try { const P = PN(); P.addListener('adhanStarted', e => showAdhanScreen(e.prayer)); P.addListener('adhanEnded', () => stopAdhan()); } catch (e) {} }
+if (NATIVE) {
+  try { const P = PN(); if (P) { P.addListener('adhanStarted', e => showAdhanScreen(e.prayer)); P.addListener('adhanEnded', () => stopAdhan()); } } catch (e) {}
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) { refreshNativeStatus(); window.scheduleNativeNotifs && scheduleNativeNotifs(); } });
+}
 let _lastBack = 0;
 window.__hardBack = function () {
   if (hideTop()) return true;
