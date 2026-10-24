@@ -2541,6 +2541,12 @@ window.__hardBack = function () {
   if (Date.now() - _lastBack < 2000) return false;
   _lastBack = Date.now(); showToast('اضغط مرة أخرى للخروج', 'fas fa-arrow-right-from-bracket'); return true;
 };
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js').then(() => {
+      console.log('تم تفعيل خدمة الإشعارات بنجاح');
+    });
+  }
 </script>
 </body>
 </html>
