@@ -1,22 +1,44 @@
-const V = 'mishkat-v2';
-const SHELL = ['./', 'index.html', 'manifest.json', 'icon-192.png', 'icon-512.png'];
-const CDN = /(cdnjs\.cloudflare\.com|cdn\.jsdelivr\.net|unpkg\.com|fonts\.googleapis\.com|fonts\.gstatic\.com|upload\.wikimedia\.org|tile\.openstreetmap\.org)/;
-self.addEventListener('install', e => { e.waitUntil(caches.open(V).then(c => c.addAll(SHELL)).then(() => self.skipWaiting())); });
-self.addEventListener('activate', e => { e.waitUntil(caches.keys().then(k => Promise.all(k.filter(x => x !== V).map(x => caches.delete(x)))).then(() => self.clients.claim())); });
-self.addEventListener('fetch', e => {
-  const r = e.request; if (r.method !== 'GET' || r.destination === 'audio' || r.headers.has('range')) return;
-  const u = new URL(r.url);
-  if (u.pathname.includes('/mushaf/')) return;
-  if (u.hostname === 'api.alquran.cloud' || u.hostname === 'en.wikipedia.org') {
-    e.respondWith(fetch(r).then(x => { const c = x.clone(); caches.open(V).then(h => h.put(r, c)); return x; }).catch(() => caches.match(r)));
-    return;
-  }
-  if (u.origin === location.origin) { e.respondWith(fetch(r).then(x => { const c = x.clone(); caches.open(V).then(k => k.put(r, c)); return x; }).catch(() => caches.match(r))); return; }
-  if (CDN.test(u.hostname)) {
-    e.respondWith(caches.match(r).then(h => {
-      const n = fetch(r).then(x => { if (x.ok || x.type === 'opaque') { const c = x.clone(); caches.open(V).then(k => k.put(r, c)); } return x; }).catch(() => h);
-      return h || n;
-    }));
+// ملف الخدمة الخلفية Service Worker للإشعارات والتنبيهات المستمرة (مشابه لتطبيق صلاتك)
+const CACHE_NAME = 'mishkat-cache-v1';
+
+// تثبيت ملف الخدمة
+self.addEventListener('install', (event) => {
+  self.skipWaiting();
+});
+
+// تفعيل ملف الخدمة
+self.addEventListener('activate', (event) => {
+  event.waitUntil(self.clients.claim());
+});
+
+// استقبال طلبات عرض الإشعارات
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'SHOW_NOTIFICATION') {
+    const { title, body } = event.data;
+    
+    self.registration.showNotification(title, {
+      body: body,
+      icon: './icon.png', // تأكد من وجود أيقونة بهذا الاسم أو غيرها
+      badge: './badge.png',
+      tag: 'mishkat-persistent-alarm',
+      ongoing: true, // يجعله إشعاراً دائماً لا يختفي بسهولة (مناسب لتطبيق صلاتك)
+      requireInteraction: true,
+      actions: [
+        { action: 'open_app', title: 'فتح التطبيق' }
+      ]
+    });
   }
 });
-self.addEventListener('notificationclick', e => { e.notification.close(); e.waitUntil(clients.matchAll({ type: 'window' }).then(l => l.length ? l[0].focus() : clients.openWindow('./'))); });
+
+// التعامل مع النقر على الإشعار
+self.notificationclick = function(event) {
+  event.notification.close();
+  event.waitUntil(
+    clients.matchAll({ type: 'window', includeUncontrolled: true }).then(clientList => {
+      if (clientList.length > 0) {
+        return clientList[0].focus();
+      }
+      return clients.openWindow('./index.html');
+    })
+  );
+};
