@@ -8,6 +8,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.SystemClock;
 import android.widget.RemoteViews;
@@ -103,6 +104,23 @@ public class PrayerReceiver extends BroadcastReceiver {
     return c.getResources().getIdentifier(name, type, c.getPackageName());
   }
 
+  static void fillViews(Context c, RemoteViews rv, JSONObject e, long t, boolean big) throws Exception {
+    rv.setTextViewText(rid(c, "n_name", "id"), e.getString("name") + "  " + e.getString("time"));
+    rv.setTextViewText(rid(c, "n_sub", "id"), "الصلاة القادمة • " + e.optString("hijri"));
+    if (big) rv.setTextViewText(rid(c, "n_day", "id"), e.optString("day"));
+    int cid = rid(c, "n_chrono", "id");
+    if (Build.VERSION.SDK_INT >= 24) rv.setChronometerCountDown(cid, true);
+    rv.setChronometer(cid, SystemClock.elapsedRealtime() + (t - System.currentTimeMillis()), null, true);
+    try {
+      String bg = e.optString("bg", "");
+      if (bg.length() > 0) rv.setInt(rid(c, "n_root", "id"), "setBackgroundColor", Color.parseColor(bg));
+    } catch (Exception ex) {}
+    try {
+      String fg = e.optString("fg", "");
+      if (fg.length() > 0) rv.setTextColor(cid, Color.parseColor(fg));
+    } catch (Exception ex) {}
+  }
+
   static void show(Context c) {
     NotificationManager nm = (NotificationManager) c.getSystemService(Context.NOTIFICATION_SERVICE);
     JSONObject e = nextEvent(c);
@@ -116,12 +134,9 @@ public class PrayerReceiver extends BroadcastReceiver {
       String pkg = c.getPackageName();
       long t = e.getLong("t");
       RemoteViews rv = new RemoteViews(pkg, rid(c, "notif_prayer", "layout"));
-      rv.setTextViewText(rid(c, "n_name", "id"), e.getString("name") + "  " + e.getString("time"));
-      rv.setTextViewText(rid(c, "n_sub", "id"), e.getString("hijri"));
-      rv.setTextViewText(rid(c, "n_day", "id"), e.optString("day"));
-      int cid = rid(c, "n_chrono", "id");
-      if (Build.VERSION.SDK_INT >= 24) rv.setChronometerCountDown(cid, true);
-      rv.setChronometer(cid, SystemClock.elapsedRealtime() + (t - System.currentTimeMillis()), null, true);
+      RemoteViews rvBig = new RemoteViews(pkg, rid(c, "notif_prayer_big", "layout"));
+      fillViews(c, rv, e, t, false);
+      fillViews(c, rvBig, e, t, true);
       Intent li = c.getPackageManager().getLaunchIntentForPackage(c.getPackageName());
       PendingIntent pi = li == null ? null : PendingIntent.getActivity(c, 0, li, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
       PendingIntent pDel = PendingIntent.getBroadcast(c, 3, new Intent(c, PrayerReceiver.class).setAction("REPOST"), PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
@@ -131,7 +146,7 @@ public class PrayerReceiver extends BroadcastReceiver {
         .setContentTitle("الصلاة القادمة: " + e.getString("name") + " " + e.getString("time"))
         .setContentText(e.getString("hijri"))
         .setCustomContentView(rv)
-        .setCustomBigContentView(rv)
+        .setCustomBigContentView(rvBig)
         .setStyle(new NotificationCompat.DecoratedCustomViewStyle())
         .setOngoing(true)
         .setOnlyAlertOnce(true)
