@@ -620,6 +620,88 @@ html,body{overscroll-behavior:none}
 @keyframes nodePop{0%{transform:scale(.6)}60%{transform:scale(1.18)}100%{transform:scale(1)}}
 @keyframes flowDown{to{background-position:0 12px}}
 @media (prefers-reduced-motion:reduce){.s-row.cur .s-line,.s-row.cur .s-node{animation:none}.s-trav{transition:none}}
+
+/* dua after adhan */
+#duaAfter{position:fixed;inset:0;z-index:9400;display:none;align-items:flex-end;justify-content:center;background:rgba(0,0,0,.55);backdrop-filter:blur(3px)}
+#duaAfter.on{display:flex;animation:fadeIn .3s}
+.da-card{position:relative;width:100%;max-width:480px;margin:0 8px calc(14px + env(safe-area-inset-bottom));padding:26px 20px 20px;border-radius:26px;text-align:center;background:var(--gradient-primary);border:2px solid var(--royal-gold);box-shadow:0 -10px 50px rgba(var(--goldl-rgb),.25);animation:daUp .5s cubic-bezier(.2,.9,.3,1)}
+@keyframes daUp{from{transform:translateY(60px);opacity:0}}
+.da-x{position:absolute;top:10px;left:10px;width:32px;height:32px;border-radius:50%;border:1px solid rgba(var(--gold-rgb),.5);background:rgba(0,0,0,.18);color:var(--cream);cursor:pointer}
+.da-ic{width:54px;height:54px;margin:0 auto 8px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;background:var(--gradient-gold);color:var(--royal-green-deep);box-shadow:0 0 28px rgba(var(--goldl-rgb),.6)}
+.da-t{font-size:18px;font-weight:700;color:var(--royal-gold-light);margin-bottom:10px}
+.da-tx{font-family:'Amiri','Cairo',serif;font-size:21px;line-height:2;color:var(--cream)}
+.da-ref{font-size:11.5px;opacity:.75;margin:8px 0 14px}
+.da-btn{width:100%;padding:13px;border:0;border-radius:16px;background:var(--gradient-gold);color:var(--royal-green-deep);font:700 16px 'Cairo',sans-serif;cursor:pointer;box-shadow:var(--shadow-gold)}
+.da-btn:active{transform:scale(.97)}
+/* wilaya picker */
+#wilayaModal{position:fixed;inset:0;z-index:9300;display:none;align-items:flex-end;justify-content:center;background:rgba(0,0,0,.6)}
+#wilayaModal.on{display:flex;animation:fadeIn .25s}
+.wl-box{width:100%;max-width:520px;max-height:82vh;display:flex;flex-direction:column;border-radius:26px 26px 0 0;background:var(--royal-green-deep);border:2px solid var(--royal-gold);border-bottom:0;padding:16px 14px 0}
+.wl-head{display:flex;justify-content:space-between;align-items:center;color:var(--royal-gold-light);font-size:17px}
+.wl-head button{width:34px;height:34px;border-radius:50%;border:1px solid rgba(var(--gold-rgb),.5);background:none;color:var(--cream);cursor:pointer}
+.wl-sub{font-size:12px;opacity:.75;margin:4px 0 10px;color:var(--cream)}
+.wl-search{width:100%;padding:11px 14px;border-radius:14px;border:1px solid rgba(var(--gold-rgb),.45);background:rgba(var(--rg-rgb),.5);color:var(--cream);font:500 14px 'Cairo',sans-serif;outline:0;margin-bottom:8px}
+#wilayaList{overflow-y:auto;padding-bottom:calc(16px + env(safe-area-inset-bottom))}
+.wl-item{display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:14px;color:var(--cream);cursor:pointer;margin-bottom:5px;border:1px solid transparent}
+.wl-item:active{background:rgba(var(--goldl-rgb),.12)}
+.wl-item.sel{border-color:var(--royal-gold);background:rgba(var(--goldl-rgb),.1)}
+.wl-item .fa-check{margin-right:auto;color:var(--royal-gold-light)}
+.wl-item.auto{background:rgba(var(--rg-rgb),.55)}.wl-item.auto>i{font-size:18px;color:var(--royal-gold-light);width:30px;text-align:center}
+.wl-item small{display:block;font-size:11px;opacity:.7}
+.wl-n{width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;background:rgba(var(--goldl-rgb),.15);color:var(--royal-gold-light)}
+.whatsnew{margin-top:14px;text-align:right;font-size:13px;line-height:1.8;border-top:1px solid rgba(var(--gold-rgb),.35);padding-top:10px}
+.whatsnew ul{margin:4px 18px 0 0;padding:0}
+/* prayer tracker */
+.tracker{margin:6px 16px 16px;padding:16px;border-radius:20px;background:linear-gradient(135deg,rgba(var(--rg-rgb),.6),rgba(var(--rgd-rgb),.85));border:1px solid rgba(var(--gold-rgb),.5)}
+.tk-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.tk-title{font-weight:700;color:var(--royal-gold-light);font-size:16px}
+.tk-streak{font-size:12.5px;padding:4px 10px;border-radius:12px;background:rgba(var(--goldl-rgb),.15);border:1px solid rgba(var(--gold-rgb),.45);color:var(--royal-gold-light)}
+.tk-row{display:grid;grid-template-columns:repeat(5,1fr);gap:7px}
+.tk-chip{padding:9px 2px;text-align:center;border-radius:14px;border:1px solid rgba(var(--gold-rgb),.4);background:rgba(0,0,0,.18);color:var(--cream);font-size:12px;cursor:pointer;transition:all .25s;user-select:none}
+.tk-chip i{display:block;font-size:16px;margin-bottom:3px;opacity:.5}
+.tk-chip.done{background:var(--gradient-gold);color:var(--royal-green-deep);border-color:var(--royal-gold-light);font-weight:700;box-shadow:0 4px 14px rgba(var(--goldl-rgb),.35)}
+.tk-chip.done i{opacity:1}
+.tk-week{display:flex;align-items:flex-end;gap:7px;height:52px;margin-top:14px}
+.tk-day{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;justify-content:flex-end;font-size:10.5px;opacity:.9;color:var(--cream)}
+.tk-bar{width:100%;border-radius:6px;background:rgba(var(--goldl-rgb),.18);min-height:4px}
+.tk-day.full .tk-bar{background:var(--gradient-gold)}
+.tk-day.today span{color:var(--royal-gold-light);font-weight:700}
+.tk-sum{font-size:12px;opacity:.85;margin-top:8px;text-align:center;color:var(--cream)}
+
+/* quran search highlight */
+mark.qhl{background:linear-gradient(transparent 6%,rgba(var(--goldl-rgb),.5) 6%);color:inherit;border-radius:6px;padding:0 3px;box-shadow:0 0 0 1px rgba(var(--gold-rgb),.55),0 0 12px rgba(var(--goldl-rgb),.35)}
+.sr-count{margin:10px 2px 2px;font-size:12.5px;color:var(--royal-gold-light);font-weight:700}
+.sr-item .sr-h{display:flex;justify-content:space-between;align-items:center;font-family:'Cairo',sans-serif;font-size:12px;margin-bottom:4px;color:var(--royal-gold-light);font-weight:700}
+.sr-item .sr-h span:last-child{background:rgba(var(--goldl-rgb),.18);padding:1px 9px;border-radius:10px}
+.sr-item .sr-t{font-family:'Scheherazade New','Amiri',serif;font-size:20px;line-height:2.05;text-align:right}
+/* mushaf toolbar + sheets */
+.mv-top button{flex:none}
+.mv-sheet{position:absolute;left:0;right:0;bottom:0;max-height:78%;display:none;flex-direction:column;z-index:6;background:var(--royal-green-deep);border-top:2px solid var(--royal-gold);border-radius:24px 24px 0 0;box-shadow:0 -12px 40px rgba(0,0,0,.6);padding:14px 14px calc(12px + env(safe-area-inset-bottom));color:var(--cream)}
+.mv-sheet.on{display:flex;animation:daUp .35s cubic-bezier(.2,.9,.3,1)}
+.mvs-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;color:var(--royal-gold-light);font-weight:700;font-size:16px}
+.mvs-head button{width:32px;height:32px;border-radius:50%;border:1px solid rgba(var(--gold-rgb),.5);background:none;color:var(--cream);cursor:pointer}
+.mvs-input{width:100%;padding:12px 14px;border-radius:14px;border:1px solid rgba(var(--gold-rgb),.5);background:rgba(var(--rg-rgb),.5);color:var(--cream);font:500 14px 'Cairo',sans-serif;outline:0}
+#mvSearchRes{overflow-y:auto;margin-top:8px}
+.mvs-hint{font-size:11.5px;opacity:.75;margin-top:6px;line-height:1.7}
+.mvs-go{display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:14px;margin-top:6px;background:rgba(var(--goldl-rgb),.1);border:1px solid rgba(var(--gold-rgb),.3);cursor:pointer}
+.mvs-go i{width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center;background:var(--gradient-gold);color:var(--royal-green-deep);font-size:13px}
+.mvs-go small{display:block;opacity:.7;font-size:11px}
+.mvs-recs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:10px}
+.mvs-ctl{display:flex;align-items:center;justify-content:center;gap:16px;margin:4px 0 10px}
+.mvs-ctl button{width:44px;height:44px;border-radius:50%;border:1px solid rgba(var(--gold-rgb),.55);background:rgba(var(--goldl-rgb),.1);color:var(--royal-gold-light);font-size:16px;cursor:pointer}
+.mvs-ctl button.big{width:62px;height:62px;font-size:22px;background:var(--gradient-gold);color:var(--royal-green-deep);box-shadow:0 0 26px rgba(var(--goldl-rgb),.5)}
+.mvs-row{display:flex;justify-content:space-between;align-items:center;font-size:13px;margin-bottom:8px}
+#mvAyahs{overflow-y:auto;flex:1;min-height:90px}
+.mva{display:flex;gap:10px;align-items:flex-start;padding:10px 11px;border-radius:14px;margin-bottom:6px;border:1px solid transparent;font-family:'Scheherazade New','Amiri',serif;font-size:20px;line-height:2;text-align:right;user-select:none;-webkit-user-select:none;transition:background .3s,border-color .3s,box-shadow .3s}
+.mva .n{flex:none;margin-top:6px;width:26px;height:26px;border-radius:50%;background:rgba(var(--goldl-rgb),.18);color:var(--royal-gold-light);font:700 11px 'Cairo',sans-serif;display:flex;align-items:center;justify-content:center}
+.mva.press{background:rgba(var(--goldl-rgb),.2);transform:scale(.985)}
+.mva.playing{background:linear-gradient(135deg,rgba(var(--goldl-rgb),.28),rgba(var(--gold-rgb),.1));border-color:var(--royal-gold-light);box-shadow:0 0 22px rgba(var(--goldl-rgb),.35);color:#fff6cf;animation:ayahGlow 2s ease-in-out infinite}
+.mva.playing .n{background:var(--gradient-gold);color:var(--royal-green-deep)}
+@keyframes ayahGlow{50%{box-shadow:0 0 34px rgba(var(--goldl-rgb),.55)}}
+#mvNow{position:absolute;left:10px;right:10px;bottom:calc(66px + env(safe-area-inset-bottom));z-index:4;display:none;padding:10px 14px;border-radius:18px;background:rgba(var(--rgd-rgb),.94);border:1px solid var(--royal-gold-light);box-shadow:0 0 24px rgba(var(--goldl-rgb),.4);color:#fff6cf;font-family:'Scheherazade New','Amiri',serif;font-size:19px;line-height:1.9;text-align:center;max-height:96px;overflow:hidden}
+#mvNow.on{display:block;animation:daUp .3s}
+#mvNow small{display:block;font:600 11px 'Cairo',sans-serif;color:var(--royal-gold-light);margin-bottom:2px}
+.verses-block,.da-tx,.mva,.sr-t,#mvNow,.bismillah{direction:rtl}
 .hidden{display:none!important}
 @media (max-width:360px){.splash-title{font-size:38px}.next-prayer-name{font-size:26px}.tasbih-counter{font-size:52px}.qibla-compass{width:250px;height:250px}.tick{transform-origin:50% 111px}.qibla-needle{height:90px}.wird-results{grid-template-columns:repeat(2,1fr)}}
 </style>
@@ -713,8 +795,10 @@ html,body{overscroll-behavior:none}
         <div id="prayerGrid"></div>
       </div>
 
+      <div class="tracker" id="tracker"></div>
+
       <div class="map-section">
-        <div class="map-overlay" onclick="requestLocation(true)" title="تحديث الموقع"><i class="fas fa-location-crosshairs"></i><span id="locationLabel">موقعك الحالي</span></div>
+        <div class="map-overlay" onclick="mapLocClick()" title="تحديث الموقع"><i class="fas fa-location-crosshairs"></i><span id="locationLabel">موقعك الحالي</span></div>
         <div id="map"></div>
         <div class="map-live">
           <span><span class="live-dot" id="liveDot"></span><span id="liveText">في انتظار الموقع المباشر</span></span>
@@ -881,6 +965,14 @@ html,body{overscroll-behavior:none}
       </div>
 
       <div class="settings-section">
+        <div class="settings-section-title"><i class="fas fa-location-dot"></i><span>الموقع</span></div>
+        <div class="settings-item" onclick="openWilaya()">
+          <div class="settings-item-left"><div class="settings-icon"><i class="fas fa-city"></i></div><div><div class="settings-label">الولاية / المدينة</div><div class="settings-sub" id="settingsCity">—</div></div></div>
+          <div class="settings-value"><i class="fas fa-chevron-left"></i></div>
+        </div>
+      </div>
+
+      <div class="settings-section">
         <div class="settings-section-title"><i class="fas fa-wifi"></i><span>الصوتيات والبث</span></div>
         <div class="settings-item" onclick="toggleWifi()">
           <div class="settings-item-left"><div class="settings-icon"><i class="fas fa-wifi"></i></div><div><div class="settings-label">البث عبر Wi-Fi فقط</div><div class="settings-sub">حماية باقة البيانات عند الاستماع</div></div></div>
@@ -903,7 +995,7 @@ html,body{overscroll-behavior:none}
         <div class="settings-section-title"><i class="fas fa-info-circle"></i><span>حول التطبيق</span></div>
         <div class="settings-item" onclick="openSetup(true)"><div class="settings-item-left"><div class="settings-icon"><i class="fas fa-wand-magic-sparkles"></i></div><div><div class="settings-label">معالج التفعيل</div><div class="settings-sub">الموقع والإشعارات وتشغيل الأذان والتطبيق مغلق</div></div></div><div class="settings-value"><i class="fas fa-chevron-left"></i></div></div>
         <div class="settings-item" onclick="installApp()"><div class="settings-item-left"><div class="settings-icon"><i class="fas fa-mobile-screen"></i></div><div><div class="settings-label">تثبيت التطبيق على الهاتف</div><div class="settings-sub">يعمل بدون إنترنت كتطبيق مستقل</div></div></div><div class="settings-value"><i class="fas fa-chevron-left"></i></div></div>
-        <div class="settings-item" onclick="showCreator(event)"><div class="settings-item-left"><div class="settings-icon"><i class="fas fa-code-branch"></i></div><div class="settings-label">الإصدار</div></div><div class="settings-value"><span class="version-label" onclick="showCreator(event)">1.00</span></div></div>
+        <div class="settings-item" onclick="showCreator(event)"><div class="settings-item-left"><div class="settings-icon"><i class="fas fa-code-branch"></i></div><div class="settings-label">الإصدار</div></div><div class="settings-value"><span class="version-label" onclick="showCreator(event)">1.1</span></div></div>
         <div class="settings-item" onclick="showToast('شكراً لتقييمك ⭐⭐⭐⭐⭐','fas fa-star')"><div class="settings-item-left"><div class="settings-icon"><i class="fas fa-star"></i></div><div class="settings-label">قيّم التطبيق</div></div><div class="settings-value"><i class="fas fa-chevron-left"></i></div></div>
       </div>
       <div class="version-display">مشكاة الأنوار © 2026 - جميع الحقوق محفوظة</div>
@@ -976,11 +1068,22 @@ html,body{overscroll-behavior:none}
 <div class="cal-head"><button onclick="calNav(-1)"><i class="fas fa-chevron-right"></i></button><div><div id="calTitle"></div><div id="calSub"></div></div><button onclick="calNav(1)"><i class="fas fa-chevron-left"></i></button></div>
 <div class="cal-week" id="calWeek"></div><div class="cal-view" id="calView"><div class="cal-track" id="calTrack"><div class="cal-pane" id="calPN"></div><div class="cal-pane" id="calPC"></div><div class="cal-pane" id="calPP"></div></div></div>
 <div class="cal-foot"><button onclick="calToday()">اليوم</button><button onclick="closeCalendar()">إغلاق</button></div></div></div>
-<div id="mushafViewer" dir="rtl"><div class="mv-top"><button onclick="closeMushaf()"><i class="fas fa-arrow-right"></i></button><div class="mv-title"><div id="mvSurah"></div><div style="font-size:12px;opacity:.85;font-weight:400">الجزء <span id="mvJuz">1</span> • صفحة <span id="mvPageNo">1</span></div></div><button onclick="mvNavToggle()"><i class="fas fa-list"></i></button></div>
+<div id="mushafViewer" dir="rtl"><div class="mv-top"><button onclick="closeMushaf()"><i class="fas fa-arrow-right"></i></button><div class="mv-title"><div id="mvSurah"></div><div style="font-size:12px;opacity:.85;font-weight:400">الجزء <span id="mvJuz">1</span> • صفحة <span id="mvPageNo">1</span></div></div><button onclick="mvSearchOpen()" aria-label="بحث"><i class="fas fa-magnifying-glass"></i></button><button onclick="mvAudioOpen()" aria-label="إعدادات المصحف"><i class="fas fa-sliders"></i></button><button onclick="mvNavToggle()" aria-label="الفهرس"><i class="fas fa-list"></i></button></div>
 <div id="mvMsg"></div>
 <div class="mv-stage" id="mvStage"><div class="mv-track" id="mvTrack"><div class="mv-pane"><img id="mvImgN" alt=""></div><div class="mv-pane"><img id="mvImg" alt="" onerror="showToast('صفحات المصحف متوفرة في تطبيق الأندرويد فقط','fas fa-triangle-exclamation')"></div><div class="mv-pane"><img id="mvImgP" alt=""></div></div></div>
 <div class="mv-bar"><button onclick="mvSlide(-1)"><i class="fas fa-chevron-right"></i></button><input type="range" id="mvRange" min="1" max="604" value="1" oninput="mvGo(+this.value)"><button onclick="mvSlide(1)"><i class="fas fa-chevron-left"></i></button></div>
-<div id="mvNav"></div></div>
+<div id="mvNav"></div>
+<div id="mvNow" onclick="mvAudioOpen()"></div>
+<div class="mv-sheet" id="mvSearch"><div class="mvs-head"><span><i class="fas fa-magnifying-glass"></i> بحث في المصحف</span><button onclick="mvSheet('mvSearch',false)"><i class="fas fa-xmark"></i></button></div>
+<input class="mvs-input" id="mvSearchIn" placeholder="رقم الصفحة، اسم السورة، أو آية (مثال: 2:255)" oninput="mvSearchRun(this.value)" autocomplete="off"><div class="mvs-hint">اكتب رقم صفحة، أو اسم سورة، أو كلمات من آية، أو رقم السورة والآية مثل 36:1</div><div id="mvSearchRes"></div></div>
+<div class="mv-sheet" id="mvAudio"><div class="mvs-head"><span><i class="fas fa-headphones"></i> الاستماع إلى السور</span><button onclick="mvSheet('mvAudio',false)"><i class="fas fa-xmark"></i></button></div>
+<div class="mvs-recs" id="mvRecs"></div>
+<div class="mvs-ctl"><button onclick="maStep(-1)" aria-label="السابق"><i class="fas fa-backward-step"></i></button><button class="big" id="maPlay" onclick="maToggle()"><i class="fas fa-play"></i></button><button onclick="maStep(1)" aria-label="التالي"><i class="fas fa-forward-step"></i></button></div>
+<div class="mvs-row"><span>صفحة <b id="maPg">1</b> • صوتها الخاص</span><span onclick="maCont()" style="cursor:pointer"><i class="fas fa-repeat"></i> متابعة الصفحات <span class="prayer-toggle on" id="maContT" style="display:inline-block;vertical-align:middle;margin-right:6px"></span></span></div>
+<div class="mvs-hint" style="margin:0 0 8px">اضغط مطوّلاً على أي آية لتلوّنها وتبدأ التلاوة منها حتى نهاية الصفحة</div>
+<div id="mvAyahs"></div></div></div>
+<div id="wilayaModal"><div class="wl-box"><div class="wl-head"><b>اختر ولايتك</b><button onclick="closeWilaya()" aria-label="إغلاق"><i class="fas fa-xmark"></i></button></div><div class="wl-sub">إذا أخطأ التطبيق في تحديد مكانك أو أردت ولاية أخرى</div><input id="wilayaSearch" class="wl-search" placeholder="ابحث عن ولاية..." oninput="renderWilayaList(this.value)"><div id="wilayaList"></div></div></div>
+<div id="duaAfter"><div class="da-card"><button class="da-x" onclick="closeDuaAfter()" aria-label="إغلاق"><i class="fas fa-xmark"></i></button><div class="da-ic"><i class="fas fa-hands-praying"></i></div><div class="da-t">دعاء بعد الأذان</div><div class="da-tx">اللَّهُمَّ رَبَّ هَذِهِ الدَّعْوَةِ التَّامَّةِ وَالصَّلَاةِ الْقَائِمَةِ، آتِ مُحَمَّدًا الْوَسِيلَةَ وَالْفَضِيلَةَ، وَابْعَثْهُ مَقَامًا مَحْمُودًا الَّذِي وَعَدْتَهُ</div><div class="da-ref">رواه البخاري • وصلِّ على النبي ﷺ قبل الدعاء</div><button class="da-btn" onclick="duaAfterRead()"><i class="fas fa-check"></i> قرأته</button></div></div>
 <div id="adhanOverlay"><div class="ao-in"><div class="ao-sub">حان الآن موعد صلاة</div><div class="ao-name" id="aoName"></div><div class="ao-time" id="aoTime"></div><div class="ao-date" id="aoDate"></div><input type="range" id="aoVol" min="0" max="100" oninput="setAdhanVol(this.value/100)"><button class="ao-stop" onclick="userStopAdhan()"><i class="fas fa-stop"></i> إيقاف الأذان</button></div></div>
 <button id="adhanStop" onclick="userStopAdhan()"><i class="fas fa-stop"></i> إيقاف الأذان</button>
 <script>
@@ -1054,7 +1157,9 @@ const verseCache = {};
 const duaaData = {
   morning: [
     { text: 'أعوذ بالله من الشيطان الرجيم. اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ ۚ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ ۚ لَهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ ۗ مَنْ ذَا الَّذِي يَشْفَعُ عِنْدَهُ إِلَّا بِإِذْنِهِ ۚ يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ ۖ وَلَا يُحِيطُونَ بِشَيْءٍ مِنْ عِلْمِهِ إِلَّا بِمَا شَاءَ ۚ وَسِعَ كُرْسِيُّهُ السَّمَاوَاتِ وَالْأَرْضَ ۖ وَلَا يَئُودُهُ حِفْظُهُمَا ۚ وَهُوَ الْعَلِيُّ الْعَظِيمُ', translation: 'Ayat al-Kursi — protection until evening', count: 1, ref: 'البقرة 255' },
-    { text: 'بسم الله الرحمن الرحيم: قُلْ هُوَ اللَّهُ أَحَدٌ ... قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ ... قُلْ أَعُوذُ بِرَبِّ النَّاسِ', translation: 'Al-Ikhlas, Al-Falaq, An-Nas — suffice you from everything', count: 3, ref: 'أبو داود والترمذي' },
+    { text: 'بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ. قُلْ هُوَ اللَّهُ أَحَدٌ ۝ اللَّهُ الصَّمَدُ ۝ لَمْ يَلِدْ وَلَمْ يُولَدْ ۝ وَلَمْ يَكُنْ لَهُ كُفُوًا أَحَدٌ', translation: 'Surah Al-Ikhlas — with the other two suffices you from everything', count: 3, ref: 'أبو داود والترمذي' },
+    { text: 'بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ. قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ ۝ مِن شَرِّ مَا خَلَقَ ۝ وَمِن شَرِّ غَاسِقٍ إِذَا وَقَبَ ۝ وَمِن شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ ۝ وَمِن شَرِّ حَاسِدٍ إِذَا حَسَدَ', translation: 'Surah Al-Falaq — with the other two suffices you from everything', count: 3, ref: 'أبو داود والترمذي' },
+    { text: 'بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ. قُلْ أَعُوذُ بِرَبِّ النَّاسِ ۝ مَلِكِ النَّاسِ ۝ إِلَٰهِ النَّاسِ ۝ مِن شَرِّ الْوَسْوَاسِ الْخَنَّاسِ ۝ الَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ ۝ مِنَ الْجِنَّةِ وَالنَّاسِ', translation: 'Surah An-Nas — with the other two suffices you from everything', count: 3, ref: 'أبو داود والترمذي' },
     { text: 'أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ، لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ، رَبِّ أَسْأَلُكَ خَيْرَ مَا فِي هَذَا الْيَوْمِ وَخَيْرَ مَا بَعْدَهُ، وَأَعُوذُ بِكَ مِنْ شَرِّ مَا فِي هَذَا الْيَوْمِ وَشَرِّ مَا بَعْدَهُ', translation: 'We have reached the morning and all sovereignty belongs to Allah', count: 1, ref: 'مسلم' },
     { text: 'اللَّهُمَّ بِكَ أَصْبَحْنَا، وَبِكَ أَمْسَيْنَا، وَبِكَ نَحْيَا، وَبِكَ نَمُوتُ، وَإِلَيْكَ النُّشُورُ', translation: 'O Allah, by You we enter the morning and by You the evening', count: 1, ref: 'الترمذي' },
     { text: 'اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلَّا أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ، وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ، أَعُوذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ، أَبُوءُ لَكَ بِنِعْمَتِكَ عَلَيَّ، وَأَبُوءُ بِذَنْبِي فَاغْفِرْ لِي فَإِنَّهُ لَا يَغْفِرُ الذُّنُوبَ إِلَّا أَنْتَ', translation: 'Sayyid al-Istighfar — the master of seeking forgiveness', count: 1, ref: 'البخاري' },
@@ -1070,8 +1175,10 @@ const duaaData = {
     { text: 'سُبْحَانَ اللَّهِ وَبِحَمْدِهِ', translation: 'Glory and praise be to Allah', count: 100, ref: 'مسلم' }
   ],
   evening: [
-    { text: 'أعوذ بالله من الشيطان الرجيم. اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ ۚ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ ... وَهُوَ الْعَلِيُّ الْعَظِيمُ', translation: 'Ayat al-Kursi — protection until morning', count: 1, ref: 'البقرة 255' },
-    { text: 'قُلْ هُوَ اللَّهُ أَحَدٌ ... قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ ... قُلْ أَعُوذُ بِرَبِّ النَّاسِ', translation: 'The three Quls', count: 3, ref: 'أبو داود' },
+    { text: 'أعوذ بالله من الشيطان الرجيم. اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ ۚ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ ۚ لَهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ ۗ مَنْ ذَا الَّذِي يَشْفَعُ عِنْدَهُ إِلَّا بِإِذْنِهِ ۚ يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ ۖ وَلَا يُحِيطُونَ بِشَيْءٍ مِنْ عِلْمِهِ إِلَّا بِمَا شَاءَ ۚ وَسِعَ كُرْسِيُّهُ السَّمَاوَاتِ وَالْأَرْضَ ۖ وَلَا يَئُودُهُ حِفْظُهُمَا ۚ وَهُوَ الْعَلِيُّ الْعَظِيمُ', translation: 'Ayat al-Kursi — protection until morning', count: 1, ref: 'البقرة 255' },
+    { text: 'بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ. قُلْ هُوَ اللَّهُ أَحَدٌ ۝ اللَّهُ الصَّمَدُ ۝ لَمْ يَلِدْ وَلَمْ يُولَدْ ۝ وَلَمْ يَكُنْ لَهُ كُفُوًا أَحَدٌ', translation: 'Surah Al-Ikhlas', count: 3, ref: 'أبو داود والترمذي' },
+    { text: 'بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ. قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ ۝ مِن شَرِّ مَا خَلَقَ ۝ وَمِن شَرِّ غَاسِقٍ إِذَا وَقَبَ ۝ وَمِن شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ ۝ وَمِن شَرِّ حَاسِدٍ إِذَا حَسَدَ', translation: 'Surah Al-Falaq', count: 3, ref: 'أبو داود والترمذي' },
+    { text: 'بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ. قُلْ أَعُوذُ بِرَبِّ النَّاسِ ۝ مَلِكِ النَّاسِ ۝ إِلَٰهِ النَّاسِ ۝ مِن شَرِّ الْوَسْوَاسِ الْخَنَّاسِ ۝ الَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ ۝ مِنَ الْجِنَّةِ وَالنَّاسِ', translation: 'Surah An-Nas', count: 3, ref: 'أبو داود والترمذي' },
     { text: 'أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ، لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، رَبِّ أَسْأَلُكَ خَيْرَ مَا فِي هَذِهِ اللَّيْلَةِ وَخَيْرَ مَا بَعْدَهَا، وَأَعُوذُ بِكَ مِنْ شَرِّ مَا فِي هَذِهِ اللَّيْلَةِ وَشَرِّ مَا بَعْدَهَا', translation: 'We have reached the evening and all sovereignty belongs to Allah', count: 1, ref: 'مسلم' },
     { text: 'اللَّهُمَّ بِكَ أَمْسَيْنَا، وَبِكَ أَصْبَحْنَا، وَبِكَ نَحْيَا، وَبِكَ نَمُوتُ، وَإِلَيْكَ الْمَصِيرُ', translation: 'O Allah, by You we enter the evening', count: 1, ref: 'الترمذي' },
     { text: 'اللَّهُمَّ مَا أَمْسَى بِي مِنْ نِعْمَةٍ أَوْ بِأَحَدٍ مِنْ خَلْقِكَ فَمِنْكَ وَحْدَكَ لَا شَرِيكَ لَكَ، فَلَكَ الْحَمْدُ وَلَكَ الشُّكْرُ', translation: 'Whatever blessing I have this evening is from You alone', count: 1, ref: 'أبو داود' },
@@ -1099,10 +1206,14 @@ const duaaData = {
     { text: 'اللَّهُمَّ أَنْتَ الصَّاحِبُ فِي السَّفَرِ، وَالْخَلِيفَةُ فِي الْأَهْلِ، اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنْ وَعْثَاءِ السَّفَرِ، وَكَآبَةِ الْمَنْظَرِ، وَسُوءِ الْمُنْقَلَبِ فِي الْمَالِ وَالْأَهْلِ', translation: 'You are the Companion on the journey and Guardian of the family', count: 1, ref: 'مسلم' },
     { text: 'أَسْتَوْدِعُكُمُ اللَّهَ الَّذِي لَا تَضِيعُ وَدَائِعُهُ', translation: 'I entrust you to Allah, whose trusts are never lost (to those staying)', count: 1, ref: 'ابن ماجه' },
     { text: 'أَسْتَوْدِعُ اللَّهَ دِينَكَ، وَأَمَانَتَكَ، وَخَوَاتِيمَ عَمَلِكَ', translation: 'I entrust your religion and deeds to Allah (to the traveler)', count: 1, ref: 'الترمذي' },
-    { text: 'اللَّهُمَّ رَبَّ السَّمَاوَاتِ السَّبْعِ وَمَا أَظْلَلْنَ ... أَسْأَلُكَ خَيْرَ هَذِهِ الْقَرْيَةِ وَخَيْرَ أَهْلِهَا، وَأَعُوذُ بِكَ مِنْ شَرِّهَا وَشَرِّ أَهْلِهَا', translation: 'Upon entering a town', count: 1, ref: 'الحاكم' },
+    { text: 'اللَّهُمَّ رَبَّ السَّمَاوَاتِ السَّبْعِ وَمَا أَظْلَلْنَ، وَرَبَّ الْأَرَضِينَ السَّبْعِ وَمَا أَقْلَلْنَ، وَرَبَّ الشَّيَاطِينِ وَمَا أَضْلَلْنَ، وَرَبَّ الرِّيَاحِ وَمَا ذَرَيْنَ، أَسْأَلُكَ خَيْرَ هَذِهِ الْقَرْيَةِ وَخَيْرَ أَهْلِهَا، وَأَعُوذُ بِكَ مِنْ شَرِّهَا وَشَرِّ أَهْلِهَا وَشَرِّ مَا فِيهَا', translation: 'Upon entering a town', count: 1, ref: 'الحاكم' },
     { text: 'آيِبُونَ، تَائِبُونَ، عَابِدُونَ، لِرَبِّنَا حَامِدُونَ', translation: 'Returning, repenting, worshipping, praising our Lord (upon return)', count: 1, ref: 'مسلم' }
   ],
   sleep: [
+    { text: 'أعوذ بالله من الشيطان الرجيم. اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ ۚ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ ۚ لَهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ ۗ مَنْ ذَا الَّذِي يَشْفَعُ عِنْدَهُ إِلَّا بِإِذْنِهِ ۚ يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ ۖ وَلَا يُحِيطُونَ بِشَيْءٍ مِنْ عِلْمِهِ إِلَّا بِمَا شَاءَ ۚ وَسِعَ كُرْسِيُّهُ السَّمَاوَاتِ وَالْأَرْضَ ۖ وَلَا يَئُودُهُ حِفْظُهُمَا ۚ وَهُوَ الْعَلِيُّ الْعَظِيمُ', translation: 'Ayat al-Kursi — a guardian from Allah stays with you until morning', count: 1, ref: 'البخاري' },
+    { text: 'بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ. قُلْ هُوَ اللَّهُ أَحَدٌ ۝ اللَّهُ الصَّمَدُ ۝ لَمْ يَلِدْ وَلَمْ يُولَدْ ۝ وَلَمْ يَكُنْ لَهُ كُفُوًا أَحَدٌ', translation: 'Surah Al-Ikhlas — recite and blow into your palms', count: 3, ref: 'أبو داود والترمذي' },
+    { text: 'بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ. قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ ۝ مِن شَرِّ مَا خَلَقَ ۝ وَمِن شَرِّ غَاسِقٍ إِذَا وَقَبَ ۝ وَمِن شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ ۝ وَمِن شَرِّ حَاسِدٍ إِذَا حَسَدَ', translation: 'Surah Al-Falaq — recite and blow into your palms', count: 3, ref: 'أبو داود والترمذي' },
+    { text: 'بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ. قُلْ أَعُوذُ بِرَبِّ النَّاسِ ۝ مَلِكِ النَّاسِ ۝ إِلَٰهِ النَّاسِ ۝ مِن شَرِّ الْوَسْوَاسِ الْخَنَّاسِ ۝ الَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ ۝ مِنَ الْجِنَّةِ وَالنَّاسِ', translation: 'Surah An-Nas — recite and blow into your palms', count: 3, ref: 'أبو داود والترمذي' },
     { text: 'بِاسْمِكَ اللَّهُمَّ أَمُوتُ وَأَحْيَا', translation: 'In Your name, O Allah, I die and I live', count: 1, ref: 'البخاري' },
     { text: 'اللَّهُمَّ قِنِي عَذَابَكَ يَوْمَ تَبْعَثُ عِبَادَكَ', translation: 'O Allah, protect me from Your punishment on the Day You resurrect Your servants', count: 3, ref: 'أبو داود' },
     { text: 'سُبْحَانَ اللَّهِ', translation: 'Glory be to Allah', count: 33, ref: 'البخاري ومسلم' },
@@ -1128,6 +1239,10 @@ const duaaCats = [
 ];
 Object.assign(duaaData, {
   'after-prayer': [
+    { text: 'أعوذ بالله من الشيطان الرجيم. اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ ۚ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ ۚ لَهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ ۗ مَنْ ذَا الَّذِي يَشْفَعُ عِنْدَهُ إِلَّا بِإِذْنِهِ ۚ يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ ۖ وَلَا يُحِيطُونَ بِشَيْءٍ مِنْ عِلْمِهِ إِلَّا بِمَا شَاءَ ۚ وَسِعَ كُرْسِيُّهُ السَّمَاوَاتِ وَالْأَرْضَ ۖ وَلَا يَئُودُهُ حِفْظُهُمَا ۚ وَهُوَ الْعَلِيُّ الْعَظِيمُ', translation: 'Ayat al-Kursi after every prayer', count: 1, ref: 'النسائي' },
+    { text: 'بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ. قُلْ هُوَ اللَّهُ أَحَدٌ ۝ اللَّهُ الصَّمَدُ ۝ لَمْ يَلِدْ وَلَمْ يُولَدْ ۝ وَلَمْ يَكُنْ لَهُ كُفُوًا أَحَدٌ', translation: 'Surah Al-Ikhlas — after every prayer', count: 3, ref: 'أبو داود والترمذي' },
+    { text: 'بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ. قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ ۝ مِن شَرِّ مَا خَلَقَ ۝ وَمِن شَرِّ غَاسِقٍ إِذَا وَقَبَ ۝ وَمِن شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ ۝ وَمِن شَرِّ حَاسِدٍ إِذَا حَسَدَ', translation: 'Surah Al-Falaq — after every prayer', count: 3, ref: 'أبو داود والترمذي' },
+    { text: 'بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ. قُلْ أَعُوذُ بِرَبِّ النَّاسِ ۝ مَلِكِ النَّاسِ ۝ إِلَٰهِ النَّاسِ ۝ مِن شَرِّ الْوَسْوَاسِ الْخَنَّاسِ ۝ الَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ ۝ مِنَ الْجِنَّةِ وَالنَّاسِ', translation: 'Surah An-Nas — after every prayer', count: 3, ref: 'أبو داود والترمذي' },
     { text: 'أَسْتَغْفِرُ اللَّهَ، أَسْتَغْفِرُ اللَّهَ، أَسْتَغْفِرُ اللَّهَ', translation: 'I seek forgiveness from Allah (3 times)', count: 1, ref: 'مسلم' },
     { text: 'اللَّهُمَّ أَنْتَ السَّلَامُ وَمِنْكَ السَّلَامُ، تَبَارَكْتَ يَا ذَا الْجَلَالِ وَالْإِكْرَامِ', translation: 'O Allah, You are Peace and from You comes peace', count: 1, ref: 'مسلم' },
     { text: 'سُبْحَانَ اللَّهِ', translation: 'Glory be to Allah', count: 33, ref: 'مسلم' },
@@ -1200,7 +1315,8 @@ window.addEventListener('load', () => {
   renderSurahList();
   initWird();
   initTasbih();
-  restoreTheme();
+  restoreTheme(); restoreLang();
+  renderTracker(); updateCityLabel();
   startCountdown();
   updateHijriDate();
   setInterval(() => { const d = new Date(); if (d.getHours() === 0 && d.getMinutes() === 0 && d.getSeconds() < 2) { calculatePrayerTimes(); updateHijriDate(); } }, 1000);
@@ -1281,12 +1397,12 @@ function renderAdhanCards() {
   const mk = p => `
     <div class="adhan-card">
       <div class="adhan-header"><div class="adhan-icon" style="background:none;padding:0;overflow:hidden">${mosqueIcon(p).replace(/id="(\w+)-/g, 'id="$1-a').replace(/url\(#(\w+)-/g, 'url(#$1-a')}</div>
-      <div><div class="adhan-title">أذان ${t(p)}</div><div class="adhan-subtitle">اختر المؤذن</div></div></div>
+      <div><div class="adhan-title">${p === 'dhuha' ? 'تذكير صلاة الضحى' : 'أذان ' + t(p)}</div><div class="adhan-subtitle">${p === 'dhuha' ? 'اختر الصوت' : 'اختر المؤذن'}</div></div></div>
       <select class="adhan-select" onchange="store.set('adhanSel_${p}', +this.value); showToast('تم حفظ الأذان','fas fa-check'); window.scheduleNativeNotifs && scheduleNativeNotifs()">${adhanList().map((a, i) => `<option value="${i}" ${i === adhanPref(p) ? 'selected' : ''}>${a.name}</option>`).join('')}</select>
       <div class="mode-toggle">
         <div class="mode-btn ${adhanModeOf(p) === 'notif' ? 'active' : ''}" onclick="setAdhanMode('${p}','notif',this)"><i class="fas fa-bell"></i> إشعار</div>
         <div class="mode-btn ${adhanModeOf(p) === 'full' ? 'active' : ''}" onclick="setAdhanMode('${p}','full',this)"><i class="fas fa-expand"></i> شاشة كاملة</div>
-        <div class="mode-btn" onclick="playAdhan('${p}')"><i class="fas fa-play"></i> تجربة</div>
+        <div class="mode-btn" onclick="playAdhan('${p}', true)"><i class="fas fa-play"></i> تجربة</div>
       </div>
     </div>`;
   const row = (id, icon, title, sub, btn, fn) => `<div class="nrow" id="${id}"><div class="nrow-ic"><i class="fas ${icon}"></i></div><div class="nrow-tx"><div class="nrow-t">${title}</div><div class="nrow-s" id="${id}S">${sub}</div></div><button class="nrow-b" onclick="${fn}">${btn}</button></div>`;
@@ -1299,7 +1415,7 @@ function renderAdhanCards() {
     <div class="ntest" onclick="testRealAdhan()"><i class="fas fa-stopwatch"></i> اختبار حقيقي بعد 10 ثوانٍ</div>
     <div style="font-size:11.5px;opacity:.85;margin-top:8px;line-height:1.6">اضغط الزر ثم اقفل الشاشة أو اخرج من التطبيق، وسيظهر إشعار الأذان كما يظهر وقت الصلاة.</div></div>` : '';
   const vol = `<div class="adhan-card"><div class="adhan-header"><div class="adhan-icon"><i class="fas fa-volume-high"></i></div><div><div class="adhan-title">مستوى صوت الأذان</div><div class="adhan-subtitle">ارفع صوت المنبّه في هاتفك أيضاً</div></div></div><input type="range" id="adhanVolRange" min="0" max="100" value="${Math.round(store.get('adhanVol', 1) * 100)}" oninput="setAdhanVol(this.value/100)" style="width:100%;accent-color:#f4c430;margin-top:10px"></div>`;
-  document.getElementById('adhanCards').innerHTML = nat + vol + ['fajr', 'dhuhr', 'asr', 'maghrib', 'isha'].map(mk).join('');
+  document.getElementById('adhanCards').innerHTML = nat + vol + ['fajr', 'dhuha', 'dhuhr', 'asr', 'maghrib', 'isha'].map(mk).join('');
   if (NATIVE) refreshNativeStatus();
 }
 function renderDuaaCategories() {
@@ -1315,6 +1431,31 @@ function renderDuaaCategories() {
 
 // ==================== PERMISSIONS & GEO ====================
 let watchId = null, locFirst = true, geoTried = 0;
+// ---- Prayer tracker ----
+const dayKey = d => d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
+const TRK = ['fajr', 'dhuhr', 'asr', 'maghrib', 'isha'];
+function trkLog() { return store.get('prayLog', {}); }
+function trkCount(log, d) { const e = log[dayKey(d)] || {}; return TRK.filter(p => e[p]).length; }
+function trkStreak(log) {
+  let d = new Date(), n = 0; if (trkCount(log, d) < 5) d = new Date(d.getTime() - 86400000);
+  while (trkCount(log, d) === 5) { n++; d = new Date(d.getTime() - 86400000); }
+  return n;
+}
+function toggleTrk(p) {
+  const log = trkLog(), k = dayKey(new Date()); log[k] = log[k] || {}; log[k][p] = log[k][p] ? 0 : 1;
+  const keys = Object.keys(log); if (keys.length > 120) delete log[keys[0]];
+  store.set('prayLog', log); if (navigator.vibrate) navigator.vibrate(15); renderTracker();
+  if (trkCount(log, new Date()) === 5 && log[k][p]) showToast('أتممت صلوات اليوم، تقبل الله منك', 'fas fa-medal');
+}
+function renderTracker() {
+  const el = document.getElementById('tracker'); if (!el) return;
+  const log = trkLog(), today = log[dayKey(new Date())] || {}, st = trkStreak(log), wd = state.currentLang === 'ar' ? ['ح', 'ن', 'ث', 'ر', 'خ', 'ج', 'س'] : ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+  let week = '';
+  for (let i = 6; i >= 0; i--) { const d = new Date(Date.now() - i * 86400000), c = trkCount(log, d); week += `<div class="tk-day ${c === 5 ? 'full' : ''} ${i === 0 ? 'today' : ''}"><div class="tk-bar" style="height:${Math.max(8, c / 5 * 100)}%"></div><span>${wd[d.getDay()]}</span></div>`; }
+  el.innerHTML = `<div class="tk-head"><div class="tk-title"><i class="fas fa-circle-check"></i> متتبّع الصلوات</div><div class="tk-streak"><i class="fas fa-fire"></i> ${st} يوم متتالٍ</div></div>
+    <div class="tk-row">${TRK.map(p => `<div class="tk-chip ${today[p] ? 'done' : ''}" onclick="toggleTrk('${p}')"><i class="fas ${today[p] ? 'fa-circle-check' : 'fa-circle'}"></i>${t(p)}</div>`).join('')}</div>
+    <div class="tk-week">${week}</div><div class="tk-sum">أدّيت ${trkCount(log, new Date())} من 5 صلوات اليوم</div>`;
+}
 // ---- Setup wizard ----
 const SETUP = { steps: [], open: false, busy: false, poll: null, opened: {}, ns: {} };
 const sleep = ms => new Promise(r => setTimeout(r, ms));
@@ -1447,6 +1588,46 @@ document.addEventListener('visibilitychange', () => {
   if (SETUP.opened.auto) store.set('autoOK', true);
   setTimeout(evalSetup, 300);
 });
+const WIL = [["أدرار", "Adrar", 27.87, -0.29], ["الشلف", "Chlef", 36.16, 1.33], ["الأغواط", "Laghouat", 33.8, 2.88], ["أم البواقي", "Oum El Bouaghi", 35.88, 7.11], ["باتنة", "Batna", 35.56, 6.17], ["بجاية", "Béjaïa", 36.75, 5.06], ["بسكرة", "Biskra", 34.85, 5.73], ["بشار", "Béchar", 31.62, -2.22], ["البليدة", "Blida", 36.47, 2.83], ["البويرة", "Bouira", 36.37, 3.9], ["تمنراست", "Tamanrasset", 22.79, 5.52], ["تبسة", "Tébessa", 35.4, 8.12], ["تلمسان", "Tlemcen", 34.88, -1.32], ["تيارت", "Tiaret", 35.37, 1.32], ["تيزي وزو", "Tizi Ouzou", 36.71, 4.05], ["الجزائر", "Alger", 36.75, 3.06], ["الجلفة", "Djelfa", 34.67, 3.26], ["جيجل", "Jijel", 36.82, 5.77], ["سطيف", "Sétif", 36.19, 5.41], ["سعيدة", "Saïda", 34.83, 0.15], ["سكيكدة", "Skikda", 36.88, 6.91], ["سيدي بلعباس", "Sidi Bel Abbès", 35.19, -0.63], ["عنابة", "Annaba", 36.9, 7.77], ["قالمة", "Guelma", 36.46, 7.43], ["قسنطينة", "Constantine", 36.37, 6.61], ["المدية", "Médéa", 36.26, 2.75], ["مستغانم", "Mostaganem", 35.93, 0.09], ["المسيلة", "M'Sila", 35.7, 4.54], ["معسكر", "Mascara", 35.4, 0.14], ["ورقلة", "Ouargla", 31.95, 5.32], ["وهران", "Oran", 35.7, -0.63], ["البيض", "El Bayadh", 33.68, 1.02], ["إليزي", "Illizi", 26.51, 8.48], ["برج بوعريريج", "Bordj Bou Arréridj", 36.07, 4.76], ["بومرداس", "Boumerdès", 36.76, 3.48], ["الطارف", "El Tarf", 36.77, 8.31], ["تندوف", "Tindouf", 27.67, -8.15], ["تيسمسيلت", "Tissemsilt", 35.61, 1.81], ["الوادي", "El Oued", 33.37, 6.86], ["خنشلة", "Khenchela", 35.43, 7.14], ["سوق أهراس", "Souk Ahras", 36.29, 7.95], ["تيبازة", "Tipaza", 36.59, 2.45], ["ميلة", "Mila", 36.45, 6.26], ["عين الدفلى", "Aïn Defla", 36.26, 1.97], ["النعامة", "Naâma", 33.27, -0.31], ["عين تموشنت", "Aïn Témouchent", 35.3, -1.14], ["غرداية", "Ghardaïa", 32.49, 3.67], ["غليزان", "Relizane", 35.74, 0.56], ["تيميمون", "Timimoun", 29.26, 0.23], ["برج باجي مختار", "Bordj Badji Mokhtar", 21.33, 0.95], ["أولاد جلال", "Ouled Djellal", 34.43, 5.07], ["بني عباس", "Béni Abbès", 30.13, -2.17], ["عين صالح", "In Salah", 27.2, 2.48], ["عين قزام", "In Guezzam", 19.57, 5.77], ["تقرت", "Touggourt", 33.1, 6.06], ["جانت", "Djanet", 24.55, 9.48], ["المغير", "El M'Ghair", 33.95, 5.92], ["المنيعة", "El Meniaa", 30.58, 2.88]];
+const wilName = i => (state.currentLang === 'ar' ? WIL[i][0] : WIL[i][1]);
+function nearestWilaya(L) { let b = 0, bd = 1e9; WIL.forEach((w, i) => { const d = haversine(L, { lat: w[2], lng: w[3] }); if (d < bd) { bd = d; b = i; } }); return { i: b, d: bd }; }
+function currentCityName() {
+  const mw = store.get('manualWilaya', null); if (mw !== null && WIL[mw]) return wilName(mw);
+  const n = nearestWilaya(state.location); if (n.d < 150) return wilName(n.i);
+  return state.geoCity || '';
+}
+function updateCityLabel() {
+  const lb = document.getElementById('locationLabel'), L = state.location; if (!lb) return;
+  lb.textContent = currentCityName() || (L.lat.toFixed(3) + ', ' + L.lng.toFixed(3));
+  const sc = document.getElementById('settingsCity');
+  if (sc) { const mw = store.get('manualWilaya', null); sc.textContent = (currentCityName() || '—') + (mw !== null ? ' • يدوي' : ' • تلقائي'); }
+}
+function applyWilaya(i, quiet) {
+  const w = WIL[i]; if (!w) return;
+  store.set('manualWilaya', i);
+  if (watchId !== null) { try { navigator.geolocation.clearWatch(watchId); } catch (e) {} watchId = null; }
+  state.location = { lat: w[2], lng: w[3] }; state.liveLocation = true;
+  state.qiblaDirection = computeQibla(w[2], w[3]);
+  calculatePrayerTimes(); updateMapLocation(true, true); updateQiblaLabels(); updateCityLabel();
+  setLocStatus('الموقع اليدوي: ' + wilName(i), true);
+  window.scheduleNativeNotifs && scheduleNativeNotifs();
+  if (!quiet) showToast('تم اختيار ولاية ' + wilName(i), 'fas fa-location-dot');
+}
+function useAutoLocation() {
+  store.set('manualWilaya', null); state.liveLocation = false; state.geoCity = '';
+  updateCityLabel(); closeWilaya(); requestLocation('auto');
+}
+function mapLocClick() { if (store.get('manualWilaya', null) !== null) openWilaya(); else requestLocation(true); }
+function renderWilayaList(q) {
+  q = (q || '').trim().toLowerCase(); const mw = store.get('manualWilaya', null);
+  const items = WIL.map((w, i) => ({ w, i })).filter(x => !q || normalizeArabic(x.w[0]).includes(normalizeArabic(q)) || x.w[1].toLowerCase().includes(q) || String(x.i + 1) === q);
+  document.getElementById('wilayaList').innerHTML =
+    `<div class="wl-item auto ${mw === null ? 'sel' : ''}" onclick="useAutoLocation()"><i class="fas fa-location-crosshairs"></i><div><b>تلقائي (GPS)</b><small>يحدد موقعك الحقيقي</small></div></div>` +
+    items.map(x => `<div class="wl-item ${mw === x.i ? 'sel' : ''}" onclick="pickWilaya(${x.i})"><span class="wl-n">${String(x.i + 1).padStart(2, '0')}</span><div><b>${wilName(x.i)}</b></div>${mw === x.i ? '<i class="fas fa-check"></i>' : ''}</div>`).join('');
+}
+function openWilaya() { document.getElementById('wilayaModal').classList.add('on'); document.getElementById('wilayaSearch').value = ''; renderWilayaList(''); }
+function closeWilaya() { document.getElementById('wilayaModal').classList.remove('on'); }
+function pickWilaya(i) { applyWilaya(i); closeWilaya(); }
 function useSavedLocation() {
   const v = store.get('lastLoc', null);
   if (v && isFinite(v.lat) && isFinite(v.lng) && !state.liveLocation) { state.location = { lat: v.lat, lng: v.lng }; return true; }
@@ -1454,6 +1635,7 @@ function useSavedLocation() {
 }
 function setLocStatus(txt, on) { document.getElementById('liveText').textContent = txt; document.getElementById('liveDot').classList.toggle('on', !!on); }
 function onGeoPos(pos) {
+  if (store.get('manualWilaya', null) !== null) return;
   const loc = { lat: pos.coords.latitude, lng: pos.coords.longitude, acc: pos.coords.accuracy };
   const moved = !state.liveLocation || haversine(state.location, loc) > 1;
   state.location = loc; state.liveLocation = true;
@@ -1476,6 +1658,7 @@ function onGeoErr(err) {
   if (locFirst) { locFirst = false; showToast(msgs[err.code] || 'تعذر تحديد الموقع', 'fas fa-location-dot'); }
 }
 function requestLocation(manual) {
+  const mw = store.get('manualWilaya', null); if (mw !== null && WIL[mw] && manual !== 'auto') { applyWilaya(mw, true); return; }
   if (manual) { locFirst = true; showToast('جاري تحديد موقعك...', 'fas fa-location-crosshairs'); }
   if (!navigator.geolocation) { calculatePrayerTimes(); updateMapLocation(true, true); setLocStatus('الموقع غير مدعوم في هذا المتصفح', false); return; }
   if (!window.isSecureContext) showToast('GPS يتطلب فتح الصفحة عبر HTTPS', 'fas fa-lock');
@@ -1485,10 +1668,10 @@ function requestLocation(manual) {
   try { watchId = navigator.geolocation.watchPosition(onGeoPos, () => {}, { enableHighAccuracy: true, timeout: 30000, maximumAge: 5000 }); } catch (e) {}
 }
 function reverseGeocode() {
-  const lb = document.getElementById('locationLabel'), L = state.location;
-  lb.textContent = L.lat.toFixed(3) + ', ' + L.lng.toFixed(3);
+  updateCityLabel(); if (store.get('manualWilaya', null) !== null) return;
+  const L = state.location;
   fetch(`https://nominatim.openstreetmap.org/reverse?format=json&zoom=10&lat=${L.lat}&lon=${L.lng}&accept-language=ar`)
-    .then(r => r.json()).then(j => { const a = j.address || {}; const n = a.city || a.town || a.village || a.county || a.state; if (n) lb.textContent = n; }).catch(() => {});
+    .then(r => r.json()).then(j => { const a = j.address || {}; const n = a.city || a.town || a.village || a.county || a.state; if (n) { state.geoCity = n; updateCityLabel(); window.scheduleNativeNotifs && scheduleNativeNotifs(); } }).catch(() => {});
 }
 
 // ==================== MAP + LIVE ROUTE TO MAKKAH ====================
@@ -2035,19 +2218,36 @@ function zoomQuran(d) { setQFS((state.qfs || 25) + d); }
   rc.addEventListener('touchmove', e => { if (e.touches.length === 2 && d0) { e.preventDefault(); setQFS(f0 * dist(e) / d0); } }, { passive: false });
   rc.addEventListener('touchend', () => { d0 = 0; });
 })();
+// ---- Quran search highlighting ----
+const _nzc = c => /[\u0610-\u061A\u064B-\u065F\u0670\u06D6-\u06ED\u0640]/.test(c) ? '' : ('أإآٱ'.includes(c) ? 'ا' : c === 'ى' ? 'ي' : c === 'ة' ? 'ه' : c);
+function hlText(text, q) {
+  text = String(text || ''); const nq = [...String(q || '')].map(_nzc).join('').trim(); if (!nq) return text;
+  let norm = '', map = []; for (let i = 0; i < text.length; i++) { const n = _nzc(text[i]); if (n) { norm += n; map.push(i); } }
+  const find = term => { const r = []; let f = 0; while (term) { const k = norm.indexOf(term, f); if (k < 0) break; r.push([map[k], map[k + term.length - 1] + 1]); f = k + term.length; } return r; };
+  let ranges = find(nq); if (!ranges.length && nq.includes(' ')) nq.split(/\s+/).filter(w => w.length > 1).forEach(w => { ranges = ranges.concat(find(w)); });
+  ranges.sort((a, b) => a[0] - b[0]); let out = '', pos = 0;
+  for (const [a, b0] of ranges) { if (a < pos) continue; let b = b0; while (b < text.length && !_nzc(text[b])) b++; out += text.slice(pos, a) + '<mark class="qhl">' + text.slice(a, b) + '</mark>'; pos = b; }
+  return out + text.slice(pos);
+}
+function markInAyah(n, q) {
+  const el = document.querySelector(`#readerContent .ayah[data-a="${n}"]`); if (!el || !q) return;
+  const tn = [...el.childNodes].find(x => x.nodeType === 3 && x.nodeValue.trim()); if (!tn) return;
+  const sp = document.createElement('span'); sp.innerHTML = hlText(tn.nodeValue, q); el.replaceChild(sp, tn);
+}
 const nz = x => normalizeArabic(x).replace(/\u0671/g, 'ا').replace(/[\u06D6-\u06ED]/g, '');
 function toggleReaderSearch() { const b = document.getElementById('readerSearch'); b.classList.toggle('hidden'); if (!b.classList.contains('hidden')) document.getElementById('readerSearchInput').focus(); }
-function goToAyah(n) {
+function goToAyah(n, q) {
   document.getElementById('readerSearchRes').innerHTML = '';
   const el = document.querySelector(`#readerContent .ayah[data-a="${n}"]`);
   if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); el.classList.add('found'); setTimeout(() => el.classList.remove('found'), 2500); }
+  if (q) markInAyah(n, q);
 }
 function searchInSurah(q) {
   const res = document.getElementById('readerSearchRes'), vs = verseCache[state.currentSurah] || localVerses[state.currentSurah];
   q = nz(q.trim().toLowerCase());
   if (!q || !vs) { res.innerHTML = ''; return; }
   const out = []; vs.forEach((v, i) => { if (nz(v).includes(q)) out.push(i); });
-  res.innerHTML = out.slice(0, 30).map(i => `<div class="sr-item" onclick="goToAyah(${i + 1})"><b>آية ${toArabicNum(i + 1)}</b> ${vs[i]}</div>`).join('') || '<div class="sr-item">لا توجد نتائج</div>';
+  res.innerHTML = out.length ? `<div class="sr-count">${out.length} نتيجة في هذه السورة</div>` + out.slice(0, 30).map(i => `<div class="sr-item" onclick="goToAyah(${i + 1}, '${q.replace(/'/g, '')}')"><div class="sr-h"><span>${surahs[state.currentSurah - 1].name}</span><span>آية ${toArabicNum(i + 1)}</span></div><div class="sr-t">${hlText(vs[i], q)}</div></div>`).join('') : '<div class="sr-item">لا توجد نتائج</div>';
 }
 let ayahTimer;
 function searchAyahGlobal(q) {
@@ -2063,7 +2263,8 @@ function searchAyahGlobal(q) {
       if (list.length) break;
     }
     if (!list.length) Object.keys(verseCache).forEach(sn => verseCache[sn].forEach((v, i) => { if (nz(v).includes(k)) list.push({ s: +sn, a: i + 1, t: v }); }));
-    box.innerHTML = list.slice(0, 40).map(m => `<div class="sr-item" onclick="openAyah(${m.s},${m.a})"><b>سورة ${surahs[m.s - 1].name} • آية ${toArabicNum(m.a)}</b><br>${m.t}</div>`).join('') || '<div class="sr-item">لا توجد نتائج - جرّب كلمات أقل أو تحقق من الاتصال</div>';
+    const qs = q.replace(/'/g, '');
+    box.innerHTML = list.length ? `<div class="sr-count">${list.length > 40 ? '40+' : list.length} نتيجة</div>` + list.slice(0, 40).map(m => `<div class="sr-item" onclick="openAyah(${m.s},${m.a},'${qs}')"><div class="sr-h"><span>سورة ${surahs[m.s - 1].name}</span><span>آية ${toArabicNum(m.a)}</span></div><div class="sr-t">${hlText((verseCache[m.s] && verseCache[m.s][m.a - 1]) || m.t, q)}</div></div>`).join('') : '<div class="sr-item">لا توجد نتائج - جرّب كلمات أقل أو تحقق من الاتصال</div>';
   }, 450);
 }
 const QDB = {
@@ -2104,6 +2305,9 @@ function hideTop() {
   if (!q('permissionModal').classList.contains('off')) return true;
   if (q('adhanOverlay').classList.contains('on') || q('adhanStop').classList.contains('on')) { userStopAdhan(); return true; }
   if (q('calOverlay').classList.contains('on')) { closeCalendar(); return true; }
+  const sh = ['mvSearch', 'mvAudio'].find(x => q(x).classList.contains('on')); if (sh) { mvSheet(sh, false); return true; }
+  if (q('wilayaModal').classList.contains('on')) { closeWilaya(); return true; }
+  if (q('duaAfter').classList.contains('on')) { closeDuaAfter(); return true; }
   if (q('mvNav').classList.contains('on')) { mvNavToggle(false); return true; }
   if (q('mushafViewer').classList.contains('on')) { closeMushaf(); return true; }
   const mf = document.querySelector('.map-full'); if (mf) { mf.classList.remove('map-full'); document.querySelectorAll('.leaflet-bar .fa-compress').forEach(i => { i.classList.remove('fa-compress'); i.classList.add('fa-expand'); }); setTimeout(() => map.invalidateSize(), 250); return true; }
@@ -2118,7 +2322,7 @@ function hideTop() {
   return false;
 }
 (function () { const A = window.Capacitor && Capacitor.Plugins && Capacitor.Plugins.App; if (A && A.addListener) A.addListener('backButton', () => { if (!hideTop()) A.exitApp(); }); })();
-async function openAyah(sn, a) { await openSurah(sn); setTimeout(() => goToAyah(a), 150); }
+async function openAyah(sn, a, q) { await openSurah(sn); setTimeout(() => goToAyah(a, q), 150); }
 function closeQuranReader() { document.getElementById('quranReader').classList.remove('active'); stopAudio(); }
 
 let audioElement = null, nextPre = null;
@@ -2212,7 +2416,7 @@ function setWirdDays(v) {
     today = dayN <= days ? `<br><i class="fas fa-bookmark"></i> ورد اليوم (${dayN}/${days}): <b>من الصفحة ${from} إلى ${to}</b>` : '<br>🎉 <b>اكتملت الختمة، تقبل الله منك</b>';
     document.getElementById('khatmaBtnText').textContent = 'إعادة بدء الختمة';
   }
-  document.getElementById('wirdNote').innerHTML = `لختم القرآن في <b>${days}</b> يوماً اقرأ <b>${Math.ceil(pages)}</b> صفحة يومياً، أي نحو <b>${Math.ceil(pages / 5)}</b> صفحات بعد كل صلاة. موعد الختم المتوقع: <b>${end.toLocaleDateString('ar-EG-u-nu-latn', { day: 'numeric', month: 'long', year: 'numeric' })}</b>${today}`;
+  document.getElementById('wirdNote').innerHTML = `لختم القرآن في <b>${days}</b> يوماً اقرأ <b>${Math.ceil(pages)}</b> صفحة يومياً، أي نحو <b>${Math.ceil(pages / 5)}</b> صفحات بعد كل صلاة. موعد الختم المتوقع: <b>${end.getDate()} ${GMONTHS[end.getMonth()]} ${end.getFullYear()}</b>${today}`;
 }
 function startKhatma() {
   store.set('khatmaStart', new Date().toISOString());
@@ -2322,16 +2526,150 @@ function restoreTheme() {
   const sw = document.querySelector('.theme-swatch.theme-' + th.k);
   if (sw) changeTheme(th.k, sw, true);
 }
-function changeLanguage(lang, el) {
-  state.currentLang = lang;
+const TRD = {"تخطي":["Skip","Passer","Omitir"],"تجهيز التطبيق":["App setup","Configuration de l'application","Configurar la app"],"فعّل الخطوات بالترتيب ليعمل الأذان والتنبيهات في وقتها بدقة":["Complete the steps in order so the adhan and alerts work on time","Activez les étapes dans l'ordre pour que l'adhan et les alertes fonctionnent à l'heure","Activa los pasos en orden para que el adhan y las alertas funcionen a tiempo"],"ابدأ الاستخدام":["Start using the app","Commencer","Empezar"],"معايرة البوصلة":["Compass calibration","Calibrage de la boussole","Calibrar la brújula"],"لتحديد اتجاه القبلة بدقة، حرّك جهازك في الهواء بحركة رقم 8 اللانهائية":["To find the Qibla accurately, move your phone in a figure-8 motion","Pour trouver la Qibla avec précision, bougez votre téléphone en forme de 8","Para hallar la Qibla con precisión, mueve el teléfono en forma de 8"],"بشكل مستمر وسلس":["continuously and smoothly","de façon continue et fluide","de forma continua y suave"],"جاري المعايرة...":["Calibrating...","Calibrage en cours...","Calibrando..."],"إنهاء المعايرة":["Finish calibration","Terminer le calibrage","Terminar calibración"],"القبلة":["Qibla","Qibla","Qibla"],"الإشعارات":["Notifications","Notifications","Notificaciones"],"الفجر":["Fajr","Fajr","Fajr"],"الضحى":["Dhuha","Dhouha","Duha"],"الظهر":["Dhuhr","Dhuhr","Dhuhr"],"العصر":["Asr","Asr","Asr"],"المغرب":["Maghrib","Maghrib","Maghrib"],"العشاء":["Isha","Isha","Isha"],"الشروق":["Sunrise","Lever du soleil","Amanecer"],"ساعة":["Hours","Heures","Horas"],"دقيقة":["Minutes","Minutes","Minutos"],"ثانية":["Seconds","Secondes","Segundos"],"بعد":["in","dans","en"],"س":["h","h","h"],"د":["m","min","min"],"القادمة":["Next","Prochaine","Siguiente"],"انقضت":["Passed","Passée","Pasada"],"تنبيه مسبق قبل 30 دقيقة من كل صلاة مفعّلة":["Pre-alert 30 minutes before every enabled prayer","Alerte 30 minutes avant chaque prière activée","Aviso 30 minutos antes de cada oración activada"],"تحديث الموقع":["Update location","Actualiser la position","Actualizar ubicación"],"موقعك الحالي":["Your current location","Votre position actuelle","Tu ubicación actual"],"في انتظار الموقع المباشر":["Waiting for live location","En attente de la position en direct","Esperando la ubicación en vivo"],"إلى الكعبة:":["To the Kaaba:","Jusqu'à la Kaaba :","Hasta la Kaaba:"],"إلى الكعبة":["To the Kaaba","Jusqu'à la Kaaba","Hasta la Kaaba"],"اتجاه القبلة":["Qibla direction","Direction de la Qibla","Dirección de la Qibla"],"معايرة":["Calibrate","Calibrer","Calibrar"],"التنبيه المسبق":["Pre-alert","Pré-alerte","Aviso previo"],"إشعار هادئ قبل 30 دقيقة من كل صلاة مفعّلة":["A quiet notification 30 minutes before each enabled prayer","Une notification discrète 30 minutes avant chaque prière activée","Una notificación discreta 30 minutos antes de cada oración activada"],"متبقي 30 دقيقة على موعد الصلاة التالية":["30 minutes left until the next prayer","Il reste 30 minutes avant la prochaine prière","Faltan 30 minutos para la próxima oración"],"تجربة التنبيه":["Test alert","Tester l'alerte","Probar aviso"],"خلفية الشاشة الكاملة":["Full-screen background","Arrière-plan plein écran","Fondo de pantalla completa"],"اختر من معرض الصور أو الأصول":["Choose from your gallery or built-in images","Choisissez dans la galerie ou les images intégrées","Elige de tu galería o de las imágenes incluidas"],"السبحة التفاعلية":["Interactive tasbih","Tasbih interactif","Tasbih interactivo"],"اكتب ذكرك هنا...":["Type your dhikr here...","Écrivez votre dhikr ici...","Escribe tu dhikr aquí..."],"الهدف:":["Goal:","Objectif :","Objetivo:"],"الجولات:":["Rounds:","Tours :","Rondas:"],"اسحب الحبة التالية إلى اليسار أو انقر على الخيط للتسبيح":["Drag the next bead to the left or tap the string to count","Faites glisser la perle suivante vers la gauche ou touchez le fil pour compter","Arrastra la siguiente cuenta a la izquierda o toca el hilo para contar"],"إعادة":["Reset","Réinitialiser","Reiniciar"],"المصحف الشريف":["The Holy Quran","Le Saint Coran","El Sagrado Corán"],"رواية ورش عن نافع":["Warsh narration from Nafi'","Récit de Warsh d'après Nafi'","Narración de Warsh de Nafi'"],"رواية حفص عن عاصم":["Hafs narration from 'Asim","Récit de Hafs d'après 'Asim","Narración de Hafs de 'Asim"],"سورة":["Surah","Sourate","Sura"],"المصحف المصوّر بالتجويد":["Illustrated Mushaf with Tajweed","Mushaf illustré avec Tajwid","Mushaf ilustrado con Tayuid"],"رواية ورش":["Warsh narration","Récit de Warsh","Narración de Warsh"],"صفحة":["page","page","página"],"يعمل بدون إنترنت":["Works offline","Fonctionne hors ligne","Funciona sin conexión"],"الورد اليومي":["Daily wird","Wird quotidien","Wird diario"],"حاسبة الختمة حسب عدد الأيام":["Khatma calculator by number of days","Calculateur de khatma par nombre de jours","Calculadora de khatma por días"],"يوم":["day","jour","día"],"جزء/يوم":["juz/day","juz/jour","yuz/día"],"حزب/يوم":["hizb/day","hizb/jour","hizb/día"],"صفحة/يوم":["pages/day","pages/jour","páginas/día"],"آية/يوم":["verses/day","versets/jour","versículos/día"],"ابدأ الختمة":["Start khatma","Commencer la khatma","Iniciar khatma"],"ابحث عن آية: اكتب جزءاً منها...":["Search a verse: type part of it...","Chercher un verset : tapez-en une partie...","Buscar un versículo: escribe parte de él..."],"ابحث عن سورة بالاسم أو الرقم...":["Search a surah by name or number...","Chercher une sourate par nom ou numéro...","Buscar una sura por nombre o número..."],"شمال":["North","Nord","Norte"],"شمال شرق":["North-east","Nord-est","Noreste"],"شرق":["East","Est","Este"],"جنوب شرق":["South-east","Sud-est","Sureste"],"جنوب":["South","Sud","Sur"],"جنوب غرب":["South-west","Sud-ouest","Suroeste"],"غرب":["West","Ouest","Oeste"],"شمال غرب":["North-west","Nord-ouest","Noroeste"],"اتجاه الكعبة المشرفة":["direction of the Kaaba","direction de la Kaaba","dirección de la Kaaba"],"غير مقفلة - يرجى المعايرة":["Not locked - please calibrate","Non verrouillé - veuillez calibrer","Sin bloquear - calibra por favor"],"المسافة إلى مكة":["Distance to Makkah","Distance jusqu'à La Mecque","Distancia a La Meca"],"اتجاه الجهاز":["Device heading","Cap de l'appareil","Orientación del dispositivo"],"إعادة المعايرة":["Recalibrate","Recalibrer","Recalibrar"],"سمة التطبيق":["App theme","Thème de l'application","Tema de la app"],"اختر لوناً مخصصاً وسيقوم الذكاء الاصطناعي بإنشاء سمة متناغمة":["Pick a custom color and AI will create a harmonious theme","Choisissez une couleur et l'IA créera un thème harmonieux","Elige un color y la IA creará un tema armonioso"],"لون مخصص":["Custom color","Couleur personnalisée","Color personalizado"],"اللغة":["Language","Langue","Idioma"],"الصوتيات والبث":["Audio & streaming","Audio et streaming","Audio y transmisión"],"البث عبر Wi-Fi فقط":["Stream over Wi-Fi only","Streaming en Wi-Fi uniquement","Transmitir solo con Wi-Fi"],"حماية باقة البيانات عند الاستماع":["Protect your data plan while listening","Protégez votre forfait pendant l'écoute","Protege tu plan de datos al escuchar"],"القارئ المفضل":["Favorite reciter","Récitateur préféré","Recitador favorito"],"ياسين الجزائري":["Yassine Al-Djazairi","Yassine Al-Djazairi","Yassine Al-Djazairi"],"عبد الرحمن السديس":["Abdul Rahman Al-Sudais","Abdul Rahman Al-Sudais","Abdul Rahman Al-Sudais"],"مشاري العفاسي":["Mishary Alafasy","Mishary Alafasy","Mishary Alafasy"],"الشروط والأذونات":["Terms & permissions","Conditions et autorisations","Términos y permisos"],"سياسة الخصوصية":["Privacy policy","Politique de confidentialité","Política de privacidad"],"لا يتم جمع أو مشاركة أي بيانات شخصية. يُستخدم موقعك محلياً فقط لحساب المواقيت والقبلة.":["No personal data is collected or shared. Your location is used locally only to calculate prayer times and the Qibla.","Aucune donnée personnelle n'est collectée ni partagée. Votre position sert uniquement en local au calcul des horaires et de la Qibla.","No se recopila ni comparte ningún dato personal. Tu ubicación se usa solo localmente para calcular los horarios y la Qibla."],"شروط الاستخدام":["Terms of use","Conditions d'utilisation","Condiciones de uso"],"التطبيق مخصص للاستخدام الشخصي في العبادة والذكر، ويُمنع استخدامه بما يسيء للمقدسات.":["The app is for personal worship and remembrance; using it to offend sacred values is prohibited.","L'application est destinée à un usage personnel pour l'adoration et le rappel ; il est interdit de l'utiliser pour offenser le sacré.","La app es de uso personal para la adoración y el recuerdo; está prohibido usarla para ofender lo sagrado."],"أوافق على الشروط":["I agree to the terms","J'accepte les conditions","Acepto los términos"],"حول التطبيق":["About","À propos","Acerca de"],"معالج التفعيل":["Setup wizard","Assistant d'activation","Asistente de activación"],"الموقع والإشعارات وتشغيل الأذان والتطبيق مغلق":["Location, notifications and adhan with the app closed","Position, notifications et adhan application fermée","Ubicación, notificaciones y adhan con la app cerrada"],"تثبيت التطبيق على الهاتف":["Install on your phone","Installer sur le téléphone","Instalar en el teléfono"],"يعمل بدون إنترنت كتطبيق مستقل":["Works offline as a standalone app","Fonctionne hors ligne comme application autonome","Funciona sin conexión como app independiente"],"الإصدار":["Version","Version","Versión"],"شكراً لتقييمك":["Thanks for rating","Merci de votre note","Gracias por calificar"],"قيّم التطبيق":["Rate the app","Noter l'application","Calificar la app"],"جميع الحقوق محفوظة":["All rights reserved","Tous droits réservés","Todos los derechos reservados"],"تصغير":["Zoom out","Réduire","Reducir"],"تكبير":["Zoom in","Agrandir","Ampliar"],"بحث":["Search","Rechercher","Buscar"],"تغيير القارئ":["Change reciter","Changer de récitateur","Cambiar recitador"],"ابحث عن آية في هذه السورة...":["Search a verse in this surah...","Chercher un verset dans cette sourate...","Buscar un versículo en esta sura..."],"أذكار الصباح":["Morning adhkar","Adhkar du matin","Adhkar de la mañana"],"أذكار المساء":["Evening adhkar","Adhkar du soir","Adhkar de la tarde"],"دخول المنزل":["Entering the home","Entrer à la maison","Entrar en casa"],"خروج المنزل":["Leaving the home","Sortir de la maison","Salir de casa"],"دعاء السفر":["Travel supplication","Invocation du voyage","Súplica de viaje"],"أذكار النوم":["Sleep adhkar","Adhkar du coucher","Adhkar para dormir"],"أدعية الطعام":["Food supplications","Invocations du repas","Súplicas de la comida"],"السبحة الذكية":["Smart tasbih","Tasbih intelligent","Tasbih inteligente"],"أذكار بعد الصلاة":["After-prayer adhkar","Adhkar après la prière","Adhkar tras la oración"],"الوضوء والمسجد":["Ablution & mosque","Ablutions et mosquée","Ablución y mezquita"],"الهم والكرب":["Distress & anxiety","Détresse et angoisse","Angustia y aflicción"],"الاستغفار والتوبة":["Forgiveness & repentance","Pardon et repentir","Perdón y arrepentimiento"],"أدعية قرآنية":["Quranic supplications","Invocations coraniques","Súplicas coránicas"],"تفاعلية":["Interactive","Interactif","Interactivo"],"بارك الله فيك":["May Allah bless you","Qu'Allah vous bénisse","Que Allah te bendiga"],"لقد أتممت الذكر بنجاح":["You completed the dhikr successfully","Vous avez terminé le dhikr avec succès","Completaste el dhikr con éxito"],"حسناً":["OK","D'accord","De acuerdo"],"الآن":["Now","Maintenant","Ahora"],"رسالة":["Message","Message","Mensaje"],"اليوم":["Today","Aujourd'hui","Hoy"],"إغلاق":["Close","Fermer","Cerrar"],"الجزء":["Juz","Juz","Yuz"],"صفحات المصحف متوفرة في تطبيق الأندرويد فقط":["Mushaf pages are available in the Android app only","Les pages du Mushaf sont disponibles uniquement dans l'application Android","Las páginas del Mushaf solo están en la app de Android"],"حان الآن موعد صلاة":["It is now time for the prayer of","C'est l'heure de la prière de","Es la hora de la oración de"],"إيقاف الأذان":["Stop adhan","Arrêter l'adhan","Detener el adhan"],"مسلم":["Muslim","Muslim","Muslim"],"البخاري":["Al-Bukhari","Al-Boukhari","Al-Bujari"],"أبو داود":["Abu Dawud","Abou Daoud","Abu Dawud"],"الترمذي":["At-Tirmidhi","At-Tirmidhi","At-Tirmidhi"],"النسائي":["An-Nasa'i","An-Nasa'i","An-Nasa'i"],"الحاكم":["Al-Hakim","Al-Hakim","Al-Hakim"],"ابن ماجه":["Ibn Majah","Ibn Majah","Ibn Maya"],"البخاري ومسلم":["Al-Bukhari & Muslim","Al-Boukhari et Muslim","Al-Bujari y Muslim"],"أبو داود والترمذي":["Abu Dawud & At-Tirmidhi","Abou Daoud et At-Tirmidhi","Abu Dawud y At-Tirmidhi"],"أبو داود والنسائي":["Abu Dawud & An-Nasa'i","Abou Daoud et An-Nasa'i","Abu Dawud y An-Nasa'i"],"أذان":["Adhan","Adhan","Adhan"],"تذكير صلاة الضحى":["Dhuha prayer reminder","Rappel de la prière de Dhouha","Recordatorio de la oración de Duha"],"اختر المؤذن":["Choose the muezzin","Choisissez le muezzin","Elige el muecín"],"اختر الصوت":["Choose the sound","Choisissez le son","Elige el sonido"],"تم حفظ الأذان":["Adhan saved","Adhan enregistré","Adhan guardado"],"إشعار":["Notification","Notification","Notificación"],"شاشة كاملة":["Full screen","Plein écran","Pantalla completa"],"تجربة":["Test","Test","Probar"],"تشغيل الأذان والتطبيق مغلق":["Adhan with the app closed","Adhan application fermée","Adhan con la app cerrada"],"جارٍ الفحص...":["Checking...","Vérification...","Comprobando..."],"تفعيل":["Enable","Activer","Activar"],"العرض فوق التطبيقات":["Display over other apps","Affichage par-dessus les autres applis","Mostrar sobre otras apps"],"البطارية بدون قيود":["Unrestricted battery","Batterie sans restriction","Batería sin restricciones"],"التشغيل التلقائي":["Auto-start","Démarrage automatique","Inicio automático"],"فتح":["Open","Ouvrir","Abrir"],"اضغط الزر ثم اقفل الشاشة أو اخرج من التطبيق، وسيظهر إشعار الأذان كما يظهر وقت الصلاة.":["Press the button, then lock the screen or leave the app; the adhan notification will appear just as at prayer time.","Appuyez sur le bouton puis verrouillez l'écran ou quittez l'application ; la notification d'adhan apparaîtra comme à l'heure de la prière.","Pulsa el botón y luego bloquea la pantalla o sal de la app; la notificación del adhan aparecerá como a la hora de la oración."],"لكي يبدأ الأذان في وقته دون أن تفتح التطبيق، فعّل الأمور التالية. اضغط «تفعيل» فيفتح إعداد الهاتف، اختر السماح ثم ارجع للتطبيق.":["For the adhan to start on time without opening the app, enable the following. Tap “Enable”, allow it in the phone settings, then come back.","Pour que l'adhan démarre à l'heure sans ouvrir l'application, activez ce qui suit. Touchez « Activer », autorisez dans les réglages puis revenez.","Para que el adhan suene a su hora sin abrir la app, activa lo siguiente. Pulsa «Activar», permite en los ajustes y vuelve."],"في هواتف شاومي وأوبو وفيفو فعّل «التشغيل التلقائي» من إعدادات التطبيق":["On Xiaomi, Oppo and Vivo phones enable “Autostart” in the app settings","Sur Xiaomi, Oppo et Vivo activez « Démarrage automatique » dans les réglages de l'application","En teléfonos Xiaomi, Oppo y Vivo activa «Inicio automático» en los ajustes de la app"],"اختبار حقيقي بعد 10 ثوانٍ":["Real test in 10 seconds","Test réel dans 10 secondes","Prueba real en 10 segundos"],"مستوى صوت الأذان":["Adhan volume","Volume de l'adhan","Volumen del adhan"],"ارفع صوت المنبّه في هاتفك أيضاً":["Raise your phone's alarm volume too","Augmentez aussi le volume d'alarme du téléphone","Sube también el volumen de alarma del teléfono"],"الموقع الدقيق":["Precise location","Position précise","Ubicación precisa"],"لحساب مواقيت الصلاة واتجاه القبلة بدقة":["To calculate prayer times and the Qibla accurately","Pour calculer précisément les horaires et la Qibla","Para calcular con precisión los horarios y la Qibla"],"تفعيل الموقع":["Enable location","Activer la position","Activar ubicación"],"لتنبيهك قبل الصلاة بـ 30 دقيقة ولتشغيل الأذان":["To alert you 30 minutes before prayer and play the adhan","Pour vous alerter 30 minutes avant la prière et lancer l'adhan","Para avisarte 30 minutos antes y reproducir el adhan"],"تفعيل الإشعارات":["Enable notifications","Activer les notifications","Activar notificaciones"],"ليظهر الأذان بشاشة كاملة حتى والهاتف مقفل":["So the adhan shows full screen even when the phone is locked","Pour que l'adhan s'affiche en plein écran même téléphone verrouillé","Para que el adhan se muestre a pantalla completa incluso con el teléfono bloqueado"],"فتح الإعداد":["Open setting","Ouvrir le réglage","Abrir ajuste"],"حتى لا يوقف النظام الأذان عند إغلاق التطبيق":["So the system doesn't stop the adhan when the app is closed","Pour que le système n'arrête pas l'adhan quand l'application est fermée","Para que el sistema no detenga el adhan con la app cerrada"],"في هواتف شاومي وأوبو وفيفو فعّل «التشغيل التلقائي» ثم ارجع للتطبيق":["On Xiaomi, Oppo and Vivo enable “Autostart”, then return to the app","Sur Xiaomi, Oppo et Vivo activez « Démarrage automatique » puis revenez","En Xiaomi, Oppo y Vivo activa «Inicio automático» y vuelve a la app"],"لاحقاً":["Later","Plus tard","Más tarde"],"تم التفعيل ✓":["Enabled ✓","Activé ✓","Activado ✓"],"تم التخطي — يمكنك التفعيل لاحقاً":["Skipped — you can enable it later","Ignoré — vous pourrez l'activer plus tard","Omitido — puedes activarlo más tarde"],"تم رفض الإذن — افتح إعدادات التطبيق وفعّل «الموقع»":["Permission denied — open app settings and enable “Location”","Autorisation refusée — ouvrez les réglages de l'application et activez « Position »","Permiso denegado — abre los ajustes de la app y activa «Ubicación»"],"تم رفض الإذن — فعّله من إعدادات المتصفح":["Permission denied — enable it from the browser settings","Autorisation refusée — activez-la dans les réglages du navigateur","Permiso denegado — actívalo en los ajustes del navegador"],"فتح إعدادات التطبيق":["Open app settings","Ouvrir les réglages de l'application","Abrir ajustes de la app"],"تم تجهيز كل شيء، بارك الله فيك 🤍":["Everything is ready, may Allah bless you 🤍","Tout est prêt, qu'Allah vous bénisse 🤍","Todo listo, que Allah te bendiga 🤍"],"متتبّع الصلوات":["Prayer tracker","Suivi des prières","Seguimiento de oraciones"],"أتممت صلوات اليوم، تقبل الله منك":["You completed today's prayers, may Allah accept it","Vous avez accompli vos prières du jour, qu'Allah l'accepte","Completaste las oraciones de hoy, que Allah lo acepte"],"دعاء بعد الأذان":["Dua after the adhan","Invocation après l'adhan","Súplica después del adhan"],"رواه البخاري • وصلِّ على النبي ﷺ قبل الدعاء":["Narrated by Al-Bukhari • Send blessings on the Prophet ﷺ before the dua","Rapporté par Al-Boukhari • Priez sur le Prophète ﷺ avant l'invocation","Narrado por Al-Bujari • Bendice al Profeta ﷺ antes de la súplica"],"رواه البخاري":["Narrated by Al-Bukhari","Rapporté par Al-Boukhari","Narrado por Al-Bujari"],"قرأته":["I read it","Je l'ai lue","La leí"],"بارك الله فيك، تقبّل الله منك":["May Allah bless you and accept from you","Qu'Allah vous bénisse et accepte de vous","Que Allah te bendiga y lo acepte"],"اختر ولايتك":["Choose your wilaya","Choisissez votre wilaya","Elige tu wilaya"],"إذا أخطأ التطبيق في تحديد مكانك أو أردت ولاية أخرى":["If the app got your location wrong, or you want another wilaya","Si l'application s'est trompée de position, ou pour une autre wilaya","Si la app falló al ubicarte, o quieres otra wilaya"],"ابحث عن ولاية...":["Search for a wilaya...","Chercher une wilaya...","Buscar una wilaya..."],"تلقائي (GPS)":["Automatic (GPS)","Automatique (GPS)","Automático (GPS)"],"يحدد موقعك الحقيقي":["Detects your real location","Détecte votre position réelle","Detecta tu ubicación real"],"الموقع":["Location","Localisation","Ubicación"],"الولاية / المدينة":["Wilaya / City","Wilaya / Ville","Wilaya / Ciudad"],"يدوي":["manual","manuel","manual"],"تلقائي":["automatic","automatique","automático"],"بحث في المصحف":["Search the Mushaf","Rechercher dans le Mushaf","Buscar en el Mushaf"],"رقم الصفحة، اسم السورة، أو آية (مثال: 2:255)":["Page number, surah name, or verse (e.g. 2:255)","Numéro de page, nom de sourate ou verset (ex. 2:255)","Número de página, nombre de sura o versículo (ej. 2:255)"],"اكتب رقم صفحة، أو اسم سورة، أو كلمات من آية، أو رقم السورة والآية مثل 36:1":["Type a page number, a surah name, words from a verse, or surah:verse like 36:1","Tapez un numéro de page, un nom de sourate, des mots d'un verset ou sourate:verset comme 36:1","Escribe un número de página, nombre de sura, palabras de un versículo o sura:versículo como 36:1"],"الاستماع إلى السور":["Listen to the surahs","Écouter les sourates","Escuchar las suras"],"متابعة الصفحات":["Continue pages","Pages suivantes","Continuar páginas"],"اضغط مطوّلاً على أي آية لتلوّنها وتبدأ التلاوة منها حتى نهاية الصفحة":["Long-press any verse to highlight it and recite from it to the end of the page","Appuyez longuement sur un verset pour le colorer et réciter jusqu'à la fin de la page","Mantén pulsado un versículo para resaltarlo y recitar hasta el final de la página"],"اضغط مطوّلاً على الآية في القائمة لبدء التلاوة منها":["Long-press the verse in the list to start reciting from it","Appuyez longuement sur le verset dans la liste pour réciter à partir de celui-ci","Mantén pulsado el versículo de la lista para recitar desde él"],"جاري تحميل آيات الصفحة...":["Loading the page verses...","Chargement des versets de la page...","Cargando los versículos de la página..."],"تحتاج اتصالاً بالإنترنت لتحميل آيات هذه الصفحة وتلاوتها":["An internet connection is needed to load and recite this page","Une connexion internet est nécessaire pour charger et réciter cette page","Se necesita internet para cargar y recitar esta página"],"اذهب إلى صفحة الآية":["Go to the verse's page","Aller à la page du verset","Ir a la página del versículo"],"جاري البحث في الآيات...":["Searching the verses...","Recherche dans les versets...","Buscando en los versículos..."],"لا توجد آيات مطابقة (تحتاج اتصالاً بالإنترنت)":["No matching verses (internet required)","Aucun verset correspondant (internet requis)","Sin versículos coincidentes (requiere internet)"],"جاري تحديد الصفحة...":["Locating the page...","Recherche de la page...","Localizando la página..."],"انتهت الصفحة، تقبّل الله منك":["Page finished, may Allah accept from you","Page terminée, qu'Allah accepte de vous","Página terminada, que Allah lo acepte"],"تعذر تشغيل الصوت - تحقق من الاتصال":["Couldn't play audio - check your connection","Lecture impossible - vérifiez la connexion","No se pudo reproducir - revisa la conexión"],"البث متاح عبر Wi-Fi فقط - غيّر الإعداد":["Streaming is Wi-Fi only - change the setting","Streaming en Wi-Fi uniquement - changez le réglage","Solo Wi-Fi - cambia el ajuste"],"الأجزاء":["Juz list","Juz","Yuz"],"السور":["Surahs","Sourates","Suras"],"جانفي":["January","janvier","enero"],"فيفري":["February","février","febrero"],"مارس":["March","mars","marzo"],"أفريل":["April","avril","abril"],"ماي":["May","mai","mayo"],"جوان":["June","juin","junio"],"جويلية":["July","juillet","julio"],"أوت":["August","août","agosto"],"سبتمبر":["September","septembre","septiembre"],"أكتوبر":["October","octobre","octubre"],"نوفمبر":["November","novembre","noviembre"],"ديسمبر":["December","décembre","diciembre"],"المحرم":["Muharram","Mouharram","Muharram"],"محرم":["Muharram","Mouharram","Muharram"],"صفر":["Safar","Safar","Safar"],"ربيع الأول":["Rabi' al-Awwal","Rabi' al-Awwal","Rabi' al-Awwal"],"ربيع الآخر":["Rabi' al-Thani","Rabi' ath-Thani","Rabi' al-Zani"],"ربيع الثاني":["Rabi' al-Thani","Rabi' ath-Thani","Rabi' al-Zani"],"جمادى الأولى":["Jumada al-Awwal","Joumada al-Oula","Yumada al-Ula"],"جمادى الآخرة":["Jumada al-Thani","Joumada ath-Thania","Yumada al-Ajira"],"جمادى الثانية":["Jumada al-Thani","Joumada ath-Thania","Yumada al-Ajira"],"رجب":["Rajab","Rajab","Rayab"],"شعبان":["Sha'ban","Cha'ban","Sha'ban"],"رمضان":["Ramadan","Ramadan","Ramadán"],"شوال":["Shawwal","Chawwal","Shawwal"],"ذو القعدة":["Dhu al-Qi'dah","Dhou al-Qi'da","Du al-Qi'da"],"ذو الحجة":["Dhu al-Hijjah","Dhou al-Hijja","Du al-Hiyya"],"هـ":["AH","H","H"],"سبت":["Sat","Sam","Sáb"],"أحد":["Sun","Dim","Dom"],"اثنين":["Mon","Lun","Lun"],"ثلاثاء":["Tue","Mar","Mar"],"أربعاء":["Wed","Mer","Mié"],"خميس":["Thu","Jeu","Jue"],"جمعة":["Fri","Ven","Vie"],"ش":["N","N","N"],"ج":["S","S","S"],"شر":["E","E","E"],"غ":["W","O","O"],"مكية":["Meccan","Mecquoise","Mecana"],"مدنية":["Medinan","Médinoise","Medinense"],"مكة":["Makkah","La Mecque","La Meca"],"المدينة":["Madinah","Médine","Medina"],"الأقصى":["Al-Aqsa","Al-Aqsa","Al-Aqsa"],"الأزهر":["Al-Azhar","Al-Azhar","Al-Azhar"],"صورتي":["My photo","Ma photo","Mi foto"],"إضافة صورة":["Add photo","Ajouter une photo","Añadir foto"],"تم حفظ الخلفية":["Background saved","Arrière-plan enregistré","Fondo guardado"],"تمت إضافة الصورة وحفظها":["Photo added and saved","Photo ajoutée et enregistrée","Foto añadida y guardada"],"تعذر فتح هذه الصورة":["Couldn't open this image","Impossible d'ouvrir cette image","No se pudo abrir esta imagen"],"تم حذف الصورة":["Photo deleted","Photo supprimée","Foto eliminada"],"رباح بن دراح الجزائري":["Rabah Ben Derradj Al-Djazairi","Rabah Ben Derradj Al-Djazairi","Rabah Ben Derradj Al-Djazairi"],"محمد رمضان السعد":["Mohamed Ramadan Al-Saad","Mohamed Ramadan Al-Saad","Mohamed Ramadan Al-Saad"],"ناصر القطامي":["Nasser Al-Qatami","Nasser Al-Qatami","Nasser Al-Qatami"],"تم الحفظ":["Saved","Enregistré","Guardado"],"موقعي":["My location","Ma position","Mi ubicación"],"الطريق إلى الكعبة":["Route to the Kaaba","Itinéraire vers la Kaaba","Ruta a la Kaaba"],"تكبير الخريطة":["Enlarge map","Agrandir la carte","Ampliar el mapa"],"تتبع مباشر":["Live tracking","Suivi en direct","Seguimiento en vivo"],"الكعبة المشرفة":["The Noble Kaaba","La Kaaba noble","La Noble Kaaba"],"تم تحديد موقعك الحقيقي بنجاح":["Your real location was found","Votre position réelle a été trouvée","Se encontró tu ubicación real"],"تعذر تحديد الموقع - تأكد من تشغيل GPS":["Couldn't find location - make sure GPS is on","Position introuvable - vérifiez que le GPS est activé","No se pudo ubicar - verifica que el GPS esté activo"],"انتهت مهلة تحديد الموقع":["Location request timed out","Délai de localisation dépassé","Se agotó el tiempo de ubicación"],"جاري تحديد الموقع (دقة أقل)...":["Finding location (lower accuracy)...","Recherche de la position (précision réduite)...","Buscando ubicación (menor precisión)..."],"تعذر تحديد الموقع":["Couldn't find location","Position introuvable","No se pudo ubicar"],"جاري تحديد موقعك...":["Finding your location...","Recherche de votre position...","Buscando tu ubicación..."],"الموقع غير مدعوم في هذا المتصفح":["Location isn't supported in this browser","La localisation n'est pas prise en charge par ce navigateur","La ubicación no es compatible con este navegador"],"جاري تحديد الموقع...":["Finding location...","Recherche de la position...","Buscando ubicación..."],"تم تفعيل التنبيه المسبق":["Pre-alert enabled","Pré-alerte activée","Aviso previo activado"],"تم إيقاف التنبيه المسبق":["Pre-alert disabled","Pré-alerte désactivée","Aviso previo desactivado"],"التنبيه المسبق متوقف":["Pre-alert is off","Pré-alerte désactivée","Aviso previo desactivado"],"جاري المعايرة... استمر بحركة ∞":["Calibrating... keep moving in a ∞ motion","Calibrage... continuez le mouvement ∞","Calibrando... sigue el movimiento ∞"],"اكتملت المعايرة ✓":["Calibration complete ✓","Calibrage terminé ✓","Calibración completa ✓"],"تمت المعايرة وقفل اتجاه القبلة":["Calibrated and Qibla direction locked","Calibré et direction de la Qibla verrouillée","Calibrado y dirección de la Qibla bloqueada"],"تمت إعادة العداد":["Counter reset","Compteur réinitialisé","Contador reiniciado"],"تنبيه":["Warning","Avertissement","Advertencia"],"أنت تسيء لله وليس لي، فاحذر من سخط الله تعالى والله المستعان":["You are offending Allah, not me — beware of His wrath, and Allah is the One whose help is sought","Vous offensez Allah et non moi — craignez Son courroux, et c'est Allah que l'on implore","Ofendes a Allah, no a mí — cuídate de Su ira, y a Allah se pide ayuda"],"لا توجد نتائج":["No results","Aucun résultat","Sin resultados"],"جاري البحث...":["Searching...","Recherche...","Buscando..."],"لا توجد نتائج - جرّب كلمات أقل أو تحقق من الاتصال":["No results - try fewer words or check your connection","Aucun résultat - essayez moins de mots ou vérifiez la connexion","Sin resultados - prueba menos palabras o revisa la conexión"],"تم حفظ المصحف - القراءة والبحث بدون إنترنت":["Mushaf saved - read and search offline","Mushaf enregistré - lecture et recherche hors ligne","Mushaf guardado - leer y buscar sin conexión"],"إشعار تجريبي ✓ الإشعارات تعمل":["Test notification ✓ Notifications work","Notification de test ✓ Les notifications fonctionnent","Notificación de prueba ✓ Las notificaciones funcionan"],"انتهت السورة، تقبل الله منك":["Surah finished, may Allah accept from you","Sourate terminée, qu'Allah accepte de vous","Sura terminada, que Allah lo acepte"],"تعذر تشغيل الصوت":["Couldn't play audio","Lecture audio impossible","No se pudo reproducir el audio"],"السماح بالبث عبر بيانات الجوال":["Streaming over mobile data allowed","Streaming autorisé sur données mobiles","Transmisión por datos móviles permitida"],"إعادة بدء الختمة":["Restart khatma","Recommencer la khatma","Reiniciar khatma"],"بدأت الختمة، أعانك الله":["Khatma started, may Allah help you","Khatma commencée, qu'Allah vous aide","Khatma iniciada, que Allah te ayude"],"اكتملت الختمة، تقبل الله منك":["Khatma completed, may Allah accept from you","Khatma terminée, qu'Allah accepte de vous","Khatma completada, que Allah lo acepte"],"تمت إعادة العدادات":["Counters reset","Compteurs réinitialisés","Contadores reiniciados"],"تم تغيير السمة":["Theme changed","Thème modifié","Tema cambiado"],"تم إنشاء سمة متناغمة بالذكاء الاصطناعي":["A harmonious theme was created by AI","Un thème harmonieux a été créé par l'IA","La IA creó un tema armonioso"],"تم تغيير اللغة":["Language changed","Langue modifiée","Idioma cambiado"],"تمت الموافقة على الشروط":["Terms accepted","Conditions acceptées","Términos aceptados"],"تم إلغاء الموافقة":["Approval withdrawn","Accord retiré","Aprobación retirada"],"هدية الذاكرين 🎁":["A gift for those who remember Allah 🎁","Un cadeau pour ceux qui invoquent Allah 🎁","Un regalo para quienes recuerdan a Allah 🎁"],"بارك الله فيك، تقبل الله منك":["May Allah bless you and accept from you","Qu'Allah vous bénisse et accepte de vous","Que Allah te bendiga y lo acepte"],"تم تثبيت التطبيق":["App installed","Application installée","App instalada"],"أنت تستخدم التطبيق بالفعل":["You're already using the app","Vous utilisez déjà l'application","Ya estás usando la app"],"تثبيت التطبيق":["Install the app","Installer l'application","Instalar la app"],"إضافة الإشعارات غير موجودة في هذه النسخة":["The notifications plugin isn't in this version","Le plugin de notifications est absent de cette version","El complemento de notificaciones no está en esta versión"],"تعذر تشغيل ملف الأذان":["Couldn't play the adhan file","Impossible de lire le fichier d'adhan","No se pudo reproducir el archivo del adhan"],"مفعّلة ✓":["Enabled ✓","Activées ✓","Activadas ✓"],"مفعّل ✓":["Enabled ✓","Activé ✓","Activado ✓"],"غير مفعّلة - اضغط تفعيل":["Not enabled - tap Enable","Non activées - touchez Activer","No activadas - pulsa Activar"],"غير مفعّل - ضروري للشاشة الكاملة":["Not enabled - required for full screen","Non activé - requis pour le plein écran","No activado - necesario para pantalla completa"],"بدون قيود ✓":["Unrestricted ✓","Sans restriction ✓","Sin restricciones ✓"],"اضغط تفعيل ثم اختر «بدون قيود» للتطبيق":["Tap Enable, then choose “Unrestricted” for the app","Touchez Activer puis choisissez « Sans restriction » pour l'application","Pulsa Activar y elige «Sin restricciones» para la app"],"لم يُجدول شيء بعد - افتح التطبيق مرة واحدة بإنترنت لتحديد موقعك":["Nothing scheduled yet - open the app once with internet to find your location","Rien de planifié - ouvrez l'application une fois avec internet pour trouver votre position","Nada programado aún - abre la app una vez con internet para ubicarte"],"اسمح بـ«العرض فوق التطبيقات» لتظهر شاشة الأذان الكاملة":["Allow “Display over other apps” so the full-screen adhan can appear","Autorisez « Affichage par-dessus les autres applis » pour l'adhan plein écran","Permite «Mostrar sobre otras apps» para ver el adhan a pantalla completa"],"اضغط مرة أخرى للخروج":["Press again to exit","Appuyez de nouveau pour quitter","Pulsa de nuevo para salir"],"بعد 10 ثوانٍ يظهر إشعار الأذان - اقفل الشاشة أو اخرج من التطبيق":["The adhan notification appears in 10 seconds - lock the screen or leave the app","La notification d'adhan apparaît dans 10 secondes - verrouillez l'écran ou quittez l'application","La notificación del adhan aparece en 10 segundos - bloquea la pantalla o sal de la app"],"بسم":["Bismillah","Bismillah","Bismillah"],"لختم القرآن في":["To complete the Quran in","Pour terminer le Coran en","Para completar el Corán en"],"يوماً اقرأ":["days, read","jours, lisez","días, lee"],"صفحة يومياً، أي نحو":["pages daily, about","pages par jour, soit environ","páginas diarias, unas"],"صفحات بعد كل صلاة. موعد الختم المتوقع:":["pages after each prayer. Expected completion date:","pages après chaque prière. Date de fin prévue :","páginas tras cada oración. Fecha de finalización estimada:"],"ورد اليوم":["Today's wird","Wird du jour","Wird de hoy"],"من الصفحة":["From page","De la page","Desde la página"],"إلى":["to","à","a"],"أندرويد (Chrome): القائمة ⋮ ثم «تثبيت التطبيق». آيفون (Safari): زر المشاركة ثم «إضافة إلى الشاشة الرئيسية». يلزم فتح الموقع عبر HTTPS.":["Android (Chrome): menu ⋮ then “Install app”. iPhone (Safari): Share button then “Add to Home Screen”. The site must be opened over HTTPS.","Android (Chrome) : menu ⋮ puis « Installer l'application ». iPhone (Safari) : bouton Partager puis « Sur l'écran d'accueil ». Le site doit être ouvert en HTTPS.","Android (Chrome): menú ⋮ y «Instalar app». iPhone (Safari): botón Compartir y «Añadir a pantalla de inicio». El sitio debe abrirse por HTTPS."],"تم صنع هذا التطبيق من قبل":["This app was made by","Cette application a été créée par","Esta aplicación fue creada por"],"زيدار هيثم شمس الدين":["Zidar Haitham Chams Eddine","Zidar Haitham Chams Eddine","Zidar Haitham Chams Eddine"],"جديد الإصدار 1.1":["What's new in 1.1","Nouveautés de la 1.1","Novedades de la 1.1"],"اختيار الولاية يدوياً (58 ولاية)":["Choose your wilaya manually (58 wilayas)","Choisir sa wilaya manuellement (58 wilayas)","Elegir la wilaya manualmente (58 wilayas)"],"متتبّع الصلوات وسلسلة الالتزام":["Prayer tracker and commitment streak","Suivi des prières et série d'assiduité","Seguimiento de oraciones y racha"],"الاستماع لصفحات المصحف المصوّر":["Listen to the illustrated Mushaf pages","Écoute des pages du Mushaf illustré","Escucha de las páginas del Mushaf ilustrado"],"إشعار دائم بتصميم جديد":["Persistent notification with a new design","Notification permanente au nouveau design","Notificación permanente con nuevo diseño"],"ترجمة كاملة للتطبيق":["Full app translation","Traduction complète de l'application","Traducción completa de la app"],"اسم":["Name","Nom","Nombre"],"ياسين الجزائري - رواية ورش":["Yassine Al-Djazairi - Warsh narration","Yassine Al-Djazairi - récit de Warsh","Yassine Al-Djazairi - narración de Warsh"]};
+
+// ==================== FULL APP TRANSLATION ENGINE ====================
+(function () {
+  const AR_RE = /[\u0600-\u06FF]/, LI = { en: 0, fr: 1, es: 2 };
+  const SKIP = '[data-brand],script,style,textarea,input,.ayah,.verses-block,.da-tx,.mva,.sr-t,#mvNow,.duaa-text,.notr,[data-notr],.lang-btn,.bismillah,.verse-number,.counter-text,.tasbih-text,.chip-ar';
+  surahs.forEach(sh => {
+    TRD[sh.name] = [sh.nameEn, sh.nameEn, sh.nameEn];
+    TRD['سورة ' + sh.name] = ['Surah ' + sh.nameEn, 'Sourate ' + sh.nameEn, 'Sura ' + sh.nameEn];
+  });
+  WIL.forEach(w => { TRD[w[0]] = [w[1], w[1], w[1]]; });
+  TRD['الجزائر'] = ['Algiers', 'Alger', 'Argel'];
+  TRD['مشكاة الأنوار'] = ['Mishkat Al-Anwar', 'Mishkat Al-Anwar', 'Mishkat Al-Anwar'];
+  TRD['لتحديد اتجاه القبلة بدقة، حرّك جهازك في الهواء بحركة رقم 8 اللانهائية (∞) بشكل مستمر وسلس'] = ['To find the Qibla accurately, move your phone in the air in a continuous, smooth figure-8 (∞) motion', 'Pour trouver la Qibla avec précision, bougez votre téléphone dans l\'air en un 8 (∞) continu et fluide', 'Para hallar la Qibla con precisión, mueve el teléfono en el aire en un ocho (∞) continuo y suave'];
+  const P = (re, en, fr, es) => ({ re, t: [en, fr, es] });
+  const PATS = [
+    P(/^(\d+\+?) سورة$/, '{1} surahs', '{1} sourates', '{1} suras'),
+    P(/^(\d+) آية$/, '{1} verses', '{1} versets', '{1} versículos'),
+    P(/^(\d+\+?) آية$/, '{1} verses', '{1} versets', '{1} versículos'),
+    P(/^آية (\d+)$/, 'Verse {1}', 'Verset {1}', 'Versículo {1}'),
+    P(/^(\d+) (?:ذكراً|أذكار|ذكر)$/, '{1} adhkar', '{1} adhkar', '{1} adhkar'),
+    P(/^(\d+) يوم(?:اً)?$/, '{1} days', '{1} jours', '{1} días'),
+    P(/^(\d+\+?) نتيجة$/, '{1} results', '{1} résultats', '{1} resultados'),
+    P(/^(\d+) نتيجة في هذه السورة$/, '{1} results in this surah', '{1} résultats dans cette sourate', '{1} resultados en esta sura'),
+    P(/^سورة (.+) • آية (\d+)$/, 'Surah {t1} • Verse {2}', 'Sourate {t1} • Verset {2}', 'Sura {t1} • Versículo {2}'),
+    P(/^الصفحة (\d+)$/, 'Page {1}', 'Page {1}', 'Página {1}'),
+    P(/^الجزء (\d+)$/, 'Juz {1}', 'Juz {1}', 'Yuz {1}'),
+    P(/^تبدأ في الصفحة (\d+)$/, 'Starts on page {1}', 'Commence à la page {1}', 'Empieza en la página {1}'),
+    P(/^يبدأ في الصفحة (\d+)$/, 'Starts on page {1}', 'Commence à la page {1}', 'Empieza en la página {1}'),
+    P(/^• صفحة$/, '• page', '• page', '• página'),
+    P(/^• صوتها الخاص$/, '• its own audio', '• son propre audio', '• su propio audio'),
+    P(/^([\d,\.]+) كم$/, '{1} km', '{1} km', '{1} km'),
+    P(/^\(±(\d+)م\)$/, '(±{1} m)', '(±{1} m)', '(±{1} m)'),
+    P(/^بعد (\d+)س (\d+)د$/, 'in {1}h {2}m', 'dans {1} h {2} min', 'en {1} h {2} min'),
+    P(/^صلاة (.+)$/, 'Prayer of {t1}', 'Prière de {t1}', 'Oración de {t1}'),
+    P(/^أذان (.+)$/, 'Adhan of {t1}', 'Adhan de {t1}', 'Adhan de {t1}'),
+    P(/^حان الآن موعد صلاة$/, 'It is now time for the prayer of', "C'est l'heure de la prière de", 'Es la hora de la oración de'),
+    P(/^تم تفعيل تنبيه (.+)$/, 'Alert enabled for {t1}', 'Alerte activée pour {t1}', 'Aviso activado para {t1}'),
+    P(/^تم كتم تنبيه (.+)$/, 'Alert muted for {t1}', 'Alerte coupée pour {t1}', 'Aviso silenciado para {t1}'),
+    P(/^مقفلة على (\d+)° (.+)$/, 'Locked on {1}° {t2}', 'Verrouillé sur {1}° {t2}', 'Bloqueado en {1}° {t2}'),
+    P(/^القارئ: (.+)$/, 'Reciter: {t1}', 'Récitateur : {t1}', 'Recitador: {t1}'),
+    P(/^جاري تحميل سورة (.+)\.\.\.$/, 'Loading Surah {t1}...', 'Chargement de la sourate {t1}...', 'Cargando la sura {t1}...'),
+    P(/^تعذر الاتصال بـ (.+)، جاري التبديل\.\.\.$/, "Couldn't reach {t1}, switching...", 'Connexion à {t1} impossible, changement...', 'No se pudo conectar con {t1}, cambiando...'),
+    P(/^ورد اليوم \((\d+)\/(\d+)\):$/, "Today's wird ({1}/{2}):", 'Wird du jour ({1}/{2}) :', 'Wird de hoy ({1}/{2}):'),
+    P(/^من الصفحة (\d+) إلى (\d+)$/, 'From page {1} to {2}', 'De la page {1} à {2}', 'De la página {1} a la {2}'),
+    P(/^تم جدولة (\d+) موعداً قادماً ✓$/, '{1} upcoming times scheduled ✓', '{1} horaires à venir planifiés ✓', '{1} horarios próximos programados ✓'),
+    P(/^الموقع اليدوي: (.+)$/, 'Manual location: {t1}', 'Position manuelle : {t1}', 'Ubicación manual: {t1}'),
+    P(/^تم اختيار ولاية (.+)$/, 'Wilaya selected: {t1}', 'Wilaya choisie : {t1}', 'Wilaya elegida: {t1}'),
+    P(/^بداية الحزب (\d+)$/, 'Start of Hizb {1}', 'Début du Hizb {1}', 'Inicio del Hizb {1}'),
+    P(/^أكملت الحزب (\d+) • بدأ الحزب (\d+)$/, 'Completed Hizb {1} • Hizb {2} begins', 'Hizb {1} terminé • Hizb {2} commence', 'Hizb {1} completado • empieza el Hizb {2}'),
+    P(/^ربع الحزب (\d+)$/, 'Quarter of Hizb {1}', 'Quart du Hizb {1}', 'Cuarto del Hizb {1}'),
+    P(/^دخلت في نصف الحزب (\d+)$/, 'Halfway through Hizb {1}', 'Mi-parcours du Hizb {1}', 'A mitad del Hizb {1}'),
+    P(/^ثلاثة أرباع الحزب (\d+)$/, 'Three quarters of Hizb {1}', 'Trois quarts du Hizb {1}', 'Tres cuartos del Hizb {1}'),
+    P(/^أكملت الجزء (\d+) • بدأ الجزء (\d+)$/, 'Completed Juz {1} • Juz {2} begins', 'Juz {1} terminé • Juz {2} commence', 'Yuz {1} completado • empieza el Yuz {2}'),
+    P(/^(\d+)\. (.+)$/, '{1}. {t2}', '{1}. {t2}', '{1}. {t2}'),
+    P(/^(\d+) يوم متتالٍ$/, '{1}-day streak', '{1} jours de suite', 'Racha de {1} días'),
+    P(/^أدّيت (\d+) من 5 صلوات اليوم$/, 'You prayed {1} of 5 prayers today', 'Vous avez prié {1} des 5 prières aujourd\'hui', 'Has orado {1} de 5 oraciones hoy'),
+    P(/^(\d{1,2}) (\S+(?: \S+)?) (\d{4}) هـ$/, '{1} {t2} {3} AH', '{1} {t2} {3} H', '{1} {t2} {3} H'),
+    P(/^(\S+(?: \S+)?) (\d{4}) هـ$/, '{t1} {2} AH', '{t1} {2} H', '{t1} {2} H'),
+    P(/^التكرار (\d+)$/, 'Repeat {1}', 'Répétition {1}', 'Repetición {1}'),
+    P(/^• (.+)$/, '• {t1}', '• {t1}', '• {t1}'),
+    P(/^(\d+) صفحة$/, '{1} pages', '{1} pages', '{1} páginas'),
+    P(/^مشكاة الأنوار © (\d+)$/, 'Mishkat Al-Anwar © {1}', 'Mishkat Al-Anwar © {1}', 'Mishkat Al-Anwar © {1}'),
+    P(/^القارئ$/, 'Reciter', 'Récitateur', 'Recitador'),
+    P(/^(\d{1,2}) (\S+) (\d{4})$/, '{1} {t2} {3}', '{1} {t2} {3}', '{1} de {t2} de {3}'),
+    P(/^(\S+) (\d{4})$/, '{t1} {2}', '{t1} {2}', '{t1} {2}'),
+    P(/^(\S+(?: \S+)?) (\d+(?:-\d+)?)$/, '{t1} {2}', '{t1} {2}', '{t1} {2}')
+  ];
+  const fill = (tpl, m, li) => tpl.replace(/\{(t?)(\d)\}/g, (_, t, n) => t ? trCore(m[+n], li) : m[+n]);
+  function trCore(core, li) {
+    const d = TRD[core]; if (d) return d[li];
+    for (const p of PATS) { const m = core.match(p.re); if (m) return fill(p.t[li], m, li); }
+    for (const sep of [' • ', ' - ', ' — ']) {
+      if (core.includes(sep)) { const parts = core.split(sep).map(x => trCore(x, li)); return parts.join(sep); }
+    }
+    return core;
+  }
+  function trStr(str, lang) {
+    const li = LI[lang]; if (li === undefined) return str;
+    const m = str.match(/^(\s*)([\s\S]*?)(\s*)$/); let core = m[2]; if (!core || !AR_RE.test(core)) return str;
+    const out = trCore(core.replace(/^«|»$/g, ''), li);
+    return m[1] + out + m[3];
+  }
+  window.trStr = trStr;
+  const skipEl = el => !el || (el.closest && el.closest(SKIP));
+  function trTextNode(n) {
+    const lang = state.currentLang;
+    if (n.__tr !== undefined && n.nodeValue !== n.__tr) { delete n.__ar; delete n.__tr; }
+    const src = n.__ar !== undefined ? n.__ar : n.nodeValue;
+    if (lang === 'ar') { if (n.__ar !== undefined) { const o = n.__ar; delete n.__ar; delete n.__tr; if (n.nodeValue !== o) n.nodeValue = o; } return; }
+    if (!AR_RE.test(src) || skipEl(n.parentElement)) return;
+    const out = trStr(src, lang);
+    if (out !== src) { if (n.__ar === undefined) n.__ar = src; n.__tr = out; if (n.nodeValue !== out) n.nodeValue = out; }
+  }
+  const ATTRS = ['placeholder', 'title', 'aria-label'];
+  function trAttrs(el) {
+    const lang = state.currentLang; el.__at = el.__at || {};
+    for (const a of ATTRS) {
+      if (!el.hasAttribute || !el.hasAttribute(a)) continue;
+      const cur = el.getAttribute(a), rec = el.__at[a];
+      if (rec && cur !== rec.tr) delete el.__at[a];
+      const r = el.__at[a], src = r ? r.ar : cur;
+      if (lang === 'ar') { if (r) { const o = r.ar; delete el.__at[a]; if (cur !== o) el.setAttribute(a, o); } continue; }
+      if (!AR_RE.test(src)) continue;
+      const out = trStr(src, lang); if (out !== src) { el.__at[a] = { ar: src, tr: out }; if (cur !== out) el.setAttribute(a, out); }
+    }
+  }
+  function walk(root) {
+    if (!root) return;
+    if (root.nodeType === 3) { trTextNode(root); return; }
+    if (root.nodeType !== 1) return;
+    if (root.matches && root.matches('script,style')) return;
+    trAttrs(root);
+    const tw = document.createTreeWalker(root, NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT);
+    let n; while ((n = tw.nextNode())) { if (n.nodeType === 3) trTextNode(n); else trAttrs(n); }
+  }
+  let busy = false, mo = null;
+  function apply() { busy = true; try { walk(document.body); document.title = state.currentLang === 'ar' ? 'مشكاة الأنوار' : 'Mishkat Al-Anwar'; } finally { busy = false; } }
+  function onMut(list) {
+    if (busy || state.currentLang === 'ar') return;
+    busy = true;
+    try { for (const m of list) { if (m.type === 'childList') m.addedNodes.forEach(walk); else if (m.type === 'characterData') trTextNode(m.target); else if (m.type === 'attributes') trAttrs(m.target); } }
+    finally { busy = false; }
+  }
+  window.applyAppLang = function () {
+    if (!mo) { mo = new MutationObserver(onMut); mo.observe(document.body, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: ATTRS }); }
+    apply();
+  };
+})();
+function changeLanguage(lang, el, silent) {
+  state.currentLang = lang; store.set('lang', lang);
   document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
-  el.classList.add('active');
+  if (el) el.classList.add('active');
   document.documentElement.lang = lang;
   document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
-  document.querySelectorAll('[data-i18n]').forEach(n => { const k = n.dataset.i18n; if (translations[lang][k]) n.textContent = translations[lang][k]; });
+  document.querySelectorAll('[data-i18n]').forEach(n => { const k = n.dataset.i18n; if (translations[lang] && translations[lang][k]) n.textContent = translations[lang][k]; });
   renderBrand();
-  updateNextPrayer();
-  showToast(lang === 'ar' ? 'تم تغيير اللغة' : 'Language changed', 'fas fa-language');
+  try { renderAdhanCards(); renderTracker(); renderDuaaCategories(); renderSurahList(); updateNextPrayer(); updateCityLabel(); renderReciters(); } catch (e) {}
+  window.applyAppLang();
+  if (!silent) showToast(lang === 'ar' ? 'تم تغيير اللغة' : 'Language changed', 'fas fa-language');
+}
+function restoreLang() {
+  const l = store.get('lang', 'ar'); if (l === 'ar' || !translations[l]) return;
+  const btn = document.querySelector(`.lang-btn[onclick*="'${l}'"]`); changeLanguage(l, btn, true);
 }
 function selectMode(el) { el.parentElement.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active')); el.classList.add('active'); }
 const BG_SRC = [['مكة', 'bg/mecca.jpg'], ['المدينة', 'bg/madina.jpg'], ['الجزائر', 'bg/algeria.jpg'], ['الأقصى', 'bg/aqsa.jpg'], ['الأزهر', 'bg/azhar.jpg']];
@@ -2372,8 +2710,8 @@ function showCreator(e) {
   if (navigator.vibrate) navigator.vibrate(30);
   setModalVisual(`<div class="modal-icon"><i class="fas fa-code"></i></div>`);
   document.getElementById('modalBox').classList.remove('warn');
-  document.getElementById('modalTitle').textContent = 'مشكاة الأنوار • الإصدار 1.00';
-  document.getElementById('modalText').innerHTML = 'تم صنع هذا التطبيق من قبل زيدار هيثم شمس الدين<div class="creator-name">زيدار هيثم شمس الدين</div>';
+  document.getElementById('modalTitle').textContent = 'مشكاة الأنوار • الإصدار 1.1';
+  document.getElementById('modalText').innerHTML = 'تم صنع هذا التطبيق من قبل زيدار هيثم شمس الدين<div class="creator-name">زيدار هيثم شمس الدين</div><div class="whatsnew"><b>جديد الإصدار 1.1</b><ul><li>اختيار الولاية يدوياً (58 ولاية)</li><li>دعاء بعد الأذان</li><li>متتبّع الصلوات وسلسلة الالتزام</li><li>تذكير صلاة الضحى</li><li>الاستماع لصفحات المصحف المصوّر</li><li>إشعار دائم بتصميم جديد</li><li>ترجمة كاملة للتطبيق</li></ul></div>';
   document.getElementById('modalOverlay').classList.add('active');
 }
 
@@ -2448,13 +2786,17 @@ function setAdhanMode(p, m, el) {
   if (m === 'full' && NATIVE) askOverlay();
 }
 function setAdhanVol(v) {
+  v = Math.max(0, Math.min(1, +v || 0));
   store.set('adhanVol', v); if (adhanAudio) adhanAudio.volume = v;
   ['adhanVolRange', 'aoVol'].forEach(id => { const e = document.getElementById(id); if (e) e.value = Math.round(v * 100); });
   window.scheduleNativeNotifs && scheduleNativeNotifs();
 }
-function stopAdhan() {
+let adhanOn = false, lastAdhanP = '';
+function stopAdhan(silent) {
+  const was = adhanOn; adhanOn = false;
   if (adhanAudio) { adhanAudio.onended = adhanAudio.onerror = null; adhanAudio.pause(); adhanAudio = null; }
   document.getElementById('adhanOverlay').classList.remove('on'); document.getElementById('adhanStop').classList.remove('on');
+  if (was && silent !== true) afterAdhan();
 }
 const hijriStr = d => d.toLocaleDateString('ar-SA-u-ca-islamic-umalqura-nu-latn', { day: 'numeric', month: 'long', year: 'numeric' });
 const hhmm = d => d.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
@@ -2477,6 +2819,7 @@ async function loadBgUrl(k) {
   return null;
 }
 function showAdhanScreen(p) {
+  adhanOn = true; lastAdhanP = p;
   if (adhanModeOf(p) === 'full') {
     const o = document.getElementById('adhanOverlay');
     document.getElementById('aoName').textContent = t(p); document.getElementById('aoTime').textContent = state.prayerTimes[p] || '';
@@ -2495,11 +2838,28 @@ function showAdhanScreen(p) {
     });
   } else document.getElementById('adhanStop').classList.add('on');
 }
-function userStopAdhan() { stopAdhan(); if (NATIVE) pn('stopAdhan').catch(() => {}); }
-async function playAdhan(p) {
-  userStopAdhan();
+function afterAdhan() {
+  if (lastAdhanP === 'dhuha') return;
+  store.set('pendingDua', Date.now());
+  if (!document.hidden) setTimeout(showDuaAfter, 450);
+}
+function showDuaAfter() {
+  const t0 = store.get('pendingDua', 0); if (!t0 || Date.now() - t0 > 20 * 60000) return;
+  if (document.getElementById('adhanOverlay').classList.contains('on')) return;
+  document.getElementById('duaAfter').classList.add('on');
+}
+function closeDuaAfter() { store.set('pendingDua', 0); document.getElementById('duaAfter').classList.remove('on'); }
+function duaAfterRead() {
+  closeDuaAfter(); store.set('duaReadCount', store.get('duaReadCount', 0) + 1);
+  if (navigator.vibrate) navigator.vibrate(25);
+  showToast('بارك الله فيك، تقبّل الله منك', 'fas fa-heart');
+}
+document.addEventListener('visibilitychange', () => { if (!document.hidden) setTimeout(showDuaAfter, 600); });
+function userStopAdhan(silent) { stopAdhan(silent); if (NATIVE) pn('stopAdhan').catch(() => {}); }
+async function playAdhan(p, fromTest) {
+  if (adhanOn || adhanAudio) { userStopAdhan(true); await sleep(900); }
   if (NATIVE && PN()) {
-    try { await pn('startAdhan', { prayer: p, name: t(p), time: hhmm(new Date()), file: adhanFile(p), vol: store.get('adhanVol', 1), mode: adhanModeOf(p) }); return; }
+    try { await pn('startAdhan', { prayer: p, name: t(p), time: hhmm(new Date()), file: adhanFile(p), vol: store.get('adhanVol', 1), mode: adhanModeOf(p), inapp: fromTest === true }); return; }
     catch (e) { showToast('تعذر تشغيل إشعار الأذان: ' + ((e && e.message) || e), 'fas fa-triangle-exclamation'); }
   }
   const a = adhanAudio = new Audio(ADHANS[adhanPref(p)].web);
@@ -2537,7 +2897,6 @@ function checkAdhanTime() {
   if (NATIVE) return;
   const now = Date.now();
   prayerKeys.forEach(p => {
-    if (p === 'dhuha') return;
     const d = state.prayerDates[p]; if (!d || !state.prayerToggles[p]) return;
     const k = p + d.toDateString();
     if (now >= d.getTime() && now - d.getTime() < 60000 && !firedAdhan[k]) { firedAdhan[k] = 1; playAdhan(p); }
@@ -2576,7 +2935,7 @@ async function postOngoing() {
     ev.forEach(e => {
       const tm = e.t.getTime(); if (tm <= now) return;
       const k = e.t.toDateString(); if (!dl[k]) dl[k] = dayLine(e.t);
-      out.push({ bg: nc.bg, fg: nc.fg, t: tm, p: e.p, name: t(e.p), time: hhmm(e.t), hijri: hijriStr(new Date(prev)), day: dl[k], adhan: e.p !== 'dhuha' && !!state.prayerToggles[e.p], mode: adhanModeOf(e.p), file: adhanFile(e.p), vol: store.get('adhanVol', 1), pre: e.p !== 'dhuha' && !!state.preAlerts && !!state.prayerToggles[e.p], preBody: PRE_ALERT_TEXT + ' • ' + t(e.p) });
+      out.push({ bg: nc.bg, fg: nc.fg, t: tm, p: e.p, name: t(e.p), time: hhmm(e.t), hijri: hijriStr(new Date(prev)), city: currentCityName(), day: dl[k], adhan: !!state.prayerToggles[e.p], mode: adhanModeOf(e.p), file: adhanFile(e.p), vol: store.get('adhanVol', 1), pre: e.p !== 'dhuha' && !!state.preAlerts && !!state.prayerToggles[e.p], preBody: PRE_ALERT_TEXT + ' • ' + t(e.p) });
       prev = tm;
     });
     await pn('setEvents', { events: out }); refreshNativeStatus();
@@ -2631,6 +2990,7 @@ function mvGo(p, silent) {
   document.getElementById('mvSurah').textContent = 'سورة ' + surahOfPage(p).map(i => surahs[i].name).join(' • ');
   document.getElementById('mvJuz').textContent = juzOfPage(p);
   if (!silent) mvAnnounce(p);
+  if (document.getElementById('mvAudio').classList.contains('on')) maLoad(p);
 }
 let mvBusy = false;
 function mvSlide(dir) {
@@ -2638,8 +2998,130 @@ function mvSlide(dir) {
   const tr = document.getElementById('mvTrack'); tr.style.transition = 'transform .32s cubic-bezier(.22,.8,.3,1)'; tr.style.transform = dir > 0 ? 'translateX(0%)' : 'translateX(-66.6667%)';
   setTimeout(() => { mvGo(np); mvBusy = false; }, 340);
 }
+// ---- Mushaf: search + page audio ----
+function mvSheet(id, on) { document.getElementById(id).classList.toggle('on', on); if (on) { ['mvSearch', 'mvAudio'].filter(x => x !== id).forEach(x => document.getElementById(x).classList.remove('on')); document.getElementById('mvNav').classList.remove('on'); } }
+function mvSearchOpen() { mvSheet('mvSearch', true); setTimeout(() => document.getElementById('mvSearchIn').focus(), 150); }
+let _mvSearchT;
+function mvGoItem(icon, title, sub, fn) { return `<div class="mvs-go" onclick="${fn}"><i class="fas ${icon}"></i><div>${title}<small>${sub}</small></div></div>`; }
+async function mvAyahPage(sn, a) {
+  try { const r = await fetch(`https://api.alquran.cloud/v1/ayah/${sn}:${a}`); const j = await r.json(); return j.data.page; } catch (e) { return null; }
+}
+async function mvOpenAyah(sn, a) {
+  showToast('جاري تحديد الصفحة...', 'fas fa-magnifying-glass');
+  let pg = await mvAyahPage(sn, a);
+  if (!pg) { const st = MUSHAF_START[sn - 1], nx = MUSHAF_START[sn] || 604, n = surahs[sn - 1].verses; pg = Math.min(604, st + Math.floor((a - 1) / n * (nx - st + 1))); }
+  mvSheet('mvSearch', false); mvGo(pg);
+}
+function mvSearchRun(v) {
+  clearTimeout(_mvSearchT); const box = document.getElementById('mvSearchRes'); v = v.trim(); if (!v) { box.innerHTML = ''; return; }
+  const ar = v.replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d)); let html = '';
+  const m = ar.match(/^(\d{1,3})\s*[:\/\-\s]\s*(\d{1,3})$/);
+  if (m && +m[1] >= 1 && +m[1] <= 114) {
+    const sn = +m[1], a = +m[2], s = surahs[sn - 1];
+    if (a >= 1 && a <= s.verses) html += mvGoItem('fa-quote-right', `سورة ${s.name} • آية ${a}`, 'اذهب إلى صفحة الآية', `mvOpenAyah(${sn},${a})`);
+  } else if (/^\d+$/.test(ar)) {
+    const n = +ar;
+    if (n >= 1 && n <= 604) html += mvGoItem('fa-file-lines', `الصفحة ${n}`, `الجزء ${juzOfPage(n)}`, `mvSheet('mvSearch',false);mvGo(${n})`);
+    if (n >= 1 && n <= 114) html += mvGoItem('fa-book-quran', `سورة ${surahs[n - 1].name}`, `تبدأ في الصفحة ${MUSHAF_START[n - 1]}`, `mvSheet('mvSearch',false);mvGo(${MUSHAF_START[n - 1]})`);
+    if (n >= 1 && n <= 30) html += mvGoItem('fa-layer-group', `الجزء ${n}`, `يبدأ في الصفحة ${JUZ_START[n - 1]}`, `mvSheet('mvSearch',false);mvGo(${JUZ_START[n - 1]})`);
+  }
+  const nv = nz(v.toLowerCase().replace(/^سورة\s*/, ''));
+  if (nv && !/^\d/.test(ar)) surahs.forEach((s, i) => { if (nz(s.name).includes(nv) || s.nameEn.toLowerCase().includes(v.toLowerCase())) html += mvGoItem('fa-book-quran', `سورة ${s.name}`, `${s.nameEn} • الصفحة ${MUSHAF_START[i]}`, `mvSheet('mvSearch',false);mvGo(${MUSHAF_START[i]})`); });
+  box.innerHTML = html;
+  if (!/^\d/.test(ar) && v.length >= 2) {
+    box.insertAdjacentHTML('beforeend', '<div class="sr-count" id="mvAyTitle">جاري البحث في الآيات...</div>');
+    _mvSearchT = setTimeout(async () => {
+      const k = nz(v); let list = [];
+      try { const r = await fetch(`https://api.alquran.cloud/v1/search/${encodeURIComponent(k)}/all/quran-simple-clean`); const j = await r.json(); list = ((j.data && j.data.matches) || []).map(x => ({ s: x.surah.number, a: x.numberInSurah, t: x.text })); } catch (e) {}
+      const ti = document.getElementById('mvAyTitle'); if (!ti || document.getElementById('mvSearchIn').value.trim() !== v) return;
+      ti.textContent = list.length ? `${list.length > 25 ? '25+' : list.length} آية` : 'لا توجد آيات مطابقة (تحتاج اتصالاً بالإنترنت)';
+      ti.insertAdjacentHTML('afterend', list.slice(0, 25).map(x => `<div class="sr-item" onclick="mvOpenAyah(${x.s},${x.a})"><div class="sr-h"><span>${surahs[x.s - 1].name}</span><span>آية ${x.a}</span></div><div class="sr-t">${hlText(x.t, v)}</div></div>`).join(''));
+    }, 450);
+  }
+}
+const MA = { au: null, list: [], i: -1, playing: false, page: 0, cont: store.get('mvCont', true), cache: {}, seq: 0 };
+function mvAudioOpen() {
+  mvSheet('mvAudio', true); document.getElementById('maContT').classList.toggle('on', MA.cont);
+  document.getElementById('mvRecs').innerHTML = reciterPriority.map((k, i) => `<div class="reciter-chip ${k === state.reciter ? 'active' : ''}" onclick="maSetReciter('${k}')"><span class="rank">${i + 1}</span><span>${reciters[k].name}<br><small style="opacity:.75;font-weight:400">${reciters[k].sub}</small></span></div>`).join('');
+  maLoad(mvPage);
+}
+function maSetReciter(k) { setReciter(k, false); mvAudioOpen(); if (MA.playing) maPlayIdx(MA.i); }
+function maCont() { MA.cont = !MA.cont; store.set('mvCont', MA.cont); document.getElementById('maContT').classList.toggle('on', MA.cont); }
+async function maFetchPage(p) {
+  if (MA.cache[p]) return MA.cache[p];
+  let list = null; try { list = await QDB.get('pg' + p); } catch (e) {}
+  if (!list) {
+    try { const r = await fetch(`https://api.alquran.cloud/v1/page/${p}/quran-uthmani`); const j = await r.json();
+      list = j.data.ayahs.map(a => { let t = a.text; if (a.numberInSurah === 1 && a.surah.number !== 1 && a.surah.number !== 9) { const w = t.split(' '); if (w[0] && normalizeArabic(w[0]).includes('بسم')) t = w.slice(4).join(' '); } return { s: a.surah.number, n: a.numberInSurah, t }; });
+      QDB.set('pg' + p, list);
+    } catch (e) { return null; }
+  }
+  return (MA.cache[p] = list);
+}
+async function maLoad(p) {
+  const box = document.getElementById('mvAyahs'), seq = ++MA.seq; document.getElementById('maPg').textContent = p;
+  if (MA.page === p && MA.list.length) { maRenderList(); return; }
+  box.innerHTML = '<div class="mvs-hint" style="text-align:center;padding:18px">جاري تحميل آيات الصفحة...</div>';
+  const list = await maFetchPage(p); if (seq !== MA.seq) return;
+  if (!list) { box.innerHTML = '<div class="mvs-hint" style="text-align:center;padding:18px">تحتاج اتصالاً بالإنترنت لتحميل آيات هذه الصفحة وتلاوتها</div>'; return; }
+  MA.list = list; MA.page = p; MA.i = -1; maRenderList();
+}
+function maRenderList() {
+  const box = document.getElementById('mvAyahs');
+  box.innerHTML = MA.list.map((a, i) => `<div class="mva ${MA.playing && i === MA.i ? 'playing' : ''}" data-i="${i}"><span class="n">${a.n}</span><span>${a.t}</span></div>`).join('');
+  box.querySelectorAll('.mva').forEach(el => {
+    let tm = null, moved = false, fired = false; const i = +el.dataset.i;
+    const start = e => { moved = false; fired = false; el.classList.add('press'); tm = setTimeout(() => { fired = true; el.classList.remove('press'); if (navigator.vibrate) navigator.vibrate(30); maPlayIdx(i); }, 480); };
+    const end = () => { clearTimeout(tm); el.classList.remove('press'); };
+    el.addEventListener('touchstart', start, { passive: true }); el.addEventListener('touchmove', () => { moved = true; end(); }, { passive: true }); el.addEventListener('touchend', end); el.addEventListener('touchcancel', end);
+    el.addEventListener('mousedown', start); el.addEventListener('mouseup', end); el.addEventListener('mouseleave', end);
+    el.addEventListener('contextmenu', e => e.preventDefault());
+  });
+}
+function maUI() {
+  document.getElementById('maPlay').innerHTML = `<i class="fas fa-${MA.playing ? 'pause' : 'play'}"></i>`;
+  document.querySelectorAll('#mvAyahs .mva').forEach(el => el.classList.toggle('playing', MA.playing && +el.dataset.i === MA.i));
+  const now = document.getElementById('mvNow'), a = MA.list[MA.i];
+  if (MA.playing && a) { now.innerHTML = `<small>سورة ${surahs[a.s - 1].name} • آية ${a.n}</small>${a.t}`; now.classList.add('on'); } else now.classList.remove('on');
+  const el = document.querySelector('#mvAyahs .mva.playing'); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+function maRelease() { if (MA.au) { MA.au.onended = MA.au.onerror = null; try { MA.au.pause(); } catch (e) {} MA.au = null; } }
+function maStop() { maRelease(); MA.playing = false; MA.i = -1; maUI(); }
+async function maPlayIdx(i, tryIdx) {
+  if (wifiBlocked()) { showToast('البث متاح عبر Wi-Fi فقط - غيّر الإعداد', 'fas fa-wifi'); return; }
+  if (MA.page !== mvPage) { await maLoad(mvPage); }
+  const a = MA.list[i];
+  if (!a) {
+    if (MA.cont && mvPage < 604) { mvSlide(1); setTimeout(async () => { await maLoad(mvPage); if (MA.list.length) maPlayIdx(0); }, 700); }
+    else { maStop(); showToast('انتهت الصفحة، تقبّل الله منك', 'fas fa-check'); }
+    return;
+  }
+  tryIdx = tryIdx || 0; const order = [state.reciter, ...reciterPriority.filter(k => k !== state.reciter)], key = order[tryIdx];
+  if (!key) { maStop(); showToast('تعذر تشغيل الصوت - تحقق من الاتصال', 'fas fa-exclamation-circle'); return; }
+  maRelease(); MA.i = i; MA.playing = true; maUI();
+  const au = MA.au = new Audio(audioUrl(key, a.s, a.n));
+  au.onended = () => { if (au === MA.au) maPlayIdx(i + 1); };
+  au.onerror = () => { if (au === MA.au) maPlayIdx(i, tryIdx + 1); };
+  au.play().catch(() => {});
+}
+function maToggle() {
+  if (MA.playing) { if (MA.au) MA.au.pause(); MA.playing = false; maUI(); return; }
+  if (MA.au && MA.i >= 0) { MA.au.play().catch(() => {}); MA.playing = true; maUI(); return; }
+  maPlayIdx(Math.max(0, MA.i));
+}
+function maStep(d) { const n = (MA.i < 0 ? 0 : MA.i) + d; if (n >= 0) maPlayIdx(n); }
+function mvLongPressHint() { mvAudioOpen(); }
+(function () {
+  const st = document.getElementById('mvStage'); let tm = null, x0 = 0, y0 = 0;
+  const clr = () => { clearTimeout(tm); tm = null; };
+  st.addEventListener('touchstart', e => { clr(); if (e.touches.length !== 1 || mvZ.s !== 1) return; x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; tm = setTimeout(() => { if (navigator.vibrate) navigator.vibrate(30); mvAudioOpen(); showToast('اضغط مطوّلاً على الآية في القائمة لبدء التلاوة منها', 'fas fa-headphones'); }, 650); }, { passive: true });
+  st.addEventListener('touchmove', e => { if (tm && Math.hypot(e.touches[0].clientX - x0, e.touches[0].clientY - y0) > 12) clr(); }, { passive: true });
+  st.addEventListener('touchend', clr); st.addEventListener('touchcancel', clr);
+})();
 function openMushaf() { document.getElementById('mushafViewer').classList.add('on'); mvGo(store.get('mushafPage', 1), true); }
-function closeMushaf() { document.getElementById('mvNav').classList.remove('on'); document.getElementById('mushafViewer').classList.remove('on'); }
+function closeMushaf() {
+  maStop(); ['mvSearch', 'mvAudio'].forEach(x => document.getElementById(x).classList.remove('on'));
+  document.getElementById('mvNav').classList.remove('on'); document.getElementById('mushafViewer').classList.remove('on'); }
 function mvNavToggle(force) {
   const n = document.getElementById('mvNav'); const on = force === undefined ? !n.classList.contains('on') : force;
   if (on && !n.innerHTML) n.innerHTML = '<div class="mv-sec">الأجزاء</div><div class="mv-grid">' + JUZ_START.map((p, i) => `<div class="mv-chip" onclick="mvGo(${p});mvNavToggle(false)">الجزء ${i + 1}</div>`).join('') + '</div><div class="mv-sec">السور</div><div class="mv-grid">' + surahs.map((s, i) => `<div class="mv-chip" onclick="mvGo(${MUSHAF_START[i]});mvNavToggle(false)">${i + 1}. ${s.name}</div>`).join('') + '</div>';
@@ -2676,6 +3158,7 @@ function openCalendar() { calAnchor = new Date(); renderCalendar(); document.get
 function closeCalendar() { document.getElementById('calOverlay').classList.remove('on'); }
 function calToday() { calAnchor = new Date(); renderCalendar(); }
 
+const GMONTHS = ['جانفي', 'فيفري', 'مارس', 'أفريل', 'ماي', 'جوان', 'جويلية', 'أوت', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'];
 const calInfo = anchor => {
   const a = new Date(anchor.getFullYear(), anchor.getMonth(), anchor.getDate(), 12), h = hijriParts(a);
   const first = new Date(a.getTime() - (h.day - 1) * 86400000); let len = 0;
@@ -2694,9 +3177,9 @@ const calPane = info => {
 let calBusy = false;
 function calTitle(info) {
   const hm = new Intl.DateTimeFormat('ar-SA-u-ca-islamic-umalqura-nu-latn', { month: 'long' }).format(info.a), last = new Date(info.first.getTime() + (info.len - 1) * 86400000);
-  const gm = x => x.toLocaleDateString('ar-u-nu-latn', { month: 'long', year: 'numeric' });
+  const gm = x => GMONTHS[x.getMonth()] + ' ' + x.getFullYear();
   document.getElementById('calTitle').textContent = `${hm} ${info.h.year} هـ`;
-  document.getElementById('calSub').textContent = gm(info.first) === gm(last) ? gm(info.first) : `${info.first.toLocaleDateString('ar-u-nu-latn', { month: 'long' })} - ${gm(last)}`;
+  document.getElementById('calSub').textContent = gm(info.first) === gm(last) ? gm(info.first) : `${GMONTHS[info.first.getMonth()]} - ${gm(last)}`;
 }
 let _calT = null;
 function renderCalendar() {

@@ -55,7 +55,7 @@ public class PrayerNotifPlugin extends Plugin {
   @PluginMethod
   public void startAdhan(PluginCall call) {
     Float v = call.getFloat("vol");
-    AdhanService.start(getContext(), call.getString("prayer"), call.getString("name"), call.getString("time"), call.getString("file"), v == null ? 1f : v, call.getString("mode", "notif"));
+    AdhanService.start(getContext(), call.getString("prayer"), call.getString("name"), call.getString("time"), call.getString("file"), v == null ? 1f : v, call.getString("mode", "notif"), Boolean.TRUE.equals(call.getBoolean("inapp", false)));
     call.resolve();
   }
 

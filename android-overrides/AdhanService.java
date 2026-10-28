@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.pm.ServiceInfo;
 import android.content.res.AssetFileDescriptor;
 import android.media.AudioAttributes;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.IBinder;
@@ -20,8 +21,10 @@ import androidx.core.app.NotificationCompat;
 public class AdhanService extends Service {
   static final String CH = "adhan_v2";
   MediaPlayer mp;
+  AudioManager am;
+  int prevAlarmVol = -1;
 
-  static void start(Context c, String prayer, String name, String time, String file, float vol, String mode) {
+  static void start(Context c, String prayer, String name, String time, String file, float vol, String mode, boolean inapp) {
     Intent i = new Intent(c, AdhanService.class);
     i.putExtra("prayer", prayer);
     i.putExtra("name", name);
@@ -29,6 +32,7 @@ public class AdhanService extends Service {
     i.putExtra("file", file);
     i.putExtra("vol", vol);
     i.putExtra("mode", mode);
+    i.putExtra("inapp", inapp);
     try {
       if (Build.VERSION.SDK_INT >= 26) c.startForegroundService(i); else c.startService(i);
     } catch (Exception e) {
@@ -51,6 +55,7 @@ public class AdhanService extends Service {
     String file = i.getStringExtra("file");
     String mode = i.getStringExtra("mode");
     float vol = i.getFloatExtra("vol", 1f);
+    boolean inapp = i.getBooleanExtra("inapp", false);
     if (name == null) name = "";
     NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
     if (Build.VERSION.SDK_INT >= 26 && nm.getNotificationChannel(CH) == null) {
@@ -85,7 +90,7 @@ public class AdhanService extends Service {
       .addAction(0, "إيقاف", pStop);
     if (pOpen != null) {
       b.setContentIntent(pOpen);
-      if ("full".equals(mode)) b.setFullScreenIntent(pOpen, true);
+      if ("full".equals(mode) && !inapp) b.setFullScreenIntent(pOpen, true);
     }
     Notification n = b.build();
     try {
@@ -94,7 +99,7 @@ public class AdhanService extends Service {
     } catch (Exception e) {
       nm.notify(2000, n);
     }
-    if ("full".equals(mode) && open != null && (Build.VERSION.SDK_INT < 23 || Settings.canDrawOverlays(this))) {
+    if ("full".equals(mode) && !inapp && open != null && (Build.VERSION.SDK_INT < 23 || Settings.canDrawOverlays(this))) {
       try {
         open.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(open);
@@ -111,7 +116,8 @@ public class AdhanService extends Service {
         mp.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
         afd.close();
         mp.prepare();
-        mp.setVolume(vol, vol);
+        mp.setVolume(1f, 1f);
+        applyAlarmVolume(vol);
         mp.setOnCompletionListener(m -> stopAll());
         mp.start();
         return START_NOT_STICKY;
@@ -120,6 +126,22 @@ public class AdhanService extends Service {
     PrayerReceiver.plainNotify(this, name, prayer, mode);
     stopAll();
     return START_NOT_STICKY;
+  }
+
+  void applyAlarmVolume(float vol) {
+    try {
+      am = (AudioManager) getSystemService(AUDIO_SERVICE);
+      int max = am.getStreamMaxVolume(AudioManager.STREAM_ALARM);
+      if (prevAlarmVol < 0) prevAlarmVol = am.getStreamVolume(AudioManager.STREAM_ALARM);
+      am.setStreamVolume(AudioManager.STREAM_ALARM, Math.max(1, Math.round(max * Math.max(0f, Math.min(1f, vol)))), 0);
+    } catch (Exception e) {}
+  }
+
+  void restoreAlarmVolume() {
+    try {
+      if (am != null && prevAlarmVol >= 0) am.setStreamVolume(AudioManager.STREAM_ALARM, prevAlarmVol, 0);
+    } catch (Exception e) {}
+    prevAlarmVol = -1;
   }
 
   void releasePlayer() {
@@ -132,6 +154,7 @@ public class AdhanService extends Service {
 
   void stopAll() {
     releasePlayer();
+    restoreAlarmVolume();
     PrayerNotifPlugin.emit("adhanEnded", "");
     try { stopForeground(true); } catch (Exception e) {}
     stopSelf();
