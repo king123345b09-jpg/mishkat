@@ -11,6 +11,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.SystemClock;
+import android.view.View;
 import android.widget.RemoteViews;
 import androidx.core.app.NotificationCompat;
 import org.json.JSONArray;
@@ -23,7 +24,7 @@ public class PrayerReceiver extends BroadcastReceiver {
   public void onReceive(Context c, Intent i) {
     String act = i == null ? null : i.getAction();
     if ("TEST".equals(act)) {
-      AdhanService.start(c, i.getStringExtra("prayer"), i.getStringExtra("name"), i.getStringExtra("time"), i.getStringExtra("file"), i.getFloatExtra("vol", 1f), i.getStringExtra("mode"));
+      AdhanService.start(c, i.getStringExtra("prayer"), i.getStringExtra("name"), i.getStringExtra("time"), i.getStringExtra("file"), i.getFloatExtra("vol", 1f), i.getStringExtra("mode"), false);
       return;
     }
     if (act == null) fire(c);
@@ -56,7 +57,7 @@ public class PrayerReceiver extends BroadcastReceiver {
         if (t > last && t <= now + 3000 && now - t < 300000) {
           if (t > maxT) maxT = t;
           if (o.optBoolean("adhan", false)) {
-            AdhanService.start(c, o.optString("p"), o.optString("name"), o.optString("time"), o.optString("file"), (float) o.optDouble("vol", 1.0), o.optString("mode", "notif"));
+            AdhanService.start(c, o.optString("p"), o.optString("name"), o.optString("time"), o.optString("file"), (float) o.optDouble("vol", 1.0), o.optString("mode", "notif"), false);
           }
         }
       }
@@ -105,9 +106,14 @@ public class PrayerReceiver extends BroadcastReceiver {
   }
 
   static void fillViews(Context c, RemoteViews rv, JSONObject e, long t, boolean big) throws Exception {
-    rv.setTextViewText(rid(c, "n_name", "id"), e.getString("name") + "  " + e.getString("time"));
-    rv.setTextViewText(rid(c, "n_sub", "id"), "الصلاة القادمة • " + e.optString("hijri"));
-    if (big) rv.setTextViewText(rid(c, "n_day", "id"), e.optString("day"));
+    rv.setTextViewText(rid(c, "n_hijri", "id"), e.optString("hijri"));
+    String city = e.optString("city", "");
+    rv.setTextViewText(rid(c, "n_city", "id"), city);
+    int vis = city.length() > 0 ? View.VISIBLE : View.GONE;
+    rv.setViewVisibility(rid(c, "n_city", "id"), vis);
+    rv.setViewVisibility(rid(c, "n_sep", "id"), vis);
+    rv.setTextViewText(rid(c, "n_name", "id"), "صلاة " + e.getString("name"));
+    rv.setTextViewText(rid(c, "n_time", "id"), e.getString("time"));
     int cid = rid(c, "n_chrono", "id");
     if (Build.VERSION.SDK_INT >= 24) rv.setChronometerCountDown(cid, true);
     rv.setChronometer(cid, SystemClock.elapsedRealtime() + (t - System.currentTimeMillis()), null, true);
@@ -117,7 +123,11 @@ public class PrayerReceiver extends BroadcastReceiver {
     } catch (Exception ex) {}
     try {
       String fg = e.optString("fg", "");
-      if (fg.length() > 0) rv.setTextColor(cid, Color.parseColor(fg));
+      if (fg.length() > 0) {
+        int col = Color.parseColor(fg);
+        rv.setTextColor(cid, col);
+        rv.setInt(rid(c, "n_sep", "id"), "setBackgroundColor", (col & 0x00FFFFFF) | 0x99000000);
+      }
     } catch (Exception ex) {}
   }
 

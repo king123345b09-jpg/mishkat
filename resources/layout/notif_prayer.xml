@@ -24,7 +24,7 @@
         android:ellipsize="end"
         android:textColor="#E8DDB5"
         android:textSize="12sp" />
-    <View
+    <ImageView
         android:id="@+id/n_sep"
         android:layout_width="1dp"
         android:layout_height="13dp"
