@@ -23,7 +23,8 @@ public class PrayerReceiver extends BroadcastReceiver {
   public void onReceive(Context c, Intent i) {
     String act = i == null ? null : i.getAction();
     if ("TEST".equals(act)) {
-      AdhanService.start(c, i.getStringExtra("prayer"), i.getStringExtra("name"), i.getStringExtra("time"), i.getStringExtra("file"), i.getFloatExtra("vol", 1f), i.getStringExtra("mode"));
+      // تم إصلاح الخطأ هنا بإضافة المعامل الثامن false المتوافق مع بنية AdhanService الجديدة
+      AdhanService.start(c, i.getStringExtra("prayer"), i.getStringExtra("name"), i.getStringExtra("time"), i.getStringExtra("file"), i.getFloatExtra("vol", 1f), i.getStringExtra("mode"), false);
       return;
     }
     if (act == null) fire(c);
@@ -56,7 +57,8 @@ public class PrayerReceiver extends BroadcastReceiver {
         if (t > last && t <= now + 3000 && now - t < 300000) {
           if (t > maxT) maxT = t;
           if (o.optBoolean("adhan", false)) {
-            AdhanService.start(c, o.optString("p"), o.optString("name"), o.optString("time"), o.optString("file"), (float) o.optDouble("vol", 1.0), o.optString("mode", "notif"));
+            // تم إصلاح الخطأ الثاني هنا بإضافة المعامل الثامن false ليتوافق مع الـ signatures الجديدة لـ AdhanService
+            AdhanService.start(c, o.optString("p"), o.optString("name"), o.optString("time"), o.optString("file"), (float) o.optDouble("vol", 1.0), o.optString("mode", "notif"), false);
           }
         }
       }
@@ -104,28 +106,28 @@ public class PrayerReceiver extends BroadcastReceiver {
   }
 
   static void fillViews(Context c, RemoteViews rv, JSONObject e, long t, boolean big) throws Exception {
-    // جلب اسم الولاية المخزنة في التطبيق من الإعدادات المشتركة
+    // جلب اسم الولاية المحددة في التطبيق من SharedPreferences، وافتراض قيمة احتياطية في حال عدم وجودها
     String stateName = c.getSharedPreferences("mishkat", 0).getString("user_state", "الولاية الحالية");
     String hijriDate = e.optString("hijri", "");
 
-    // السطر الأول: التاريخ الهجري وبجانبه فاصل ثم اسم الولاية المحددة
+    // السطر الأول: التاريخ الهجري وبجانبه فاصل ثم اسم الولاية
     rv.setTextViewText(rid(c, "n_name", "id"), hijriDate + "  |  " + stateName);
     
-    // السطر السفلي: الصلاة القادمة مع وقتها
+    // السطر السفلي: الصلاة القادمة مع وقتها الأذاني
     rv.setTextViewText(rid(c, "n_sub", "id"), "الصلاة القادمة: " + e.getString("name") + " (" + e.getString("time") + ")");
     
     if (big) {
       rv.setTextViewText(rid(c, "n_day", "id"), e.optString("day"));
     }
 
-    // إعداد العداد التنازلي التلقائي بجانب النص
+    // إعداد العداد التنازلي التلقائي ليتناقص تزامناً مع الوقت المتبقي
     int cid = rid(c, "n_chrono", "id");
     if (Build.VERSION.SDK_INT >= 24) {
       rv.setChronometerCountDown(cid, true);
     }
     rv.setChronometer(cid, SystemClock.elapsedRealtime() + (t - System.currentTimeMillis()), null, true);
 
-    // تطبيق لون الخلفية الخاص بالتطبيق المستخرج من الكائن البرمجي
+    // تطبيق لون الخلفية الخاص بالتطبيق المستخرج من الكائن البرمجي (JSON) لضمان تكامل التصميم البصري
     try {
       String bg = e.optString("bg", "");
       if (bg.length() > 0) {
@@ -133,7 +135,7 @@ public class PrayerReceiver extends BroadcastReceiver {
       }
     } catch (Exception ex) {}
 
-    // ضبط لون نصوص العداد لتتناسب مع التصميم الجديد
+    // ضبط لون نصوص العداد لتتناسب مع الواجهة المحدثة للإشعار الدائم
     try {
       String fg = e.optString("fg", "");
       if (fg.length() > 0) {
