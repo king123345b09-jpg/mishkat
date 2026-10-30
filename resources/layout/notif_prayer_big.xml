@@ -1,79 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Persistent prayer notification: hijri date | wilaya, prayer name + countdown, big time -->
+<!-- Persistent prayer notification: info column (hijri | wilaya, name, time) + big countdown filling the left side -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/n_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layoutDirection="rtl"
-    android:orientation="vertical"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
     android:paddingStart="14dp"
-    android:paddingEnd="14dp"
+    android:paddingEnd="10dp"
     android:paddingTop="8dp"
     android:paddingBottom="9dp"
     android:background="@drawable/notif_bg">
   <LinearLayout
-      android:layout_width="match_parent"
+      android:layout_width="0dp"
       android:layout_height="wrap_content"
-      android:orientation="horizontal"
-      android:gravity="center_vertical">
-    <TextView
-        android:id="@+id/n_hijri"
-        android:layout_width="wrap_content"
+      android:layout_weight="1"
+      android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:maxLines="1"
-        android:ellipsize="end"
-        android:textColor="#E8DDB5"
-        android:textSize="12sp" />
-    <ImageView
-        android:id="@+id/n_sep"
-        android:layout_width="1dp"
-        android:layout_height="13dp"
-        android:layout_marginStart="9dp"
-        android:layout_marginEnd="9dp"
-        android:background="#99F4C430" />
-    <TextView
-        android:id="@+id/n_city"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:maxLines="1"
-        android:ellipsize="end"
-        android:textColor="#FFFFFF"
-        android:textSize="12sp"
-        android:textStyle="bold" />
-  </LinearLayout>
-  <LinearLayout
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_marginTop="2dp"
-      android:orientation="horizontal"
-      android:gravity="center_vertical">
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+      <TextView
+          android:id="@+id/n_hijri"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:maxLines="1"
+          android:ellipsize="end"
+          android:textColor="#E8DDB5"
+          android:textSize="12sp" />
+      <ImageView
+          android:id="@+id/n_sep"
+          android:layout_width="1dp"
+          android:layout_height="13dp"
+          android:layout_marginStart="8dp"
+          android:layout_marginEnd="8dp"
+          android:background="#99F4C430" />
+      <TextView
+          android:id="@+id/n_city"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          android:maxLines="1"
+          android:ellipsize="end"
+          android:textColor="#FFFFFF"
+          android:textSize="12sp"
+          android:textStyle="bold" />
+    </LinearLayout>
     <TextView
         android:id="@+id/n_name"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_marginTop="2dp"
         android:maxLines="1"
         android:ellipsize="end"
         android:textColor="#FFFFFF"
         android:textSize="17sp"
         android:textStyle="bold" />
-    <Chronometer
-        android:id="@+id/n_chrono"
+    <TextView
+        android:id="@+id/n_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layoutDirection="ltr"
-        android:textDirection="ltr"
-        android:textColor="#F4C430"
-        android:textSize="24sp"
+        android:layout_marginTop="-1dp"
+        android:textColor="#FFFFFF"
+        android:textSize="26sp"
         android:textStyle="bold" />
   </LinearLayout>
-  <TextView
-      android:id="@+id/n_time"
+  <Chronometer
+      android:id="@+id/n_chrono"
       android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginTop="-2dp"
-      android:textColor="#FFFFFF"
-      android:textSize="24sp"
+      android:layout_height="match_parent"
+      android:layout_marginStart="8dp"
+      android:gravity="center"
+      android:layoutDirection="ltr"
+      android:textDirection="ltr"
+      android:textColor="#F4C430"
+      android:textSize="34sp"
       android:textStyle="bold" />
 </LinearLayout>
